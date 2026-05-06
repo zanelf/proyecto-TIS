@@ -3,25 +3,6 @@ Calcular fechas límites
 Avisos en caso de vencimiento
 Mostrar visualmente el vencimiento
 
-Registro de usuario
-
-Registrar momento del día
-  Registrar momento del día: Esta función permite el registro ee un momento del día
-  Entradas: nombre_estado, nombre_actividad
-  Procesos
-    El momento del día consiste en la emoción que un usuario experimenta al realizar cierta actividad.
-    nombre_estado es el nombre de la emoción
-    nombre:actividad es el nombre de la actividad
-    El usuario debe seleccionar dsde un listado de emociones un nombre_estado y desde el listado de actividades nombre_actividad
-
-
-Login de usuario
-Caracterización de usuario
-Registar momento del día
-Modificar imagen de perfil
-Vizualizar información personal
-Reaccionar a comentarios en la red
-Publicar comentario en la red
 
 
 REQUISITOS FUNCIONALES
@@ -29,4 +10,28 @@ REQUISITOS FUNCIONALES
   -El sistema debe calcular automáticamente la fecha límite de respuesta al generar el ticket
   -El sistema debe calcular automáticamente la prioridad del ticket según su tipo
   -El sistema debe generar una alerta cuando un ticket esté próximo a vencer y cuando haya vencido
-  -El sistema debe permitir 
+  
+
+
+
+Cálculo y control de tiempos: Esta función establece la prioridad y plazos de atención al momento de crearse el ticket.
+  Entradas: tipo_solicitud, fecha_creacion
+  Procesos:
+    C.1 El sistema debe permitir definir tiempos máximos de respuesta según el tipo de solicitud ingresada.
+    C.1.1 Si el tipo es "Reclamo Urgente", el plazo se fija en 24 horas.
+    C.1.2 Si el tipo es "Sugerencia", el plazo se fija en 5 días hábiles.
+
+    C.2 El sistema debe calcular automáticamente la prioridad del ticket según su tipo al momento de la generación.
+
+    C3 El sistema debe calcular automáticamente la fecha límite de respuesta sumando el tiempo definido a la fecha_creacon
+
+Monitoreo y alertas: Esta función vigila el cumplimiento de los tiempos de respuesta y notifica visualmente retrasos.
+  Entradas: fecha_limite, estado ticket
+  Procesos: 
+    D.1 El sistema contrasta el progreso de la solicitud contra la fecha_limite para determinar el cumplimiento del SLA
+
+    D.2 El sistema debe generar una alerta visual cuando un ticket esté próximo a vencer su plazo.
+
+    D.3 El sistema debe marcar visualmente los tickets que ya han superado su plazo de respuesta (ticket vencidos)
+
+    D.4 Los tickets en estado "Respondida" o "Cerrada" dejan de emitir alertas en vencimiento.
