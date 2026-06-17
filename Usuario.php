@@ -25,8 +25,7 @@
 <body>
     <?php
         include('navbar1.php'); // barra superiror autenticada
-        echo "Bienvenido------ ".$_SESSION["usuario"];
-        echo "Bienvenido------ ".$_SESSION["tipo"];
+        echo "Bienvenido------ ".$_SESSION["usuario"]."  ERES UN MALDITO".$_SESSION["tipo"];
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
             $campos[] = $fila; // No estoy tan seguro de esto o hacerlo directo, pero funca

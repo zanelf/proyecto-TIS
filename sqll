@@ -27,3 +27,31 @@ CREATE TABLE Comprobante (
     solicitud_ID INT, -- Mismo tipo de dato que la PK padre
     FOREIGN KEY (solicitud_ID) REFERENCES Solicitud(solicitud_ID)
 ) ENGINE=InnoDB;
+
+________________________________________________________________________________
+
+CREATE TABLE Usuario (
+    ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
+    nombre_usuario VARCHAR(100) NOT NULL,
+    contraseña VARCHAR(100) NOT NULL
+);
+CREATE TABLE Funcionario (
+    ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
+    FOREIGN KEY (ID_usuario) REFERENCES Usuario(ID_usuario),
+    ID_departamento INT, -- Mismo tipo de dato que la PK padre
+    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento)
+);
+CREATE TABLE Administrador (
+    ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
+    FOREIGN KEY (ID_usuario) REFERENCES Usuario(ID_usuario)
+);
+CREATE TABLE Director (
+    ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
+    FOREIGN KEY (ID_usuario) REFERENCES Usuario(ID_usuario),
+    ID_departamento INT, -- Mismo tipo de dato que la PK padre
+    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento)
+);
+CREATE TABLE Desarrollador (
+    ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
+    FOREIGN KEY (ID_usuario) REFERENCES Usuario(ID_usuario)
+);
