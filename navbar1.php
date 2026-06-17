@@ -1,0 +1,30 @@
+<?php
+echo '<nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 shadow">';
+    echo '<div class="container-fluid">';
+        echo '<a href="index.php">';
+        echo '<button type="button">INDEX</button>';
+        echo '</a>';
+        echo '<a href="solicitud.php">';
+        echo '<button type="button">SOLICITUDES</button>';
+        echo '</a>';
+        echo '<a href="usuario.php">';
+        echo '<button type="button">usuarios</button>';
+        echo '</a>';
+        echo '<a href="ciudadano.php">';
+        echo '<button type="ciudadanosssss">CIUDADANOS</button>';
+        echo '</a>';
+        echo '<a href="departamento.php">';
+        echo '<button type="departamentos">departamentos</button>';
+        echo '</a>';
+        echo '<a href="tipo_solicitud.php">';
+        echo '<button type="tipo_solicitud">tipo_solicitud</button>';
+        echo '</a>';
+        echo '<a href="encuesta.php">';
+        echo '<button type="encuesta">encuesta</button>';
+        echo '</a>';
+        echo '<a href="logout.php">';
+        echo '<button type="button">Cerrar sesión</button>';
+        echo '</a>';
+    echo '</div>';
+echo '</nav>';
+?>
