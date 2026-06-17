@@ -12,12 +12,6 @@
         <a href="index.php">
             <button type="button">INDEX</button>
         </a>
-        <a href="Enviarsolicitud.php">
-            <button type="button">SOLICITUDES</button>
-        </a>
-        <a href="Login.php">
-            <button type="button">LOGIN</button>
-        </a>
     </nav>
     <div class="container">
         <div class="row">

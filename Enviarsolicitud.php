@@ -3,6 +3,10 @@
     $consulta = "SELECT * FROM solicitud";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE solicitud");
+    $tipos_solicitudes=mysqli_query($conexionDB,"SELECT * FROM tipo_solicitud");
+    $tipo_sol=mysqli_fetch_assoc($tipos_solicitudes);
+    $departamentos=mysqli_query($conexionDB,"SELECT * FROM departamento");
+    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -15,16 +19,38 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 shadow">
-        <a href="index.php">
-            <button type="button">INDEX</button>
+
+    <a href="index.php">
+        <button type="button">INDEX</button>
+    </a>
+
+    <?php if (isset($_SESSION["usuario"])): ?>
+
+        <span class="mx-3">
+            Bienvenido, <?php echo $_SESSION["usuario"]; ?>
+        </span>
+
+        <a href="departamento.php">
+            <button type="button">departamento</button>
         </a>
-        <a href="Enviarsolicitud.php">
-            <button type="button">SOLICITUDES</button>
+        <a href="ciudadano.php">
+            <button type="button">ciudadano</button>
         </a>
+        <a href="tipo_soliciutd.php">
+            <button type="button">tipo soliciutd</button>
+        </a>
+        <a href="logout.php">
+            <button type="button">Cerrar Sesión</button>
+        </a>
+
+    <?php else: ?>
+
         <a href="Login.php">
             <button type="button">LOGIN</button>
         </a>
-    </nav>
+    <?php endif; ?>
+
+</nav>
     <?php
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
@@ -48,10 +74,45 @@
         <div class="row">
             <div class="col-8">
                 <h3>Formulario</h3>
-                <?php
-                    $Tipo_modelo = "solicitud";
-                    include('Formulario2.php');
-                ?>
+                <form action="">
+                    <label class="form-label">correo electronico</label>
+                    <input type="text" name="" class="form-control">
+                    
+                    <label class="form-label">Tipo solicitud</label>
+                    <?php
+                        echo '<select id="tipo" name="tipo">';
+                        while($tipo_sol = mysqli_fetch_assoc($tipos_solicitudes)){
+                            echo '<option value="'.$tipo_sol["ID_tipo_solicitud"].'">'.$tipo_sol["nombre"].'</option>';
+                        }
+                        echo '</select>';
+                    ?>
+                    <label class="form-label">Departamento destino</label>
+                    <?php
+                        echo '<select id="tipo" name="tipo">';
+                        while($dpto = mysqli_fetch_assoc($departamentos)){
+                            echo '<option value="'.$dpto["ID_departamento"].'">'.$dpto["nombre"].'</option>';
+                        }
+                        echo '</select>';
+                    ?>
+                    <label class="form-label">Categoria</label>
+                    <select id="tipo" name="tipo">
+                        <option value="Categoria1">Categoria1</option>
+                        <option value="Categoria2">Categoria2</option>
+                        <option value="Categoria3">Categoria3</option>
+                    </select>
+
+                    <label class="form-label">Asunto</label>
+                    <input type="text" name="" class="form-control">
+                    <label class="form-label">Descripcion</label>
+                    <input type="text" name="" class="form-control">
+                    <label class="form-label">Archivo</label>
+                    <input type="file" id="archivo" name="archivo" class="form-control">
+
+                    <input type="submit" class="btn btn-success mt-4 w-100">
+                    <a href="solicitud.php">;
+                        <button type="button">Volver</button>;
+                    </a>;
+                </form>
             </div>
         </div>
     </div>

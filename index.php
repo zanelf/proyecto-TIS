@@ -18,19 +18,24 @@
         <a href="index.php">
             <button type="button">INDEX</button>
         </a>
-        <a href="Enviarsolicitud.php">
-            <button type="button">SOLICITUDES</button>
-        </a>
         <a href="Login.php">
-            <button type="button">LOGIN</button>
+            <button type="button">acceso</button>
         </a>
     </nav>
     <div class="container">
         <div class="row">
             <div class="col-6">
-                <h5>NO SE QUE PONER AQUI</h5>
+                <a href="Enviarsolicitud.php">;
+                    <button type="button">Enviar solicitud</button>;
+                </a>;
+            </div>
+            <div class="col-6">
+                <a href="Seguimiento.php">;
+                    <button type="button">Seguimiento</button>;
+                </a>;
             </div>
         </div>
+        
 
     </div>
     zdads

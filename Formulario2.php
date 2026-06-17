@@ -23,7 +23,7 @@
     foreach($campos as $campo){
         //echo $campo['Type']."<br>";
     }
-    echo ' --- Insertar'.$modelo.'.ph';
+    echo ' - form sobre archivo: Insertar'.$modelo.'.ph';
     echo '<form action="Insertar'.$modelo.'.php" method="POST">';
     foreach($campos as $campo){
         if($campo['Key']!="PRI"){

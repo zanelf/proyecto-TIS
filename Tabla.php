@@ -1,6 +1,6 @@
 <?php
     include('conexion.php');
-
+    $modelo = $Tipo_modelo;
     $atributos = mysqli_query($conexionDB,"DESCRIBE ".$modelo);
 
     $campos=[];

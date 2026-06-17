@@ -3,6 +3,13 @@
     $consulta = "SELECT * FROM departamento";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE departamento");
+
+    session_start();
+
+    if(!isset($_SESSION["usuario"])){
+        header("Location: Login.php");
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>

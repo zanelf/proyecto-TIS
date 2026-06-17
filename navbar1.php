@@ -1,6 +1,6 @@
 <?php
 $opciones = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes", "tipo_solicitud" => "Tipos de solicitud","usuario" => "Usuarios", "departamento" => "Departamentos","logout" => "Cerrar sesion"];
-$opcionesAdm = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes", "departamento" => "Departamentos", "usuarios" => "Usuarios"];
+$opcionesAdm = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes", "departamento" => "Departamentos", "usuarios" => "Usuarios","logout" => "Cerrar sesion"];
 $opcionesFun = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes"];
 $opcionesDir = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes"];
 $opcionesDev = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes"];
