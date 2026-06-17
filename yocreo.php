@@ -1,8 +1,8 @@
 <?php
     include('conexion.php');
-    $consulta = "SELECT * FROM usuario";
+    $consulta = "SELECT * FROM yocreo";
     $resultado = mysqli_query($conexionDB,$consulta);
-    $atributos = mysqli_query($conexionDB,"DESCRIBE usuario");
+    $atributos = mysqli_query($conexionDB,"DESCRIBE yocreo");
 
     session_start();
 
@@ -24,14 +24,13 @@
 
 <body>
     <?php
-        include('navbar1.php'); // barra superiror autenticada
-        echo "Bienvenido------ ".$_SESSION["usuario"];
-        echo "Bienvenido------ ".$_SESSION["tipo"];
+        include('navbar1.php');
+        echo "Bienvenido ".$_SESSION["usuario"];
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
-            $campos[] = $fila; // No estoy tan seguro de esto o hacerlo directo, pero funca
+            $campos[] = $fila;
         }
-        foreach($campos as &$campo){ // Para pasar el tipo de dato al formulario. EJ: int(32)=number, el form de html pide number en Type=""
+        foreach($campos as &$campo){
             if(str_contains($campo['Type'],"int")){
                 $campo['Type'] = "number";
             }
@@ -40,7 +39,7 @@
             }
         }
         unset($campo);
-        foreach($campos as $campo){  // ESTO ERA PARA DEBUGEAR ALGO, PUEDE QUE SE USE PARA DEBUGEAR
+        foreach($campos as $campo){
             //echo $campo['Type']."<br>";
         }
     ?>
@@ -51,13 +50,12 @@
             <div class="col-6">
                 <h3>Formulario</h3>
                 <?php
-                    $Tipo_modelo = "usuario";
-                    include('UsuarioFormulario.php');
+                    $Tipo_modelo = "yocreo";
+                    include('Formulario.php');
                 ?>
             </div>
             <div class="col-6">
                 <?php
-                    $Tipo_modelo = "usuario";
                     include('Tabla.php');
                 ?>
             </div>

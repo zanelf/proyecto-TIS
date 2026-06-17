@@ -1,8 +1,8 @@
 <?php
     include('conexion.php');
-    $consulta = "SELECT * FROM usuario";
+    $consulta = "SELECT * FROM administrador";
     $resultado = mysqli_query($conexionDB,$consulta);
-    $atributos = mysqli_query($conexionDB,"DESCRIBE usuario");
+    $atributos = mysqli_query($conexionDB,"DESCRIBE administrador");
 
     session_start();
 
@@ -51,8 +51,8 @@
             <div class="col-6">
                 <h3>Formulario</h3>
                 <?php
-                    $Tipo_modelo = "usuario";
-                    include('UsuarioFormulario.php');
+                    $Tipo_modelo = "administrador";
+                    include('Formulario2.php');
                 ?>
             </div>
             <div class="col-6">
