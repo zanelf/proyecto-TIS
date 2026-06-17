@@ -1,12 +1,26 @@
+CREATE TABLE Ciudadano (
+    RUT_ciudadano INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
+    correo_electronico VARCHAR(100) NOT NULL
+);
+CREATE TABLE Tipo_solicitud (
+    ID_tipo_solicitud INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
+    nombre VARCHAR(100) NOT NULL,
+    descripcion VARCHAR(255) NOT NULL
+);
+CREATE TABLE Departamento (
+    ID_departamento INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
+    nombre VARCHAR(100) NOT NULL
+);
 CREATE TABLE Solicitud (
     solicitud_ID INT PRIMARY KEY AUTO_INCREMENT,
-    Tipo_estado ENUM('Felicitaciones', 'Reclamo', 'Sugerencia'),
+    Tipo_estado ENUM('Recibida', 'En revision', 'Derivada', 'En proceso', 'Respondida', 'Cerrada'),
     Asunto VARCHAR(100),
     Descripcion VARCHAR(100),
+    Categoria ENUM('Agua', 'Electrico', 'Transito'),
     RUT_ciudadano INT, -- Mismo tipo de dato que la PK padre
-    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano)
+    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano),
     ID_departamento INT, -- Mismo tipo de dato que la PK padre
-    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento)
+    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento),
     ID_tipo_solicitud INT, -- Mismo tipo de dato que la PK padre
     FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud)
 ) ENGINE=InnoDB;
@@ -15,7 +29,7 @@ CREATE TABLE Encuesta (
     ID_encuesta INT PRIMARY KEY AUTO_INCREMENT,
     Pregunta VARCHAR(100),
     RUT_ciudadano INT, -- Mismo tipo de dato que la PK padre
-    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano)
+    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano),
     solicitud_ID INT, -- Mismo tipo de dato que la PK padre
     FOREIGN KEY (solicitud_ID) REFERENCES Solicitud(solicitud_ID)
 ) ENGINE=InnoDB;
@@ -28,7 +42,12 @@ CREATE TABLE Comprobante (
     FOREIGN KEY (solicitud_ID) REFERENCES Solicitud(solicitud_ID)
 ) ENGINE=InnoDB;
 
-________________________________________________________________________________
+CREATE TABLE Archivo (
+    ID_archvio INT PRIMARY KEY AUTO_INCREMENT,
+    descripcion varchar(255),
+    solicitud_ID INT, -- Mismo tipo de dato que la PK padre
+    FOREIGN KEY (solicitud_ID) REFERENCES Solicitud(solicitud_ID)
+) ENGINE=InnoDB;
 
 CREATE TABLE Usuario (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
