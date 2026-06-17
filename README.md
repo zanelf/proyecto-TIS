@@ -7,6 +7,9 @@ repositorio para el proyecto semestral de Taller de Ingenieria de software del e
 
 
 # Instalación
+
+
+
 # Instrucciones de uso
 # Contribución
 # Estructura de carpetas
