@@ -2,6 +2,7 @@
     include('conexion.php');
     $consulta = "SELECT * FROM ciudadano";
     $resultado = mysqli_query($conexionDB,$consulta);
+    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -14,14 +15,41 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 shadow">
-        <a href="index.php">
-            <button type="button">INDEX</button>
+    <?php if (isset($_SESSION["usuario"])): ?>
+
+    <span>
+        Bienvenido,
+        <?php echo $_SESSION["usuario"]; ?>
+        (<?php echo $_SESSION["tipo"]; ?>)
+    </span>
+
+    <?php if ($_SESSION["tipo"] == "Administrador"): ?>
+        <a href="Administrador.php">
+            <button type="button">Administradores</button>
         </a>
+        <a href="ciudadano.php">
+            <button type="button">Ciudadano</button>
+        </a>
+        <a href="solicitud.php">
+            <button type="button">Solicitud</button>
+        </a>
+        <a href="usuario.php">
+            <button type="button">Usuarios</button>
+        </a>
+    <?php endif; ?>
+
+        <a href="logout.php">
+            <button type="button">Cerrar Sesión</button>
+        </a>
+
+    <?php else: ?>
+
         <a href="Login.php">
-            <button type="button">acceso</button>
+            <button type="button">Acceso</button>
         </a>
-    </nav>
+
+    <?php endif; ?>
+    
     <div class="container">
         <div class="row">
             <div class="col-6">
@@ -38,6 +66,5 @@
         
 
     </div>
-    zdads
 </body>
 </html>
