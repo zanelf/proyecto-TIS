@@ -1,6 +1,6 @@
 # proyecto-TIS (SGISC)
 
-repositorio para el proyecto semestral de Taller de Ingenieria de software del equipo 2
+repositorio para el proyecto semestral de Taller de Ingenieria de software del equipo 2.
 
 # Descripción
 
