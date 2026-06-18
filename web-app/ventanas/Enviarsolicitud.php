@@ -147,8 +147,8 @@
                 <!-- Acciones -->
                 <div class="d-flex justify-content-end align-items-center gap-2 pt-2 border-top"
                      style="border-color: var(--card-border) !important;">
-                    <a href="index.php" class="btn-cancelar">Volver</a>
-                    <button type="submit" class="btn-enviar">Enviar Solicitud</button>
+                    <a href="../index.php" class="btn btn-outline-secondary">Volver al Inicio</a>
+                    <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
                 </div>
 
             </form>
