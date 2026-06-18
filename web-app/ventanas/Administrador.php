@@ -57,7 +57,7 @@
             </div>
             <div class="col-6">
                 <?php
-                    $Tipo_modelo = "usuario";
+                    $Tipo_modelo = "administrador";
                     include('Tabla.php');
                 ?>
             </div>

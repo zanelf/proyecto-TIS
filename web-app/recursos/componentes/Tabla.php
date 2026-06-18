@@ -32,6 +32,7 @@
                     } 
                     echo '<td>
                             <a class="mx-2" href="eliminar.php?id_enviado='.$PKValue.'&tipomod='.$modelo.'">Eliminar</a>
+                            
                             <a href="editar.php?id_enviado='.$PKmodelo.'">Editar</a>
                             </td>';
                 echo "</tr>";
