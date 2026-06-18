@@ -1,3 +1,3 @@
 <?php
-    $conexionDB = mysqli_connect("localhost","root","","ProyectoDB");
+    $conexionDB = mysqli_connect("localhost","root","","proyectodb2");
 ?>

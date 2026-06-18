@@ -1,5 +1,5 @@
 <?php
-    include('conexion.php');
+    include('../base_de_datos/conexion.php');
     $consulta = "SELECT * FROM solicitud";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE solicitud");
@@ -9,7 +9,7 @@
     session_start();
 
     if(!isset($_SESSION["usuario"])){
-        header("Location: Login.php");
+        header("Location: ../index  .php");
         exit;
     }
 ?>
@@ -24,7 +24,7 @@
 </head>
 <body>
     <?php
-        include('navbar1.php');
+        include('../recursos/componentes/navbar1.php');
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
             $campos[] = $fila;
@@ -43,14 +43,14 @@
         }
     ?>
     <div class="container">
-        <a href="Enviarsolicitud.php">
+        <a href="../consultas/Enviarsolicitud.php">
                     <button type="button">Crear solicitud</button>
                 </a>
         <div class="row">
             <div class="col-6">
                 <?php
                     $Tipo_modelo = "solicitud";
-                    include('Tabla.php');
+                    include('../recursos/componentes/Tabla.php');
                 ?>
             </div>
         </div>

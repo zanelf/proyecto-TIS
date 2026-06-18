@@ -1,5 +1,5 @@
 <?php
-    include('base_de_datos/conexion.php');
+    include('../base_de_datos/conexion.php');
     $consulta = "SELECT * FROM solicitud";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE solicitud");
@@ -16,14 +16,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Solicitud — Municipalidad</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="style-enviar_solicitud_formulario.css">
+    <link rel="stylesheet" href="../recursos/css/style_enviar_solicitud_formulario.css">
 </head>
 <body>
 
 <!-- ══ Nav ══ -->
 <nav class="navbar-muni d-flex align-items-center justify-content-between">
 
-    <a href="index.php" class="titulo-muni">Municipalidad</a>
+    <a href="../index.php" class="titulo-muni">Municipalidad</a>
 
     <div class="d-flex align-items-center gap-2">
         <?php if (isset($_SESSION["usuario"])): ?>
@@ -147,7 +147,7 @@
                 <!-- Acciones -->
                 <div class="d-flex justify-content-end align-items-center gap-2 pt-2 border-top"
                      style="border-color: var(--card-border) !important;">
-                    <a href="index.php" class="btn-cancelar">Volver</a>
+                    <a href="../index.php" class="btn-cancelar">Volver</a>
                     <button type="submit" class="btn-enviar">Enviar Solicitud</button>
                 </div>
 

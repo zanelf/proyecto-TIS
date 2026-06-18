@@ -20,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
     <title>Document</title>
 </head>
@@ -54,13 +54,13 @@
                 <h3>Formulario</h3>
                 <?php
                     $Tipo_modelo = "usuario";
-                    include('UsuarioFormulario.php');
+                    include('../recursos/componentes/UsuarioFormulario.php');
                 ?>
             </div>
             <div class="col-6">
                 <?php
                     $Tipo_modelo = "usuario";
-                    include('Tabla.php');
+                    include('../recursos/componentes/Tabla.php');
                 ?>
             </div>
         </div>

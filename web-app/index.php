@@ -1,5 +1,6 @@
 <?php
-    include('base_de_datos/conexion.php');
+    include('./base_de_datos/conexion.php');
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -12,11 +13,7 @@
     <!-- Iconos de Bootstrap para el documento y la lupa de las tarjetas -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="recursos/css/style_index.css" rel="stylesheet">
-    
-    <style>
-        /* Fondo gris claro muy sutil idéntico a la imagen */
 
-    </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
