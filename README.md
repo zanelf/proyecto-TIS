@@ -62,7 +62,7 @@ web-app/                 # direccion del proyecto web
 | Nombre | github | rol |
 | --- | --- | --- |
 | Leonardo Acuña | [@Aesedefe1](https://github.com/Aesedefe1) ||
-| Vicente Bastidas| [@zanelf](https://github.com/zanelf) ||
+| Vicente Bastidas| [@zanelf](https://github.com/zanelf) | Analista |
 | Cristian  Urrutia| [@Currutiad](https://github.com/Currutiad) ||
 | Beatriz  Vidal| [@BeatrizVidalA](https://github.com/BeatrizVidalA) ||
-| Franco  Videla| [@Jayaquelo](https://github.com/Jayaquelo) ||
+| Franco  Videla| [@Jayaquelo](https://github.com/Jayaquelo) | Lider de grupo |
