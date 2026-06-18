@@ -60,9 +60,9 @@ web-app/
 ```
 # Equipo 
 | Nombre | github | rol |
-| --- | --- | 
-| Leonardo Acuña | |
-| Vicente Bastidas | | 
-| Cristian  Urrutia | |
-| Beatriz  Vidal | |
-| Franco  Videla | |
+| --- | --- | --- |
+| Leonardo Acuña |||
+| Vicente Bastidas|||
+| Cristian  Urrutia|||
+| Beatriz  Vidal|||
+| Franco  Videla|||
