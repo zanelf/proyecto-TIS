@@ -1,5 +1,5 @@
 <?php
-    include('conexion.php');
+    include('base_de_datos/conexion.php');
 ?>
 <!DOCTYPE html>
 <html lang="es">
