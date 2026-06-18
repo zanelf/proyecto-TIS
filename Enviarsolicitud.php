@@ -109,7 +109,7 @@
                     <input type="file" id="archivo" name="archivo" class="form-control">
 
                     <input type="submit" class="btn btn-success mt-4 w-100">
-                    <a href="solicitud.php">;
+                    <a href="index.php">;
                         <button type="button">Volver</button>;
                     </a>;
                 </form>
