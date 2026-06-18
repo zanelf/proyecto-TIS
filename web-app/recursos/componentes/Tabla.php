@@ -1,5 +1,5 @@
 <?php
-    include('conexion.php');
+    include('../base_de_datos/conexion.php');
     $modelo = $Tipo_modelo;
     $atributos = mysqli_query($conexionDB,"DESCRIBE ".$modelo);
 
