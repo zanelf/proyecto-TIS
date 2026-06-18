@@ -7,7 +7,7 @@
     $ID_departamento=$_POST["departamento"];
     $Asunto=$_POST["asunto"];
     $Descripcion=$_POST["descripcion"];
-    $categoria="Agua";
+    $categoria=$_POST["categoria"];
 
     $ID_tipo_solicitud=$_POST["tipo"];
 

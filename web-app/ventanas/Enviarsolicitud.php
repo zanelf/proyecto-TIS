@@ -111,9 +111,9 @@
                         </label>
                         <select id="categoria" name="categoria" class="form-select" required>
                             <option value="" disabled selected>Seleccione una categoría…</option>
-                            <option value="Categoria1">Categoría 1</option>
-                            <option value="Categoria2">Categoría 2</option>
-                            <option value="Categoria3">Categoría 3</option>
+                            <option value="Agua">Agua</option>
+                            <option value="Eléctrico">Eléctrico</option>
+                            <option value="Transito">Transito</option>
                         </select>
                     </div>
                 </div>
