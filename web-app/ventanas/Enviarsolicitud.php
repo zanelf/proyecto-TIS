@@ -23,7 +23,7 @@
 <!-- ══ Nav ══ -->
 <nav class="navbar-muni d-flex align-items-center justify-content-between">
 
-    <a href="../index.php" class="titulo-muni">Municipalidad</a>
+    <a href="../index.php" class="titulo-muni">SGISC</a>
 
     <div class="d-flex align-items-center gap-2">
         <?php if (isset($_SESSION["usuario"])): ?>
