@@ -64,7 +64,7 @@
             <p class="formulario-tarjeta-subtitulo">Complete el formulario para registrar su solicitud.</p>
             <hr class="division">
 
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="../consultas/Insertarsolicitud.php" method="post" enctype="multipart/form-data">
 
                 <!-- Fila 1: Correo y Tipo de solicitud -->
                 <div class="row g-3 mb-3">
@@ -111,9 +111,9 @@
                         </label>
                         <select id="categoria" name="categoria" class="form-select" required>
                             <option value="" disabled selected>Seleccione una categoría…</option>
-                            <option value="Categoria1">Categoría 1</option>
-                            <option value="Categoria2">Categoría 2</option>
-                            <option value="Categoria3">Categoría 3</option>
+                            <option value="Agua">Agua</option>
+                            <option value="Eléctrico">Eléctrico</option>
+                            <option value="Transito">Transito</option>
                         </select>
                     </div>
                 </div>
