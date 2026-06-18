@@ -64,7 +64,7 @@
             <p class="formulario-tarjeta-subtitulo">Complete el formulario para registrar su solicitud.</p>
             <hr class="division">
 
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="../consultas/Insertarsolicitud.php" method="post" enctype="multipart/form-data">
 
                 <!-- Fila 1: Correo y Tipo de solicitud -->
                 <div class="row g-3 mb-3">
