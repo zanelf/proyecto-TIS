@@ -22,7 +22,7 @@
 </head>
 <body>
     <?php
-        include('navbar1.php');
+        include('../recursos/componentes/navbar1.php');
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
             $campos[] = $fila;
