@@ -1,5 +1,7 @@
 <?php
-    include('conexion.php');
+
+    include('../base_de_datos/conexion.php');
+
     $consulta = "SELECT * FROM usuario";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE usuario");
@@ -10,6 +12,7 @@
         header("Location: Login.php");
         exit;
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +27,7 @@
 
 <body>
     <?php
-        include('navbar1.php'); // barra superiror autenticada
+        include('../recursos/componentes/navbar1.php'); // barra superiror autenticada
         echo "Bienvenido------ ".$_SESSION["usuario"]."  ERES UN MALDITO".$_SESSION["tipo"];
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
