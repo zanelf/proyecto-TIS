@@ -4,25 +4,30 @@ $opcionesAdm = ["../index" => "index",'ciudadano' => "Ciudadanos",'solicitud' =>
 $opcionesFun = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes"];
 $opcionesDir = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes"];
 $opcionesDev = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes"];
+$tipoUsuario = "";
+
+if(isset($_SESSION["tipo"])){
+    $tipoUsuario = $_SESSION["tipo"];
+}
 
 echo '<nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 shadow">';
     echo '<div class="container-fluid">';
         
-        if($_SESSION["tipo"]=="Administrador"){
+        if($tipoUsuario=="Administrador"){
             foreach($opcionesAdm as $opcion => $label){
                 echo '<a href="'.$opcion.'.php">';
                     echo '<button type="button">'.$label.'</button>';
                 echo '</a>';
             }
         }
-        if($_SESSION["tipo"]=="Funcionario"){
+        if($tipoUsuario=="Funcionario"){
             foreach($opcionesAdm as $opcion => $label){
                 echo '<a href="'.$opcion.'.php">';
                     echo '<button type="button">'.$label.'</button>';
                 echo '</a>';
             }
         }
-        if($_SESSION["tipo"]=="Director"){
+        if($tipoUsuario=="Director"){
             foreach($opcionesAdm as $opcion => $label){
                 echo '<a href="'.$opcion.'.php">';
                     echo '<button type="button">'.$label.'</button>';

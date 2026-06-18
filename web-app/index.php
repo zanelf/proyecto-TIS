@@ -8,16 +8,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGISC - Municipalidad</title>
-    <!-- Bootstrap 5 CDN para maquetación limpia y las tarjetas con bordes redondeados -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Iconos de Bootstrap para el documento y la lupa de las tarjetas -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="recursos/css/style_index.css" rel="stylesheet">
 
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- NAVBAR SUPERIOR -->
+ 
     <nav class="navbar navbar-municipalidad py-3 shadow-sm">
         <div class="container">
             <?php if (isset($_SESSION["usuario"])): ?>
@@ -44,7 +44,7 @@
         </div>
     </nav>
 
-    <!-- CUERPO PRINCIPAL -->
+    
     <main class="container flex-grow-1 my-5 py-4">
         <div class="row mb-5">
             <div class="col-12">
@@ -54,9 +54,9 @@
             </div>
         </div>
 
-        <!-- FILA DE TARJETAS -->
+        
         <div class="row g-4">
-            <!-- Tarjeta 1: Nueva Solicitud (Clickeable completa hacia Enviarsolicitud.php) -->
+            
             <div class="col-12 col-md-6">
                 <a href="ventanas/Enviarsolicitud.php" class="option-card card-clickable shadow-sm">
                     <div class="icon-container mb-4">
@@ -68,7 +68,7 @@
                 </a>
             </div>
 
-            <!-- Tarjeta 2: Seguimiento de Solicitud (Clickeable pero sin acción) -->
+            
             <div class="col-12 col-md-6">
                 <a href="ventanas/Seguimiento.php" class="option-card card-clickable shadow-sm">
                     <div class="icon-container mb-4">
@@ -82,7 +82,7 @@
         </div>
     </main>
 
-    <!-- PIE DE PÁGINA -->
+    
     <footer class="py-4 mt-auto">
         <div class="container">
             <p class="m-0">&copy; 2026 SGISC. Todos los derechos reservados.</p>
