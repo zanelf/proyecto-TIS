@@ -1,5 +1,5 @@
 <?php
-include('conexion.php');
+    include('../base_de_datos/conexion.php');
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@ include('conexion.php');
     <title>Acceso al Sistema SGISC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+    <link href="../recursos/css/style.css" rel="stylesheet">
 </head>
 <body class="h-100 m-0 overflow-hidden">
 
@@ -71,10 +71,10 @@ include('conexion.php');
                             <a href="#" class="text-custom-link">¿Olvidó su contraseña?</a>
                         </div>
 
-                        <button type="submit" class="btn btn-custom-dark w-100 py-2 fw-medium mb-4">Ingresar</button>
+                        <a href="../index.php" class="btn btn-custom-dark w-100 py-2 fw-medium mb-4">Ingresar</a>
 
                         <div class="text-center">
-                            <a href="index.php" class="text-custom-link text-muted d-inline-flex align-items-center gap-1">
+                            <a href="../index.php" class="text-custom-link text-muted d-inline-flex align-items-center gap-1">
                                 <i class="bi bi-arrow-left"></i> Volver al portal ciudadano
                             </a>
                         </div>
