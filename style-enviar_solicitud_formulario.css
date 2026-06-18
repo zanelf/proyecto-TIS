@@ -1,0 +1,202 @@
+
+:root {
+    --muni-blue: #0f2d59;
+    --muni-blue-hover: #0a2045;
+    --page-bg: #f4f6f9;
+    --card-border: #e2e8f0;
+    --label-color: #374151;
+    --muted-text: #6b7280;
+    --required-star: #dc3545;
+}
+
+body {
+    background-color: var(--page-bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #1a202c;
+    min-height: 100vh;
+}
+
+.navbar-muni {
+    background-color: var(--muni-blue);
+    padding: 0.75rem 1.5rem;
+}
+
+.navbar-muni .titulo-muni {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.navbar-muni .titulo-muni:hover {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.navbar-muni .nav-link-muni {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.82rem;
+    text-decoration: none;
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.navbar-muni .nav-link-muni:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-muni .texto-bienvenida {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.8rem;
+}
+
+.btn-acceso {
+    color: #ffffff;
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    background: transparent;
+    font-size: 0.8rem;
+    padding: 0.3rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+}
+
+.btn-acceso:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #fff;
+    color: #fff;
+}
+
+
+.cuerpo-pag {
+    padding: 2.5rem 1rem 4rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    color: var(--muted-text);
+    text-decoration: none;
+    margin-bottom: 1.25rem;
+    transition: color 0.15s;
+}
+
+.back-link:hover {
+    color: var(--muni-blue);
+}
+
+
+.tarjeta-formulario {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+    padding: 2.25rem 2.5rem;
+}
+
+.formulario-tarjeta-titulo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--muni-blue);
+    margin-bottom: 0.2rem;
+}
+
+.formulario-tarjeta-subtitulo {
+    font-size: 0.85rem;
+    color: var(--muted-text);
+    margin-bottom: 1.75rem;
+}
+
+.division {
+    border: none;
+    border-top: 1px solid var(--card-border);
+    margin: 0 0 1.75rem;
+}
+
+
+.form-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--label-color);
+    margin-bottom: 0.35rem;
+}
+
+.rojito {
+    color: var(--required-star);
+    margin-left: 2px;
+}
+
+.form-control,
+.form-select {
+    font-size: 0.875rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    color: #1a202c;
+    background-color: #fff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--muni-blue);
+    box-shadow: 0 0 0 3px rgba(15, 45, 89, 0.1);
+    outline: none;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.form-control[type="file"] {
+    padding: 0.4rem 0.75rem;
+    color: var(--muted-text);
+}
+
+.file-hint {
+    font-size: 0.75rem;
+    color: var(--muted-text);
+    margin-top: 0.3rem;
+}
+
+.btn-submit {
+    background-color: var(--muni-blue);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.875rem;
+    border: none;
+    padding: 0.6rem 1.75rem;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+
+.btn-submit:hover {
+    background-color: var(--muni-blue-hover);
+    color: #fff;
+}
+
+.btn-cancelar {
+    background-color: #ffffff;
+    color: #4b5563;
+    font-size: 0.875rem;
+    border: 1px solid #d1d5db;
+    padding: 0.6rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-cancel:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+    color: #1a202c;
+}
