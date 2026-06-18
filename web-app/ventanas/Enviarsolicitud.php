@@ -34,7 +34,7 @@
 
         <?php else: ?>
 
-            <a href="inicio.php" class="btn-acceso">Acceso</a>
+            <a href="Inicio.php" class="btn-acceso">Acceso</a>
 
         <?php endif; ?>
     </div>

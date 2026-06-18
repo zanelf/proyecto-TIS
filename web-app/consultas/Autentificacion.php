@@ -48,7 +48,7 @@
         if(mysqli_num_rows($esDev) > 0){
             $_SESSION["tipo"] = "Desarrollador";
         }
-        header('Location: ../ventanas/usuario.php');
+        header('Location: ../ventanas/Usuario.php');
         exit;
     }else{
         header('Location: Login.php');

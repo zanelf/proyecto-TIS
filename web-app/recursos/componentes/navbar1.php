@@ -31,11 +31,11 @@ echo '<nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 shadow">';
         }
     echo '</div>';
 
-        echo '<a href="encuesta.php">';
+        echo '<a href="Encuesta.php">';
         echo '<button type="encuesta">encuesta</button>';
         echo '</a>';
-        echo '<a href="administrador.php">';
-        echo '<button type="administrador">administrador</button>';
+        echo '<a href="Administrador.php">';
+        echo '<button type="Administrador">Administrador</button>';
         echo '</a>';
     
 echo '</nav>';
