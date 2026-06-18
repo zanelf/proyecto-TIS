@@ -23,7 +23,7 @@ Este repositorio esta separado en 2 partes principales
 - clonar proyecto en carpeta de servidor  
 - en php crear una base de datos para el proyexto
 - acceder a la carpeta `web-app/base_de_datos/`
-- correr el respaldo `inserte nombre aqui` en la base de datos creada 
+- correr el respaldo `proyectodb2.sql` en la base de datos creada 
 - abrir desde el localhost
 
 # Instrucciones-de-uso
@@ -43,26 +43,26 @@ Este repositorio esta separado en 2 partes principales
 
 # Estructura-de-carpetas
 ```
-otros/
-└── legacy/
-    └── Mantenedores/
+otros/                   # carpeta para ayudar al orden guardando cosas que competen al proyecto pero no a la pagina web
+└── legacy/              #
+    └── Mantenedores/    # version original de las interfases para los mantenedores 
 
-web-app/
-├── base-de-datos/
-├── consultas/
-├── recursos/
-│    ├── componentes/
-│    ├── css/
-│    ├── img/
-│    └── js/
-└── ventanas/
+web-app/                 # direccion del proyecto web
+├── base-de-datos/       # scripts con el backup de inicializacion back-end del proyeccto 
+├── consultas/           # alojamiento de las consultas a realizas del front-end al back-end 
+├── recursos/            # 
+│    ├── componentes/    # codigos genericos reutilizables 
+│    ├── css/            # ubicacion de los styles  
+│    ├── img/            # 
+│    └── js/             # 
+└── ventanas/            # alojamiento del front-end 
 
 ```
 # Equipo 
 | Nombre | github | rol |
 | --- | --- | --- |
-| Leonardo Acuña |||
-| Vicente Bastidas|||
-| Cristian  Urrutia|||
-| Beatriz  Vidal|||
-| Franco  Videla|||
+| Leonardo Acuña | [@Aesedefe1](https://github.com/Aesedefe1) ||
+| Vicente Bastidas| [@zanelf](https://github.com/zanelf) ||
+| Cristian  Urrutia| [@Currutiad](https://github.com/Currutiad) ||
+| Beatriz  Vidal| [@BeatrizVidalA](https://github.com/BeatrizVidalA) ||
+| Franco  Videla| [@Jayaquelo](https://github.com/Jayaquelo) ||
