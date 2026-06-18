@@ -51,7 +51,7 @@
                         <p class="text-muted small">Ingrese sus credenciales para continuar.</p>
                     </div>
 
-                    <form action="#" method="POST">
+                    <form action="../consultas/Autentificacion.php" method="POST">
                         <div class="mb-3">
                             <label for="usuario" class="form-label fw-semibold text-dark mb-1" style="font-size: 0.85rem;">Usuario</label>
                             <input type="text" class="form-control py-2" id="usuario" name="usuario" placeholder="Ingrese su usuario" required>
@@ -60,7 +60,7 @@
                         <div class="mb-2">
                             <label for="password" class="form-label fw-semibold text-dark mb-1" style="font-size: 0.85rem;">Contraseña</label>
                             <div class="input-group">
-                                <input type="password" class="form-control py-2" id="password" name="password" placeholder="Ingrese su contraseña" required>
+                                <input type="contraseña" class="form-control py-2" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña" required>
                                 <span class="input-group-text bg-white text-muted border-start-0" style="cursor: pointer;">
                                     <i class="bi bi-eye"></i>
                                 </span>
@@ -71,7 +71,7 @@
                             <a href="#" class="text-custom-link">¿Olvidó su contraseña?</a>
                         </div>
 
-                        <a href="../index.php" class="btn btn-custom-dark w-100 py-2 fw-medium mb-4">Ingresar</a>
+                        <input type="submit" class="btn btn-success mt-4 w-100">
 
                         <div class="text-center">
                             <a href="../index.php" class="text-custom-link text-muted d-inline-flex align-items-center gap-1">
