@@ -148,7 +148,7 @@
                 <div class="d-flex justify-content-end align-items-center gap-2 pt-2 border-top"
                      style="border-color: var(--card-border) !important;">
                     <a href="index.php" class="btn-cancelar">Volver</a>
-                    <button type="submit" class="btn-submit">Enviar Solicitud</button>
+                    <button type="submit" class="btn-enviar">Enviar Solicitud</button>
                 </div>
 
             </form>
