@@ -1,5 +1,5 @@
 <?php
-    include('conexion.php');
+    include('../base_de_datos/conexion.php');
     
     $usuario=$_POST["usuario"];
     $contraseña=$_POST["contraseña"];
@@ -48,7 +48,7 @@
         if(mysqli_num_rows($esDev) > 0){
             $_SESSION["tipo"] = "Desarrollador";
         }
-        header('Location: usuario.php');
+        header('Location: ../ventanas/usuario.php');
         exit;
     }else{
         header('Location: Login.php');
