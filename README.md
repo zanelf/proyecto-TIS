@@ -19,14 +19,50 @@ Este repositorio esta separado en 2 partes principales
 - `otros` Esta  carpeta tendra informacion de uso del grupo de trabajo y codigos que queden de legado, se usara principalmente para dar orden al proyecto.
 
 # Instalación
+
+- clonar proyecto en carpeta de servidor  
+- en php crear una base de datos para el proyexto
+- acceder a la carpeta `web-app/base_de_datos/`
+- correr el respaldo `inserte nombre aqui` en la base de datos creada 
+- abrir desde el localhost
+
 # Instrucciones-de-uso
+  - encender apache server
+  - encender mysql server
+  - acceder al link local del servidor `localhost:80/xampp/proyecto-TIS/web-app/` desde un buscador web
+  - utilizar la pagina
+    
 # Contribución
+| Nombre | Módulos |
+| --- | --- | 
+| Leonardo Acuña | |
+| Vicente Bastidas | | 
+| Cristian  Urrutia | |
+| Beatriz  Vidal | |
+| Franco  Videla | |
+
 # Estructura-de-carpetas
 ```
 otros/
-└──legacy/ 
-web-app/
+└── legacy/
+    └── Mantenedores/
 
+web-app/
+├── base-de-datos/
+├── consultas/
+├── recursos/
+│    ├── componentes/
+│    ├── css/
+│    ├── img/
+│    └── js/
+└── ventanas/
 
 ```
 # Equipo 
+| Nombre | github | rol |
+| --- | --- | 
+| Leonardo Acuña | |
+| Vicente Bastidas | | 
+| Cristian  Urrutia | |
+| Beatriz  Vidal | |
+| Franco  Videla | |
