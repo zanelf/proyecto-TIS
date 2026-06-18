@@ -1,5 +1,7 @@
 <?php
     include('base_de_datos/conexion.php');
+    include('./base_de_datos/conexion.php');
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -11,88 +13,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Iconos de Bootstrap para el documento y la lupa de las tarjetas -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="recursos/css/style_index.css" rel="stylesheet">
     
     <style>
         /* Fondo gris claro muy sutil idéntico a la imagen */
-        body {
-            background-color: #f8fafc;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-        /* Barra superior azul oscuro institucional */
-        .navbar-municipalidad {
-            background-color: #112d57;
-        }
-        .navbar-brand-text {
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
-        }
-        /* Botón Acceso transparente con borde blanco */
-        .btn-acceso {
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            background: transparent;
-            font-size: 0.9rem;
-            padding: 0.375rem 1rem;
-            border-radius: 0.375rem;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        .btn-acceso:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-        /* Cajas de las tarjetas contenedoras de íconos */
-        .icon-container {
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            background-color: #f1f5f9;
-            color: #334155;
-        }
-        /* Tarjetas de opciones principales */
-        .option-card {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 2rem;
-            height: 100%;
-            transition: border-color 0.15s ease-in-out;
-        }
-        /* Estilo interactivo para la tarjeta que sí funciona */
-        .card-clickable {
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-        }
-        .card-clickable:hover {
-            border-color: #cbd5e1;
-        }
-        /* Estilo interactivo para la tarjeta que es clickeable pero no hace nada */
-        .card-dummy {
-            cursor: pointer;
-        }
-        /* Enlaces internos de acción */
-        .action-link {
-            color: #1d4ed8;
-            font-weight: 500;
-            text-decoration: none;
-            font-size: 0.95rem;
-        }
-        .card-clickable:hover .action-link {
-            text-decoration: underline;
-        }
-        /* Pie de página */
-        footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e2e8f0;
-            color: #64748b;
-            font-size: 0.85rem;
-        }
+
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -100,8 +25,27 @@
     <!-- NAVBAR SUPERIOR -->
     <nav class="navbar navbar-municipalidad py-3 shadow-sm">
         <div class="container">
-            <span class="navbar-brand-text text-uppercase">Municipalidad</span>
-            <a href="Login.php" class="btn-acceso">Acceso</a>
+            <?php if (isset($_SESSION["usuario"])): ?>
+
+    <span>
+        Bienvenido,
+        <?php echo $_SESSION["usuario"]; ?>
+        (<?php echo $_SESSION["tipo"]; ?>)
+    </span>
+
+    <?php if ($_SESSION["tipo"] == "Administrador"): ?>
+            <a href="ventanas/Inicio.php" class="btn-acceso">Solicitudes</a>
+            <a href="ventanas/Inicio.php" class="btn-acceso">Ciudadanos</a>
+            <a href="ventanas/Inicio.php" class="btn-acceso">Departamentos</a>
+            <a href="ventanas/Inicio.php" class="btn-acceso">Tipos de solicitudes</a>
+    <?php endif; ?>
+
+            <a href="./consultas/logout.php" class="btn-acceso">Cerrar sesion</a>
+
+    <?php else: ?>
+        <span class="navbar-brand-text text-uppercase">Municipalidad</span>
+            <a href="ventanas/Inicio.php" class="btn-acceso">Acceso</a>
+    <?php endif; ?>
         </div>
     </nav>
 
@@ -119,7 +63,7 @@
         <div class="row g-4">
             <!-- Tarjeta 1: Nueva Solicitud (Clickeable completa hacia Enviarsolicitud.php) -->
             <div class="col-12 col-md-6">
-                <a href="Enviarsolicitud.php" class="option-card card-clickable shadow-sm">
+                <a href="ventanas/Enviarsolicitud.php" class="option-card card-clickable shadow-sm">
                     <div class="icon-container mb-4">
                         <i class="bi bi-file-earmark-text fs-5"></i>
                     </div>
