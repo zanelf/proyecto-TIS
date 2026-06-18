@@ -1,5 +1,5 @@
 <?php
-    include('conexion.php');
+    include('base_de_datos/conexion.php');
     $consulta = "SELECT * FROM solicitud";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE solicitud");
@@ -147,20 +147,12 @@
                 <!-- Acciones -->
                 <div class="d-flex justify-content-end align-items-center gap-2 pt-2 border-top"
                      style="border-color: var(--card-border) !important;">
-                    <a href="solicitud.php" class="btn-cancelar">Cancelar</a>
+                    <a href="index.php" class="btn-cancelar">Volver</a>
                     <button type="submit" class="btn-enviar">Enviar Solicitud</button>
                 </div>
 
             </form>
         </div><!-- formulario -->
-
-                    <input type="submit" class="btn btn-success mt-4 w-100">
-                    <a href="index.php">;
-                        <button type="button">Volver</button>;
-                    </a>;
-                </form>
-            </div>
-        </div>
     </div>
 </div>
 
