@@ -1,5 +1,5 @@
 <?php
-    include('conexion.php');
+    include('../base_de_datos/conexion.php');
     $consulta = "SELECT * FROM ciudadano";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE ciudadano");
@@ -7,7 +7,7 @@
     session_start();
 
     if(!isset($_SESSION["usuario"])){
-        header("Location: Login.php");
+        header("Location: ../index.php");
         exit;
     }
 ?>
@@ -24,7 +24,7 @@
 
 <body>
     <?php
-        include('navbar1.php');
+        include('../recursos/componentes/navbar1.php');
         echo "Bienvenido ".$_SESSION["usuario"];
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
@@ -51,12 +51,12 @@
                 <h3>Formulario</h3>
                 <?php
                     $Tipo_modelo = "ciudadano";
-                    include('Formulario.php');
+                    include('../recursos/componentes/Formulario2.php');
                 ?>
             </div>
             <div class="col-6">
                 <?php
-                    include('Tabla.php');
+                    include('../recursos/componentes/Tabla.php');
                 ?>
             </div>
         </div>

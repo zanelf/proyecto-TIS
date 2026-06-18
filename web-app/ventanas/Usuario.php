@@ -1,5 +1,7 @@
 <?php
-    include('conexion.php');
+
+    include('../base_de_datos/conexion.php');
+
     $consulta = "SELECT * FROM usuario";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE usuario");
@@ -10,6 +12,7 @@
         header("Location: Login.php");
         exit;
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -17,14 +20,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
     <title>Document</title>
 </head>
 
 <body>
     <?php
-        include('navbar1.php'); // barra superiror autenticada
+        include('../recursos/componentes/navbar1.php'); // barra superiror autenticada
         echo "Bienvenido------ ".$_SESSION["usuario"]."  ERES UN MALDITO".$_SESSION["tipo"];
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
@@ -51,13 +54,13 @@
                 <h3>Formulario</h3>
                 <?php
                     $Tipo_modelo = "usuario";
-                    include('UsuarioFormulario.php');
+                    include('../recursos/componentes/UsuarioFormulario.php');
                 ?>
             </div>
             <div class="col-6">
                 <?php
                     $Tipo_modelo = "usuario";
-                    include('Tabla.php');
+                    include('../recursos/componentes/Tabla.php');
                 ?>
             </div>
         </div>

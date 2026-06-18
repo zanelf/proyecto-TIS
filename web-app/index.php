@@ -1,6 +1,6 @@
 <?php
-    include('base_de_datos/conexion.php');
-
+    include('./base_de_datos/conexion.php');
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -20,8 +20,27 @@
     <!-- NAVBAR SUPERIOR -->
     <nav class="navbar navbar-municipalidad py-3 shadow-sm">
         <div class="container">
-            <span class="navbar-brand-text text-uppercase">Municipalidad</span>
+            <?php if (isset($_SESSION["usuario"])): ?>
+
+    <span>
+        Bienvenido,
+        <?php echo $_SESSION["usuario"]; ?>
+        (<?php echo $_SESSION["tipo"]; ?>)
+    </span>
+
+    <?php if ($_SESSION["tipo"] == "Administrador"): ?>
+            <a href="ventanas/Inicio.php" class="btn-acceso">Solicitudes</a>
+            <a href="ventanas/Inicio.php" class="btn-acceso">Ciudadanos</a>
+            <a href="ventanas/Inicio.php" class="btn-acceso">Departamentos</a>
+            <a href="ventanas/Inicio.php" class="btn-acceso">Tipos de solicitudes</a>
+    <?php endif; ?>
+
+            <a href="./consultas/logout.php" class="btn-acceso">Cerrar sesion</a>
+
+    <?php else: ?>
+        <span class="navbar-brand-text text-uppercase">Municipalidad</span>
             <a href="ventanas/Inicio.php" class="btn-acceso">Acceso</a>
+    <?php endif; ?>
         </div>
     </nav>
 

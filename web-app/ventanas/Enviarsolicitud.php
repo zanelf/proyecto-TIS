@@ -1,6 +1,5 @@
 <?php
     include('../base_de_datos/conexion.php');
-
     $consulta = "SELECT * FROM solicitud";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE solicitud");
@@ -154,9 +153,6 @@
 
             </form>
         </div><!-- formulario -->
-                </form>
-            </div>
-        </div>
     </div>
 </div>
 
