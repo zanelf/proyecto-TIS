@@ -10,111 +10,152 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Nueva Solicitud — Municipalidad</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="style-enviar_solicitud_formulario.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 shadow">
 
-    <a href="index.php">
-        <button type="button">INDEX</button>
-    </a>
+<!-- ══ Nav ══ -->
+<nav class="navbar-muni d-flex align-items-center justify-content-between">
 
-    <?php if (isset($_SESSION["usuario"])): ?>
+    <a href="index.php" class="titulo-muni">Municipalidad</a>
 
-        <span class="mx-3">
-            Bienvenido, <?php echo $_SESSION["usuario"]; ?>
-        </span>
+    <div class="d-flex align-items-center gap-2">
+        <?php if (isset($_SESSION["usuario"])): ?>
 
-        <a href="departamento.php">
-            <button type="button">departamento</button>
-        </a>
-        <a href="ciudadano.php">
-            <button type="button">ciudadano</button>
-        </a>
-        <a href="tipo_soliciutd.php">
-            <button type="button">tipo soliciutd</button>
-        </a>
-        <a href="logout.php">
-            <button type="button">Cerrar Sesión</button>
-        </a>
+            <span class="texto-bienvenida me-1">
+                <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
+            </span>
 
-    <?php else: ?>
+        <?php else: ?>
 
-        <a href="Login.php">
-            <button type="button">LOGIN</button>
-        </a>
-    <?php endif; ?>
+            <a href="inicio.php" class="btn-acceso">Acceso</a>
+
+        <?php endif; ?>
+    </div>
 
 </nav>
-    <?php
-        $campos=[];
-        while ($fila = mysqli_fetch_assoc($atributos)) {
-            $campos[] = $fila;
-        }
-        foreach($campos as &$campo){
-            if(str_contains($campo['Type'],"int")){
-                $campo['Type'] = "number";
-            }
-            if(str_contains($campo['Type'],"varchar")){
-                $campo['Type'] = "text";
-            }
-        }
-        unset($campo);
-        foreach($campos as $campo){
-            //echo $campo['Type']."<br>";
-        }
-    ?>
-    <div class="container">
+<!-- ══ Nav ══ -->
 
-        <div class="row">
-            <div class="col-8">
-                <h3>Formulario</h3>
-                <form action="">
-                    <label class="form-label">correo electronico</label>
-                    <input type="text" name="" class="form-control">
-                    
-                    <label class="form-label">Tipo solicitud</label>
-                    <?php
-                        echo '<select id="tipo" name="tipo">';
-                        while($tipo_sol = mysqli_fetch_assoc($tipos_solicitudes)){
-                            echo '<option value="'.$tipo_sol["ID_tipo_solicitud"].'">'.$tipo_sol["nombre"].'</option>';
-                        }
-                        echo '</select>';
-                    ?>
-                    <label class="form-label">Departamento destino</label>
-                    <?php
-                        echo '<select id="tipo" name="tipo">';
-                        while($dpto = mysqli_fetch_assoc($departamentos)){
-                            echo '<option value="'.$dpto["ID_departamento"].'">'.$dpto["nombre"].'</option>';
-                        }
-                        echo '</select>';
-                    ?>
-                    <label class="form-label">Categoria</label>
-                    <select id="tipo" name="tipo">
-                        <option value="Categoria1">Categoria1</option>
-                        <option value="Categoria2">Categoria2</option>
-                        <option value="Categoria3">Categoria3</option>
-                    </select>
+<?php
+    $campos = [];
+    while ($fila = mysqli_fetch_assoc($atributos)) {
+        $campos[] = $fila;
+    }
+    foreach ($campos as &$campo) {
+        if (str_contains($campo['Type'], "int"))     $campo['Type'] = "number";
+        if (str_contains($campo['Type'], "varchar")) $campo['Type'] = "text";
+    }
+    unset($campo);
+?>
 
-                    <label class="form-label">Asunto</label>
-                    <input type="text" name="" class="form-control">
-                    <label class="form-label">Descripcion</label>
-                    <input type="text" name="" class="form-control">
-                    <label class="form-label">Archivo</label>
+<div class="cuerpo-pag">
+    <div class="container" style="max-width:780px;">
+
+        <!-- formulario -->
+        <div class="formulario-tarjeta">
+
+            <h1 class="formulario-tarjeta-titulo">Nueva Solicitud Ciudadana</h1>
+            <p class="formulario-tarjeta-subtitulo">Complete el formulario para registrar su solicitud.</p>
+            <hr class="division">
+
+            <form action="" method="post" enctype="multipart/form-data">
+
+                <!-- Fila 1: Correo y Tipo de solicitud -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Correo electrónico <span class="rojito">*</span>
+                        </label>
+                        <input type="email" name="correo" class="form-control"
+                               placeholder="ejemplo@correo.cl" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Tipo de solicitud <span class="rojito">*</span>
+                        </label>
+                        <select id="tipo_solicitud" name="tipo" class="form-select" required>
+                            <option value="" disabled selected>Seleccione un tipo…</option>
+                            <?php while ($tipo_sol = mysqli_fetch_assoc($tipos_solicitudes)): ?>
+                                <option value="<?php echo $tipo_sol["ID_tipo_solicitud"]; ?>">
+                                    <?php echo htmlspecialchars($tipo_sol["nombre"]); ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!--  Departamento y Categoría -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Departamento destino <span class="rojito">*</span>
+                        </label>
+                        <select id="departamento" name="departamento" class="form-select" required>
+                            <option value="" disabled selected>Seleccione un departamento…</option>
+                            <?php while ($dpto = mysqli_fetch_assoc($departamentos)): ?>
+                                <option value="<?php echo $dpto["ID_departamento"]; ?>">
+                                    <?php echo htmlspecialchars($dpto["nombre"]); ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            Categoría <span class="rojito">*</span>
+                        </label>
+                        <select id="categoria" name="categoria" class="form-select" required>
+                            <option value="" disabled selected>Seleccione una categoría…</option>
+                            <option value="Categoria1">Categoría 1</option>
+                            <option value="Categoria2">Categoría 2</option>
+                            <option value="Categoria3">Categoría 3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!--  Asunto  -->
+                <div class="mb-3">
+                    <label class="form-label">
+                        Asunto <span class="rojito">*</span>
+                    </label>
+                    <input type="text" name="asunto" class="form-control"
+                           placeholder="Describa brevemente el asunto" required>
+                </div>
+
+                <!-- Descripción -->
+                <div class="mb-3">
+                    <label class="form-label">
+                        Descripción <span class="rojito">*</span>
+                    </label>
+                    <textarea name="descripcion" class="form-control"
+                              placeholder="Detalle su solicitud con la mayor información posible…"
+                              required></textarea>
+                </div>
+
+                <!-- Fila 5: Archivo adjunto -->
+                <div class="mb-4">
+                    <label class="form-label">Adjuntar archivo</label>
                     <input type="file" id="archivo" name="archivo" class="form-control">
+                   <p class="form-text text-muted mb-0">Formatos permitidos: PDF, JPG, PNG. Tamaño máximo: 5 MB.</p>
+                </div>
 
-                    <input type="submit" class="btn btn-success mt-4 w-100">
-                    <a href="solicitud.php">;
-                        <button type="button">Volver</button>;
-                    </a>;
-                </form>
-            </div>
-        </div>
+                <!-- Acciones -->
+                <div class="d-flex justify-content-end align-items-center gap-2 pt-2 border-top"
+                     style="border-color: var(--card-border) !important;">
+                    <a href="solicitud.php" class="btn-cancelar">Cancelar</a>
+                    <button type="submit" class="btn-submit">Enviar Solicitud</button>
+                </div>
+
+            </form>
+        </div><!-- formulario -->
+
     </div>
+</div>
+
 </body>
 </html>
