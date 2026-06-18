@@ -43,7 +43,7 @@
             <a href="./consultas/logout.php" class="btn-acceso">Cerrar sesion</a>
 
     <?php else: ?>
-        <span class="navbar-brand-text text-uppercase">Municipalidad</span>
+        <span class="navbar-brand-text text-uppercase">SGISC</span>
             <a href="ventanas/Inicio.php" class="btn-acceso">Acceso</a>
     <?php endif; ?>
         </div>
@@ -90,7 +90,7 @@
     <!-- PIE DE PÁGINA -->
     <footer class="py-4 mt-auto">
         <div class="container">
-            <p class="m-0">&copy; 2026 Municipalidad. Todos los derechos reservados.</p>
+            <p class="m-0">&copy; 2026 SGISC. Todos los derechos reservados.</p>
         </div>
     </footer>
 
