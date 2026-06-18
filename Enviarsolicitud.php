@@ -154,6 +154,13 @@
             </form>
         </div><!-- formulario -->
 
+                    <input type="submit" class="btn btn-success mt-4 w-100">
+                    <a href="index.php">;
+                        <button type="button">Volver</button>;
+                    </a>;
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 

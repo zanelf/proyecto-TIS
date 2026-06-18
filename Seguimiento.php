@@ -22,10 +22,6 @@
     }
     session_start();
 
-    if(!isset($_SESSION["usuario"])){
-        header("Location: Login.php");
-        exit;
-    }
 ?>
 
 <!DOCTYPE html>
