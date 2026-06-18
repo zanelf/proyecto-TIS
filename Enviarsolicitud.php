@@ -147,13 +147,12 @@
                 <!-- Acciones -->
                 <div class="d-flex justify-content-end align-items-center gap-2 pt-2 border-top"
                      style="border-color: var(--card-border) !important;">
-                    <a href="solicitud.php" class="btn-cancelar">Cancelar</a>
+                    <a href="index.php" class="btn-cancelar">Volver</a>
                     <button type="submit" class="btn-submit">Enviar Solicitud</button>
                 </div>
 
             </form>
         </div><!-- formulario -->
-
     </div>
 </div>
 
