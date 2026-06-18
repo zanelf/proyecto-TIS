@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-06-2026 a las 18:51:03
+-- Tiempo de generación: 18-06-2026 a las 19:18:02
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -39,13 +39,6 @@ CREATE TABLE `solicitud` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `solicitud`
---
-
-INSERT INTO `solicitud` (`solicitud_ID`, `Tipo_estado`, `Asunto`, `Descripcion`, `Categoria`, `RUT_ciudadano`, `ID_departamento`, `ID_tipo_solicitud`) VALUES
-(1, NULL, 'Un asunto', 'asdad', 'Agua', 123456789, 2, 6);
-
---
 -- Índices para tablas volcadas
 --
 
@@ -66,7 +59,7 @@ ALTER TABLE `solicitud`
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `solicitud_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `solicitud_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
