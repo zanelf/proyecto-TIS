@@ -157,16 +157,16 @@ textarea.form-control {
 
 .form-control[type="file"] {
     padding: 0.4rem 0.75rem;
-    color: var(--muted-text);
+    color: #6c757d;
 }
 
-.file-hint {
+.nota {
     font-size: 0.75rem;
-    color: var(--muted-text);
+    color: #6c757d;
     margin-top: 0.3rem;
 }
 
-.btn-submit {
+.btn-enviar {
     background-color: var(--muni-blue);
     color: #ffffff;
     font-weight: 700;
@@ -177,7 +177,7 @@ textarea.form-control {
     transition: background 0.15s;
 }
 
-.btn-submit:hover {
+.btn-enviar:hover {
     background-color: var(--muni-blue-hover);
     color: #fff;
 }
@@ -190,12 +190,12 @@ textarea.form-control {
     padding: 0.6rem 1.5rem;
     border-radius: 6px;
     text-decoration: none;
-    transition: background 0.15s, border-color 0.15s;
+    transition: background-color 0.2s;
     display: inline-flex;
     align-items: center;
 }
 
-.btn-cancel:hover {
+.btn-cancelar:hover {
     background-color: #f9fafb;
     border-color: #9ca3af;
     color: #1a202c;
