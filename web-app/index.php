@@ -29,10 +29,10 @@
     </span>
 
     <?php if ($_SESSION["tipo"] == "Administrador"): ?>
-            <a href="ventanas/Inicio.php" class="btn-acceso">Solicitudes</a>
-            <a href="ventanas/Inicio.php" class="btn-acceso">Ciudadanos</a>
-            <a href="ventanas/Inicio.php" class="btn-acceso">Departamentos</a>
-            <a href="ventanas/Inicio.php" class="btn-acceso">Tipos de solicitudes</a>
+            <a href="ventanas/solicitud.php" class="btn-acceso">Solicitudes</a>
+            <a href="ventanas/ciudadano.php" class="btn-acceso">Ciudadanos</a>
+            <a href="ventanas/usuario.php" class="btn-acceso">Departamentos</a>
+            <a href="ventanas/tipo_solicitud.php" class="btn-acceso">Tipos de solicitudes</a>
     <?php endif; ?>
 
             <a href="./consultas/logout.php" class="btn-acceso">Cerrar sesion</a>
