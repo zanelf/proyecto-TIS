@@ -23,8 +23,8 @@ $opcionesAdm = [
 
 $opcionesFun = [
     "../index" => "Inicio",
-    "solicitud" => "Solicitudes",
-    "ciudadano" => "Ciudadanos"
+    "../ventanas/solicitud" => "Solicitudes",
+    "../ventanas/ciudadano" => "Ciudadanos"
 ];
 
 $opcionesDir = [

@@ -43,11 +43,8 @@
         }
     ?>
     <div class="container">
-        <a href="../consultas/Enviarsolicitud.php">
-                    <button type="button">Crear solicitud</button>
-                </a>
         <div class="row">
-            <div class="col-6">
+            <div class="col">
                 <?php
                     $Tipo_modelo = "solicitud";
                     include('../recursos/componentes/Tabla.php');

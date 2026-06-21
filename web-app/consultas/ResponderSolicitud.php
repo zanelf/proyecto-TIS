@@ -1,12 +1,35 @@
 <?php
     include('../base_de_datos/conexion.php');
 
-    $ID_solicitud=$_GET["id_enviado"];
-
-    $consulta = "SELECT * FROM departamento";
-
-    $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE ciudadano");
+    session_start();
+
+$ID_solicitud = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $ID_solicitud = $_GET['id_enviado'];
+
+    $consulta = "SELECT * FROM solicitud
+                 WHERE solicitud_ID='$ID_solicitud'";
+    $resultado = mysqli_query($conexionDB, $consulta);
+}
+else {
+    $ID_solicitud = $_POST['solicitud_ID'];
+    $Respuesta = $_POST['Respuesta'];
+
+    $consulta = "UPDATE solicitud
+                 SET descripcion='$Respuesta'
+                 WHERE solicitud_ID='$ID_solicitud'";
+    $Actualizacion="UPDATE solicitud
+                 SET Tipo_estado='Respondida'
+                 WHERE solicitud_ID='$ID_solicitud'";
+
+    mysqli_query($conexionDB, $consulta);
+    mysqli_query($conexionDB, $Actualizacion);
+    header('Location: ../ventanas/solicitud.php');
+}
+
+
 
 ?>
 <!DOCTYPE html>
@@ -18,15 +41,27 @@
 </head>
 <body>
     <div class="container">
-        <a href="../consultas/Enviarsolicitud.php">
-                    <button type="button">Crear solicitud</button>
-                </a>
+        <?php
+                include('../recursos/componentes/navbar1.php'); // barra superiror autenticada
+            ?>
         <div class="row">
+            
             <div class="col-6">
                 <?php
-                    $Tipo_modelo = "departamento";
-                    include('../recursos/componentes/Tabla.php');
+                    $solicitud=mysqli_fetch_assoc($resultado);
+                    echo '<h3> Descripcion de la solicitud </h3>';
+                    echo $solicitud["ID_tipo_solicitud"]."-\n-";
+                    echo "Descripcion: ".$solicitud["Descripcion"];
                 ?>
+            </div>
+            <div class="col-6">
+                <h3> Respuesta </h3>
+                <form action="ResponderSolicitud.php" method="POST">
+                    <label class="form-label">Ingrese respuesta a la solicitud</label>
+                    <input type="text" name="Respuesta" class="form-control">
+                    <input type="hidden" name="solicitud_ID" class="form-control" value="<?php echo $ID_solicitud; ?>">
+                    <input type="submit">
+                </form>
             </div>
         </div>
     </div>
