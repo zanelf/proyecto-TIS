@@ -1,11 +1,15 @@
 <?php
     include('../base_de_datos/conexion.php');
+
     $modelo = $Tipo_modelo;
     $atributos = mysqli_query($conexionDB,"DESCRIBE ".$modelo);
+
     $campos=[];
     $PKmodelo = "";
     $PKValue="";
+
     $tipoUsuario=$_SESSION["tipo"];
+
     while ($fila = mysqli_fetch_assoc($atributos)) {
         $campos[] = $fila;
         if($fila['Key']=="PRI"){
@@ -13,7 +17,17 @@
             $PKmodelo=$fila['Field'];
         }
     }
-    
+
+    $resultado = mysqli_query($conexionDB,"SELECT * FROM ".$modelo);
+    //echo __FILE__;
+    //echo __DIR__;
+    //echo $_SERVER['SCRIPT_FILENAME'];
+    $archivos = scandir(__DIR__ . '/../../');
+
+   // echo '<pre>';
+    //print_r($archivos);
+    //echo '</pre>';
+
     echo '<table class="table">';
         echo '<thead>';
             foreach($campos as $campo){
@@ -31,11 +45,15 @@
                         echo '<td>'.$aux.'</td>';
                     } 
                     echo '<td>';
-                    if($tipoUsuario == "Administrador" and $modelo=="solicitud"){
+                    if(($tipoUsuario == "Administrador" and $modelo=="solicitud") or ($tipoUsuario == "Desarrollador" and $modelo=="solicitud")){
                         echo '<a class="mx-2" href="eliminar.php?id_enviado='.$PKValue.'&tipomod='.$modelo.'">Eliminar</a>';
                         echo '<a href="editar.php?id_enviado='.$PKmodelo.'">Editar(NI)</a>';
                         echo '<a class="mx-2" href="../consultas/ResponderSolicitud.php?id_enviado='.$PKValue.'&tipomod='.$modelo.'">RESPONDER</a>';
                         echo '<a class="mx-2" href="../consultas/ResponderSolicitud.php?id_enviado='.$PKValue.'&tipomod='.$modelo.'">Derivar</a>'; 
+                    }
+                    if($tipoUsuario == "Desarrollador"){
+                        echo '<a class="mx-2" href="eliminar.php?id_enviado='.$PKValue.'&tipomod='.$modelo.'">Eliminar</a>';
+                        echo '<a href="editar.php?id_enviado='.$PKmodelo.'">Editar(NI)</a>';
                     }
                     if($tipoUsuario == "Funcionario" and $modelo=="solicitud"){
                         echo '<a class="mx-2" href="../consultas/ResponderSolicitud.php?id_enviado='.$PKValue.'&tipomod='.$modelo.'">RESPONDER</a>'; 

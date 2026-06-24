@@ -1,7 +1,6 @@
 <?php
 $tipoUsuario = "";
 $usuario = "";
-
 if(isset($_SESSION["tipo"])){
     $tipoUsuario = $_SESSION["tipo"];
 }
@@ -35,7 +34,8 @@ $opcionesDir = [
 
 $opcionesDev = [
     "../index" => "Inicio",
-    "solicitud" => "Solicitudes",
+    "../ventanas/Desarrollador" => "DEV",
+    "../consultas/VerTablas" => "Tablas",
     "ciudadano" => "Ciudadanos",
     "departamento" => "Departamentos",
     "tipo_solicitud" => "Tipos de solicitud",
