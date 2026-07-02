@@ -1,4 +1,18 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../recursos/css/style_navbar1.css">
+</head>
+<body>
+    
 <?php
+
+
 $opciones = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes", "tipo_solicitud" => "Tipos de solicitud","usuario" => "Usuarios", "departamento" => "Departamentos","../../consultas/logout" => "Cerrar sesion"];
 $opcionesAdm = ["../index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes", "../ventanas/departamento" => "Departamentos", "usuario" => "Usuarios","../consultas/logout" => "Cerrar sesion"];
 $opcionesFun = ["index" => "index",'ciudadano' => "Ciudadanos",'solicitud' => "Solicitudes"];
@@ -45,3 +59,5 @@ echo '<nav class="navbar navbar-expand-lg bg-body-tertiary mb-4 shadow">';
     
 echo '</nav>';
 ?>
+</body>
+</html>
