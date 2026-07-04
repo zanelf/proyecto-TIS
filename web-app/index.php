@@ -70,14 +70,14 @@
 
             <!-- Tarjeta 2: Seguimiento de Solicitud (Clickeable pero sin acción) -->
             <div class="col-12 col-md-6">
-                <div class="option-card card-dummy shadow-sm" onclick="event.preventDefault();">
+                <a href="ventanas/Seguimiento.php" class="option-card card-clickable shadow-sm">
                     <div class="icon-container mb-4">
                         <i class="bi bi-search fs-5"></i>
                     </div>
                     <h2 class="h5 fw-bold text-dark mb-2">Seguimiento de Solicitud</h2>
                     <p class="text-secondary small mb-4">Consulte el estado de su solicitud con el código de seguimiento.</p>
                     <span class="action-link" style="cursor: pointer;">Consultar &rarr;</span>
-                </div>
+                </a>
             </div>
         </div>
     </main>

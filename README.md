@@ -61,8 +61,8 @@ web-app/                 # direccion del proyecto web
 # Equipo 
 | Nombre | github | rol |
 | --- | --- | --- |
-| Leonardo Acuña | [@Aesedefe1](https://github.com/Aesedefe1) ||
-| Vicente Bastidas| [@zanelf](https://github.com/zanelf) ||
-| Cristian  Urrutia| [@Currutiad](https://github.com/Currutiad) ||
-| Beatriz  Vidal| [@BeatrizVidalA](https://github.com/BeatrizVidalA) ||
-| Franco  Videla| [@Jayaquelo](https://github.com/Jayaquelo) ||
+| Leonardo Acuña | [@Aesedefe1](https://github.com/Aesedefe1) |backend|
+| Vicente Bastidas| [@zanelf](https://github.com/zanelf) | Analista |
+| Cristian  Urrutia| [@Currutiad](https://github.com/Currutiad) |frontend y backend|
+| Beatriz  Vidal| [@BeatrizVidalA](https://github.com/BeatrizVidalA) |frontend|
+| Franco  Videla| [@Jayaquelo](https://github.com/Jayaquelo) | Lider de grupo |
