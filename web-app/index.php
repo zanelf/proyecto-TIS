@@ -1,5 +1,6 @@
 <?php
     include('./base_de_datos/conexion.php');
+    
     session_start();
 ?>
 <!DOCTYPE html>
@@ -21,7 +22,7 @@
     <nav class="navbar navbar-municipalidad py-3 shadow-sm">
         <div class="container">
             <?php if (isset($_SESSION["usuario"])): ?>
-
+    <span class="navbar-brand-text text-uppercase">Municipalidad</span>
     <span>
         Bienvenido,
         <?php echo $_SESSION["usuario"]; ?>
@@ -31,8 +32,17 @@
     <?php if ($_SESSION["tipo"] == "Administrador"): ?>
             <a href="ventanas/solicitud.php" class="btn-acceso">Solicitudes</a>
             <a href="ventanas/ciudadano.php" class="btn-acceso">Ciudadanos</a>
+<<<<<<< HEAD
             <a href="ventanas/departamento.php" class="btn-acceso">Departamentos</a>
             <a href="ventanas/tipo_solicitud.php" class="btn-acceso">Tipos de solicitudes</a>
+=======
+            <a href="ventanas/usuario.php" class="btn-acceso">Departamentos</a>
+            <a href="ventanas/tipo_solicitud.php" class="btn-acceso">Tipos de solicitudes</a>
+    <?php endif; ?>
+    <?php if ($_SESSION["tipo"] == "Funcionario"): ?>
+            <a href="ventanas/solicitud.php" class="btn-acceso">Solicitudes</a>
+            <a href="ventanas/ciudadano.php" class="btn-acceso">Ciudadanos</a>
+>>>>>>> leonardo
     <?php endif; ?>
 
             <a href="./consultas/logout.php" class="btn-acceso">Cerrar sesion</a>
