@@ -13,11 +13,14 @@
         $campos[] = $fila;
     }
     foreach($campos as &$campo){
-        if(str_contains($campo['Type'],"int")){
-            $campo['Type'] = "number";
-        }
-        if(str_contains($campo['Type'],"varchar")){
-            $campo['Type'] = "text";
+        // Verificamos que 'Type' exista y no sea nulo antes de evaluar
+        if(isset($campo['Type']) && $campo['Type'] !== null) {
+            if(str_contains((string)$campo['Type'], "int")){
+                $campo['Type'] = "number";
+            }
+            if(str_contains((string)$campo['Type'], "varchar")){
+                $campo['Type'] = "text";
+            }
         }
     }
     unset($campo);

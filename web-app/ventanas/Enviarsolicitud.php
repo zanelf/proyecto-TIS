@@ -20,27 +20,8 @@
 </head>
 <body>
 
-<!-- ══ Nav ══ -->
-<nav class="navbar-muni d-flex align-items-center justify-content-between">
 
-    <a href="../index.php" class="titulo-muni">SGISC</a>
-
-    <div class="d-flex align-items-center gap-2">
-        <?php if (isset($_SESSION["usuario"])): ?>
-
-            <span class="texto-bienvenida me-1">
-                <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
-            </span>
-
-        <?php else: ?>
-
-            <a href="Inicio.php" class="btn-acceso">Acceso</a>
-
-        <?php endif; ?>
-    </div>
-
-</nav>
-<!-- ══ Nav ══ -->
+<?php include("../recursos/componentes/navbar1.php"); ?>
 
 <?php
     $campos = [];
@@ -57,7 +38,7 @@
 <div class="cuerpo-pag">
     <div class="container" style="max-width:780px;">
 
-        <!-- formulario -->
+       
         <div class="formulario-tarjeta">
 
             <h1 class="formulario-tarjeta-titulo">Nueva Solicitud Ciudadana</h1>
@@ -66,7 +47,7 @@
 
             <form action="../consultas/Insertarsolicitud.php" method="post" enctype="multipart/form-data">
 
-                <!-- Fila 1: Correo y Tipo de solicitud -->
+                
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <label class="form-label">
@@ -90,7 +71,6 @@
                     </div>
                 </div>
 
-                <!--  Departamento y Categoría -->
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <label class="form-label">
@@ -118,7 +98,7 @@
                     </div>
                 </div>
 
-                <!--  Asunto  -->
+             
                 <div class="mb-3">
                     <label class="form-label">
                         Asunto <span class="rojito">*</span>
@@ -127,7 +107,7 @@
                            placeholder="Describa brevemente el asunto" required>
                 </div>
 
-                <!-- Descripción -->
+                
                 <div class="mb-3">
                     <label class="form-label">
                         Descripción <span class="rojito">*</span>
@@ -137,14 +117,14 @@
                               required></textarea>
                 </div>
 
-                <!-- Fila 5: Archivo adjunto -->
+             
                 <div class="mb-4">
                     <label class="form-label">Adjuntar archivo</label>
                     <input type="file" id="archivo" name="archivo" class="form-control">
                    <p class="form-text text-muted mb-0">Formatos permitidos: PDF, JPG, PNG. Tamaño máximo: 5 MB.</p>
                 </div>
 
-                <!-- Acciones -->
+                
                 <div class="d-flex justify-content-end align-items-center gap-2 pt-2 border-top"
                      style="border-color: var(--card-border) !important;">
                     <a href="../index.php" class="btn-cancelar">Volver</a>
@@ -152,8 +132,7 @@
                 </div>
 
             </form>
-        </div><!-- formulario -->
-    </div>
+        </div>
 </div>
 
 </body>
