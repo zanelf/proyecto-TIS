@@ -1,104 +1,84 @@
 <?php
-$tipoUsuario = "";
-$usuario = "";
-if(isset($_SESSION["tipo"])){
-    $tipoUsuario = $_SESSION["tipo"];
+if(session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-if(isset($_SESSION["usuario"])){
-    $usuario = $_SESSION["usuario"];
-}
+$tipoUsuario = isset($_SESSION["tipo"]) ? $_SESSION["tipo"] : "";
 
-<<<<<<< HEAD
-        echo '<a href="Encuesta.php">';
-        echo '<button type="encuesta">encuesta</button>';
-        echo '</a>';
-        echo '<a href="Administrador.php">';
-        echo '<button type="Administrador">Administrador</button>';
-        echo '</a>';
-    
-echo '</nav>';
-?>
-=======
+// Opciones de menú
 $opcionesAdm = [
     "../index" => "Inicio",
-    "solicitud" => "Solicitudes",
     "ciudadano" => "Ciudadanos",
+    "solicitud" => "Solicitudes",
     "departamento" => "Departamentos",
-    "tipo_solicitud" => "Tipos de solicitud",
-    "Usuario" => "Usuarios",
-    "Encuesta" => "Encuesta",
-    "Administrador" => "Administrador"
+    "usuario" => "Usuarios",
+    "tipo_solicitud" => "Tipos de solicitudes",
+    "metricas" => "Métricas",
+    "../consultas/logout" => "Cerrar Sesión"
 ];
 
 $opcionesFun = [
     "../index" => "Inicio",
-    "../ventanas/solicitud" => "Solicitudes",
-    "../ventanas/ciudadano" => "Ciudadanos"
+    "ciudadano" => "Ciudadanos",
+    "solicitud" => "Solicitudes",
+    "../consultas/logout" => "Cerrar Sesión"
 ];
 
 $opcionesDir = [
     "../index" => "Inicio",
-    "solicitud" => "Solicitudes",
-    "departamento" => "Departamentos"
-];
-
-$opcionesDev = [
-    "../index" => "Inicio",
-    "../ventanas/Desarrollador" => "DEV",
-    "../consultas/VerTablas" => "Tablas",
     "ciudadano" => "Ciudadanos",
-    "departamento" => "Departamentos",
-    "tipo_solicitud" => "Tipos de solicitud",
-    "Usuario" => "Usuarios"
+    "solicitud" => "Solicitudes",
+    "../consultas/logout" => "Cerrar Sesión"
 ];
 
-$opcionesMenu = [];
-
-if($tipoUsuario=="Administrador"){
-    $opcionesMenu = $opcionesAdm;
-}
-if($tipoUsuario=="Funcionario"){
-    $opcionesMenu = $opcionesFun;
-}
-if($tipoUsuario=="Director"){
-    $opcionesMenu = $opcionesDir;
-}
-if($tipoUsuario=="Desarrollador"){
-    $opcionesMenu = $opcionesDev;
+// Seleccionar el arreglo de opciones correcto
+$opcionesActuales = [];
+if($tipoUsuario == "Administrador") {
+    $opcionesActuales = $opcionesAdm;
+} elseif ($tipoUsuario == "Funcionario") {
+    $opcionesActuales = $opcionesFun;
+} elseif ($tipoUsuario == "Director") {
+    $opcionesActuales = $opcionesDir;
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-</head>
-<body>
-    <nav class="navbar-interna shadow-sm">
-    <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center gap-3">
-        <a href="../index.php" class="marca-sgisc">SGISC</a>
+<link rel="stylesheet" href="../recursos/css/style_index.css?v=<?php echo time(); ?>">
 
-        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2">
-            <?php if($usuario!=""): ?>
-                <span class="texto-usuario">
-                    <?php echo $usuario; ?>
-                    <?php if($tipoUsuario!=""): ?>
-                        (<?php echo $tipoUsuario; ?>)
+<nav class="navbar navbar-expand-lg navbar-municipalidad py-3 shadow-sm mb-4">
+    <div class="container">
+        
+        <a href="../index.php" class="navbar-brand-text text-uppercase text-decoration-none">SGISC</a>
+
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            
+            <?php if (isset($_SESSION["usuario"])): ?>
+                <span class="texto-bienvenida">
+                    Bienvenido, <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
+                    <?php if ($tipoUsuario): ?>
+                        (<?php echo htmlspecialchars($tipoUsuario); ?>)
                     <?php endif; ?>
                 </span>
             <?php endif; ?>
 
-            <?php foreach($opcionesMenu as $opcion => $label): ?>
-                <a href="<?php echo $opcion; ?>.php" class="btn-nav"><?php echo $label; ?></a>
+            <?php foreach ($opcionesActuales as $opcion => $label): ?>
+                <?php 
+                    
+                    $nombreOpcion = basename($opcion); 
+                    $nombrePaginaActual = basename($_SERVER['PHP_SELF'], ".php"); 
+                    
+                  
+                    $claseExtra = (str_contains($opcion, 'logout')) ? 'btn-cerrar' : '';
+                    
+                    
+                    if ($nombreOpcion === $nombrePaginaActual && !str_contains($opcion, 'logout')) {
+                        $claseExtra .= ' btn-activo';
+                    }
+                ?>
+                <a href="<?php echo $opcion; ?>.php" class="btn-acceso <?php echo trim($claseExtra); ?>">
+                    <?php echo $label; ?>
+                </a>
             <?php endforeach; ?>
 
-            <a href="../consultas/logout.php" class="btn-nav btn-salir">Cerrar sesion</a>
         </div>
     </div>
-</nav>    
-</body>
-</html>
->>>>>>> leonardo
+</nav>
