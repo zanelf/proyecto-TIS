@@ -1,10 +1,10 @@
 <?php
+    session_start();
     include('../base_de_datos/conexion.php');
     $consulta = "SELECT * FROM ciudadano";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE ciudadano");
 
-    session_start();
 
     if(!isset($_SESSION["usuario"])){
         header("Location: ../index.php");
