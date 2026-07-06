@@ -1,5 +1,5 @@
 <?php
-    include('conexion.php');
+    include("../base_de_datos/conexion.php");
     $consulta = "SELECT * FROM tipo_solicitud";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE tipo_solicitud");
@@ -22,7 +22,7 @@
 </head>
 <body>
     <?php
-        include('navbar1.php');
+        include('../recursos/componentes/navbar1.php');
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
             $campos[] = $fila;
@@ -47,12 +47,12 @@
                 <h3>Formulario</h3>
                 <?php
                     $Tipo_modelo = "tipo_solicitud";
-                    include('Formulario2.php');
+                    include("../recursos/componentes/Formulario2.php");
                 ?>
             </div>
             <div class="col-6">
                 <?php
-                    include('Tabla.php');
+                    include("../recursos/componentes/Tabla.php");
                 ?>
             </div>
         </div>
