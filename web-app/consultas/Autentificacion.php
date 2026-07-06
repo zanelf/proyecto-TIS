@@ -47,7 +47,23 @@
                 $_SESSION["tipo"] = "Desarrollador";
             }
 
-            header('Location: ../ventanas/Usuario.php');
+            if (isset($_SESSION["tipo"])) {
+                switch ($_SESSION["tipo"]) {
+                    case "Administrador":
+                        header('Location: ../ventanas/Usuario.php');
+                        break;
+                    case "Director":
+                        header('Location: ../ventanas/director.php');
+                        break;
+                    case "Funcionario":
+                        header('Location: ../ventanas/solicitud.php');
+                        break;
+                    default:
+                        header('Location: ../ventanas/Inicio.php?error=RolInvalido');
+                        break;
+                }
+                exit;
+            }
             exit;
 
         } else {
@@ -55,7 +71,6 @@
             exit;
         }
     } else {
-        // Usuario no encontrado
         header('Location: ../ventanas/Inicio.php?error=usuario');
         exit;
     }
