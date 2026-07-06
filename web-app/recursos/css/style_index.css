@@ -1,84 +1,110 @@
 body {
-            background-color: #f8fafc;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-    
-        .navbar-municipalidad {
-            background-color: #112d57;
-        }
-        .navbar-brand-text {
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
-        }
-        .texto-bienvenida {
-            color: rgba(255, 255, 255, 0.78);
-            font-size: 0.9rem;
-            margin-right: 0.25rem;
-        }
-       
-        .btn-acceso {
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            background: transparent;
-            font-size: 0.9rem;
-            padding: 0.375rem 1rem;
-            border-radius: 0.375rem;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        .btn-acceso:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-       
-        .icon-container {
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            background-color: #f1f5f9;
-            color: #334155;
-        }
+    background-color: #f8fafc;
+    font-family: system-ui, -apple-system, sans-serif;
+}
 
-        .option-card {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 2rem;
-            height: 100%;
-            transition: border-color 0.15s ease-in-out;
-        }
+.navbar-municipalidad {
+    background-color: #112d57;
+}
 
-        .card-clickable {
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-        }
-        .card-clickable:hover {
-            border-color: #cbd5e1;
-        }
-       
-        .card-dummy {
-            cursor: pointer;
-        }
-     
-        .action-link {
-            color: #1d4ed8;
-            font-weight: 500;
-            text-decoration: none;
-            font-size: 0.95rem;
-        }
-        .card-clickable:hover .action-link {
-            text-decoration: underline;
-        }
-       
-        footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e2e8f0;
-            color: #64748b;
-            font-size: 0.85rem;
-        }
+.navbar-brand-text {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.texto-bienvenida {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.9rem;
+    margin-right: 0.25rem;
+}
+
+.btn-acceso {
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: transparent;
+    font-size: 0.9rem;
+    padding: 0.375rem 1rem;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-acceso:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.icon-container {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: #f1f5f9;
+    color: #334155;
+}
+
+.option-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 2rem;
+    height: 100%;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.card-clickable {
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+}
+
+.card-clickable:hover {
+    border-color: #cbd5e1;
+}
+
+.card-dummy {
+    cursor: pointer;
+}
+
+.action-link {
+    color: #1d4ed8;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.card-clickable:hover .action-link {
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+
+.btn-cerrar {
+    border-color: rgba(239, 68, 68, 0.6) !important; 
+    color: #fca5a5 !important; 
+}
+
+.btn-cerrar:hover {
+    background-color: rgba(239, 68, 68, 0.15) !important; 
+    color: #ffffff !important; 
+    border-color: #ef4444 !important; 
+}
+
+
+.btn-activo {
+    background-color: rgba(255, 255, 255, 0.25) !important; 
+    border-color: #ffffff !important; 
+    font-weight: 600; 
+    pointer-events: none; 
+    cursor: default;
+}

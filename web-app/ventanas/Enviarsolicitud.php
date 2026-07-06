@@ -21,26 +21,7 @@
 <body>
 
 
-<nav class="navbar-muni d-flex align-items-center justify-content-between">
-
-    <a href="../index.php" class="titulo-muni">SGISC</a>
-
-    <div class="d-flex align-items-center gap-2">
-        <?php if (isset($_SESSION["usuario"])): ?>
-
-            <span class="texto-bienvenida me-1">
-                <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
-            </span>
-
-        <?php else: ?>
-
-            <a href="Inicio.php" class="btn-acceso">Acceso</a>
-
-        <?php endif; ?>
-    </div>
-
-</nav>
-
+<?php include("../recursos/componentes/navbar1.php"); ?>
 
 <?php
     $campos = [];

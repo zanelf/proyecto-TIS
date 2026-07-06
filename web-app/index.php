@@ -1,18 +1,20 @@
 <?php
-    include('./base_de_datos/conexion.php');
-    session_start();
+include('./base_de_datos/conexion.php');
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGISC - Municipalidad</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="recursos/css/style_index.css" rel="stylesheet">
+    <link rel="stylesheet" href="recursos/css/style_index.css?v=<?php echo time(); ?>">
 
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
 
@@ -47,7 +49,7 @@
                         <a href="ventanas/departamento.php" class="btn-acceso">Departamentos</a>
                     <?php endif; ?>
 
-                    <a href="./consultas/logout.php" class="btn-acceso">Cerrar sesion</a>
+                    <a href="./consultas/logout.php" class="btn-acceso btn-cerrar">Cerrar sesion</a>
                 <?php else: ?>
                     <a href="ventanas/Inicio.php" class="btn-acceso">Acceso</a>
                 <?php endif; ?>
@@ -65,9 +67,9 @@
             </div>
         </div>
 
-        
+
         <div class="row g-4">
-           
+
             <div class="col-12 col-md-6">
                 <a href="ventanas/Enviarsolicitud.php" class="option-card card-clickable shadow-sm">
                     <div class="icon-container mb-4">
@@ -101,4 +103,5 @@
     </footer>
 
 </body>
+
 </html>
