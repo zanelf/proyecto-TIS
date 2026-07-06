@@ -28,7 +28,7 @@
                 </div>
 
                 <div style="font-size: 0.9rem;">
-                    <p class="mb-3 text-white-50">Portal interno para funcionarios municipales.</p>
+                    <p class="mb-3 text-white-50"></p>
                     <div class="d-flex flex-column gap-2 opacity-75">
                         <span class="d-flex align-items-center gap-2">
                             <i class="bi bi-shield-check"></i> Seguro

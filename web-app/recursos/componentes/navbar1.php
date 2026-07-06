@@ -13,6 +13,7 @@ $opcionesAdm = [
     "departamento" => "Departamentos",
     "usuario" => "Usuarios",
     "tipo_solicitud" => "Tipos de solicitudes",
+    "metricas" => "Métricas",
     "../consultas/logout" => "Cerrar Sesión"
 ];
 
