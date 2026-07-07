@@ -3,7 +3,6 @@
 
     $modelo = $Tipo_modelo;
 
-    // Traemos los departamentos activos para mostrarlos en el selector
     $query_deptos = "SELECT * FROM departamento";
     $res_deptos = mysqli_query($conexionDB, $query_deptos);
 
@@ -21,14 +20,13 @@
         echo '<div class="mb-3">';
             echo '<label class="form-label fw-semibold">ROL DE ACCESO</label>';
             echo '<select id="tipo" name="tipo" class="form-select" onchange="toggleDeptoSelector(this.value)" required>';
-                echo '<option value="" disabled selected>-- Seleccione un Rol --</option>'; // Opción inicial de control
+                echo '<option value="" disabled selected>-- Seleccione un Rol --</option>';
                 echo '<option value="Director">Director</option>';
                 echo '<option value="Administrador">Administrador</option>';
                 echo '<option value="Funcionario">Funcionario</option>';
             echo '</select>';
         echo '</div>';
 
-        // CORREGIDO: Se quita el display none inicial para que esté listo ante Director o Funcionario
         echo '<div class="mb-3" id="div_departamento">';
             echo '<label class="form-label fw-semibold">DEPARTAMENTO / UNIDAD MUNICIPAL</label>';
             echo '<select name="id_departamento" class="form-select" required>';
@@ -49,10 +47,10 @@ function toggleDeptoSelector(rol) {
     
     if (rol === 'Administrador' || rol === '') {
         divDepto.style.display = 'none';
-        selectDepto.removeAttribute('required'); // No se exige para administradores
+        selectDepto.removeAttribute('required');
     } else {
         divDepto.style.display = 'block';
-        selectDepto.setAttribute('required', 'required'); // Obligatorio para funcionarios y directores
+        selectDepto.setAttribute('required', 'required');
     }
 }
 </script>
