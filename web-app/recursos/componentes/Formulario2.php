@@ -42,5 +42,7 @@ foreach ($campos as $campo) {
 }
 
 
-echo '<button type="submit" class="btn btn-success mt-2 w-100 shadow-sm">Guardar</button>';
+echo '<button type="submit" class="btn btn-sm btn-success fw-medium px-3 shadow-sm w-100 py-2">
+    Guardar
+      </button>';
 echo '</form>';

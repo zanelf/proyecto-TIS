@@ -32,43 +32,52 @@ if (!$registro) {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Editar <?php echo ucfirst(str_replace('_', ' ', $modelo)); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card shadow">
-                    <div class="card-header bg-warning text-dark text-center fw-bold">
-                        Actualizar Registro (ID: <?php echo $id_recibido; ?>)
-                    </div>
-                    <div class="card-body">
-                        <form action="../../consultas/Actualizartipo_solicitud.php" method="POST">
-                            
-                            <input type="hidden" name="Id_tipo_solicitud" value="<?php echo $id_recibido; ?>">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white border-bottom border-primary py-3 text-center">
+                            <h6 class="mb-0 fw-bold text-primary text-uppercase small">Actualizar Registro (ID: <?php echo $id_recibido; ?>)</h6>
+                        </div>
+                        <div class="card-body">
+                            <form action="../../consultas/Actualizartipo_solicitud.php" method="POST">
 
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Nombre</label>
-                                <input type="text" class="form-control" name="Nombre" value="<?php echo htmlspecialchars($registro['Nombre'] ?? $registro['nombre'] ?? ''); ?>" required>
-                            </div>
+                                <input type="hidden" name="Id_tipo_solicitud" value="<?php echo $id_recibido; ?>">
 
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Descripción</label>
-                                <textarea class="form-control" name="Descripcion" rows="3" required><?php echo htmlspecialchars($registro['Descripcion'] ?? $registro['descripcion'] ?? ''); ?></textarea>
-                            </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Nombre</label>
+                                    <input type="text" class="form-control" name="Nombre" value="<?php echo htmlspecialchars($registro['Nombre'] ?? $registro['nombre'] ?? ''); ?>" required>
+                                </div>
 
-                            <div class="d-flex justify-content-between mt-4">
-                                <a href="../../ventanas/<?php echo $modelo; ?>.php" class="btn btn-secondary">Cancelar</a>
-                                <button type="submit" class="btn btn-success">Guardar Cambios</button>
-                            </div>
-                        </form>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Descripción</label>
+                                    <textarea class="form-control" name="Descripcion" rows="3" required><?php echo htmlspecialchars($registro['Descripcion'] ?? $registro['descripcion'] ?? ''); ?></textarea>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-4">
+                                    <a href="../../ventanas/<?php echo $modelo; ?>.php" class="btn btn-sm btn-secondary fw-medium px-4 shadow-sm py-2">
+                                        Cancelar
+                                    </a>
+
+                                    <button type="submit" class="btn btn-sm btn-success fw-medium px-4 shadow-sm py-2">
+                                        Guardar Cambios
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </body>
+
 </html>

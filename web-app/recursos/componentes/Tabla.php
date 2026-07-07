@@ -43,8 +43,8 @@ while ($row = mysqli_fetch_assoc($resultado)) {
 
 
     echo '<td class="text-center text-nowrap">
-                            <a href="../recursos/componentes/Editar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-warning btn-sm mx-1 shadow-sm">Editar</a>
-                            <a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-danger btn-sm mx-1 shadow-sm">Eliminar</a>
+                            <a href="../recursos/componentes/Editar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-warning text-dark fw-medium px-3 shadow-sm"">Editar</a>
+                            <a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-danger fw-medium px-3 shadow-sm">Eliminar</a>
                           </td>';
     echo "</tr>";
 }

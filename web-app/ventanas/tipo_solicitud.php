@@ -19,6 +19,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tipos de Solicitudes - SGISC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../recursos/css/style_mantenedores.css">
 </head>
 <body class="bg-light">
     <?php
@@ -43,11 +46,11 @@
         <div class="row">
             
             <div class="col-md-4 mb-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Nuevo Tipo de Solicitud</h5>
+                <div class="card shadow-sm border" style="border-radius: 8px; overflow: hidden;">
+                    <div class="card-header custom-card-header py-3">
+                        <h6 class="mb-0 fw-bold text-primary text-uppercase small tracking-wider">Nuevo Tipo de Solicitud</h6>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-4 bg-white">
                         <?php
                             $Tipo_modelo = "tipo_solicitud";
                             include("../recursos/componentes/Formulario2.php");
@@ -57,12 +60,11 @@
             </div>
 
             <div class="col-md-8">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-dark text-white">
-                        <h5 class="mb-0">Registros Actuales</h5>
+                <div class="card shadow-sm border" style="border-radius: 8px; overflow: hidden;">
+                    <div class="card-header custom-card-header-table py-3">
+                        <h6 class="mb-0 fw-bold text-secondary text-uppercase small tracking-wider">Registros Actuales</h6>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
+                    <div class="card-body p-0"> <div class="table-responsive">
                             <?php
                                 include("../recursos/componentes/Tabla.php");
                             ?>
