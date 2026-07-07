@@ -61,7 +61,7 @@
                             <label for="password" class="form-label fw-semibold text-dark mb-1" style="font-size: 0.85rem;">Contraseña</label>
                             <div class="input-group">
                                 <input type="password" class="form-control py-2" id="password" name="password" placeholder="Ingrese su contraseña" required>
-                                <span class="input-group-text bg-white text-muted border-start-0" style="cursor: pointer;">
+                                <span class="input-group-text bg-white text-muted border-start-0" style="cursor: pointer;" id ="togglePassword">
                                     <i class="bi bi-eye"></i>
                                 </span>
                             </div>
@@ -92,11 +92,8 @@
     const eyeIcon = document.querySelector('#eyeIcon');
 
     togglePassword.addEventListener('click', function () {
-        // Alternar el tipo de input
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordInput.setAttribute('type', type);
-        
-        // Alternar el ícono del ojo
         eyeIcon.classList.toggle('bi-eye');
         eyeIcon.classList.toggle('bi-eye-slash');
     });
