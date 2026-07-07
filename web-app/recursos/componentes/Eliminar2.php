@@ -1,6 +1,5 @@
 <?php
-    include('conexion.php');
-
+       include_once('../../base_de_datos/conexion.php');
 
     $id_recibido=$_GET["id_enviado"];
     $sd=$_GET["tipomod"];
@@ -20,6 +19,5 @@
     $consulta = "DELETE FROM $sd WHERE $PKmodelo=$id_recibido";
     
     $resultado = mysqli_query($conexionDB,$consulta);
-
-    header('Location: '.$sd.'.php');
+header("Location: ../../ventanas/tipo_solicitud.php");
 ?>

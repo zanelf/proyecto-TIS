@@ -13,16 +13,17 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Tipos de Solicitudes - SGISC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
     <?php
         include('../recursos/componentes/navbar1.php');
+        
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
             $campos[] = $fila;
@@ -36,25 +37,40 @@
             }
         }
         unset($campo);
-        foreach($campos as $campo){
-            //echo $campo['Type']."<br>";
-        }
     ?>
-    <div class="container">
-
+    
+    <div class="container mt-5">
         <div class="row">
-            <div class="col-6">
-                <h3>Formulario</h3>
-                <?php
-                    $Tipo_modelo = "tipo_solicitud";
-                    include("../recursos/componentes/Formulario2.php");
-                ?>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Nuevo Tipo de Solicitud</h5>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                            $Tipo_modelo = "tipo_solicitud";
+                            include("../recursos/componentes/Formulario2.php");
+                        ?>
+                    </div>
+                </div>
             </div>
-            <div class="col-6">
-                <?php
-                    include("../recursos/componentes/Tabla.php");
-                ?>
+
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Registros Actuales</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <?php
+                                include("../recursos/componentes/Tabla.php");
+                            ?>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 </body>
