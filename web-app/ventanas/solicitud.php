@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include('../base_de_datos/conexion.php');
     $consulta = "SELECT * FROM solicitud";
     $resultado = mysqli_query($conexionDB,$consulta);
@@ -6,7 +7,6 @@
     $tipos_solicitudes=mysqli_query($conexionDB,"SELECT * FROM tipo_solicitud");
     $tipo_sol=mysqli_fetch_assoc($tipos_solicitudes);
     $departamentos=mysqli_query($conexionDB,"SELECT * FROM departamento");
-    session_start();
 
     if(!isset($_SESSION["usuario"])){
         header("Location: ../index.php");
@@ -36,6 +36,9 @@
             if(str_contains($campo['Type'],"varchar")){
                 $campo['Type'] = "text";
             }
+            if(str_contains($campo['Type'],"varchar")){
+                $campo['Type'] = "date";
+            }
         }
         unset($campo);
         foreach($campos as $campo){
@@ -44,7 +47,7 @@
     ?>
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-6">
                 <?php
                     $Tipo_modelo = "solicitud";
                     include('../recursos/componentes/Tabla.php');

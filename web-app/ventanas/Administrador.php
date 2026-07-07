@@ -1,14 +1,20 @@
 <?php
+    session_start();
     include('../base_de_datos/conexion.php');
     
     $consulta = "SELECT * FROM administrador";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE administrador");
 
-    session_start();
 
     if(!isset($_SESSION["usuario"])){
-        header("Location: Login.php");
+        header("Location: Inicio.php");
+        exit;
+    }
+
+    if($_SESSION["tipo"] !== "Administrador"){ 
+        // Si no es admin, lo mandas a una página de error o de vuelta a su inicio correspondiente
+        header("Location: ../index.php?error=NoAutorizado"); 
         exit;
     }
 ?>
@@ -38,6 +44,9 @@
             }
             if(str_contains($campo['Type'],"varchar")){
                 $campo['Type'] = "text";
+            }
+            if(str_contains($campo['Type'],"date")){
+                $campo['Type'] = "date";
             }
         }
         unset($campo);

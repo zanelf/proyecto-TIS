@@ -1,17 +1,22 @@
 <?php
+session_start();
 
     include('../base_de_datos/conexion.php');
-
-    $consulta = "SELECT * FROM usuario";
-    $resultado = mysqli_query($conexionDB,$consulta);
-    $atributos = mysqli_query($conexionDB,"DESCRIBE usuario");
-
-    session_start();
 
     if(!isset($_SESSION["usuario"])){
         header("Location: Login.php");
         exit;
     }
+
+    if($_SESSION["tipo"] !== "Administrador"){
+        header("Location: Inicio.php?error=NoAutorizado");
+        exit;
+    }
+
+    $consulta = "SELECT * FROM usuario";
+    $resultado = mysqli_query($conexionDB,$consulta);
+    $atributos = mysqli_query($conexionDB,"DESCRIBE usuario");
+
 
 ?>
 

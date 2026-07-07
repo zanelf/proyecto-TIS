@@ -1,10 +1,10 @@
 <?php
+    session_start();
     include('../base_de_datos/conexion.php');
     $consulta = "SELECT * FROM ciudadano";
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE ciudadano");
 
-    session_start();
 
     if(!isset($_SESSION["usuario"])){
         header("Location: ../index.php");
@@ -25,7 +25,7 @@
 <body>
     <?php
         include('../recursos/componentes/navbar1.php');
-        //-------------------------------------------------------------------------------echo "Bienvenido ".$_SESSION["usuario"];
+        echo "Bienvenido ".$_SESSION["usuario"];
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
             $campos[] = $fila;

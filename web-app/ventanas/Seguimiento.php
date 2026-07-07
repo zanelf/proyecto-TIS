@@ -1,6 +1,6 @@
 <?php
-    include('../base_de_datos/conexion.php');
     session_start();
+    include('../base_de_datos/conexion.php');
 
     $Comp = null;
     $busqueda = false;
