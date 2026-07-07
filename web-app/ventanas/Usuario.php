@@ -33,12 +33,11 @@ session_start();
 <body>
     <?php
         include('../recursos/componentes/navbar1.php'); // barra superiror autenticada
-        echo "Bienvenido------ ".$_SESSION["usuario"]."".$_SESSION["tipo"];
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
             $campos[] = $fila; // No estoy tan seguro de esto o hacerlo directo, pero funca
         }
-        foreach($campos as &$campo){ // Para pasar el tipo de dato al formulario. EJ: int(32)=number, el form de html pide number en Type=""
+        foreach($campos as &$campo){
             if(str_contains($campo['Type'],"int")){
                 $campo['Type'] = "number";
             }
@@ -47,8 +46,8 @@ session_start();
             }
         }
         unset($campo);
-        foreach($campos as $campo){  // ESTO ERA PARA DEBUGEAR ALGO, PUEDE QUE SE USE PARA DEBUGEAR
-            //echo $campo['Type']."<br>";
+        foreach($campos as $campo){  
+
         }
     ?>
 
