@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include('../base_de_datos/conexion.php');
     $consulta = "SELECT * FROM solicitud";
     $resultado = mysqli_query($conexionDB,$consulta);
@@ -6,7 +7,6 @@
     $tipos_solicitudes=mysqli_query($conexionDB,"SELECT * FROM tipo_solicitud");
     $tipo_sol=mysqli_fetch_assoc($tipos_solicitudes);
     $departamentos=mysqli_query($conexionDB,"SELECT * FROM departamento");
-    session_start();
 ?>
 
 <!DOCTYPE html>

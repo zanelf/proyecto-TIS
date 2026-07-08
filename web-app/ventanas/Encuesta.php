@@ -1,6 +1,6 @@
 <?php
-    include('../base_de_datos/conexion.php');
     session_start();
+    include('../base_de_datos/conexion.php');
 
     $consulta = "SELECT * FROM encuesta";
     $resultado = mysqli_query($conexionDB,$consulta);
