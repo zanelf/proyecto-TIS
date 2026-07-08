@@ -3,10 +3,12 @@
     include('../base_de_datos/conexion.php');
     $consulta = "SELECT * FROM solicitud";
     $resultado = mysqli_query($conexionDB,$consulta);
+
     $atributos = mysqli_query($conexionDB,"DESCRIBE solicitud");
+
     $tipos_solicitudes=mysqli_query($conexionDB,"SELECT * FROM tipo_solicitud");
-    $tipo_sol=mysqli_fetch_assoc($tipos_solicitudes);
     $departamentos=mysqli_query($conexionDB,"SELECT * FROM departamento");
+    echo "sdsdsd ";
 ?>
 
 <!DOCTYPE html>
@@ -56,10 +58,13 @@
                         <input type="email" name="correo" class="form-control"
                                placeholder="ejemplo@correo.cl" required>
                     </div>
+
                     <div class="col-md-6">
+
                         <label class="form-label">
                             Tipo de solicitud <span class="rojito">*</span>
                         </label>
+
                         <select id="tipo_solicitud" name="tipo" class="form-select" required>
                             <option value="" disabled selected>Seleccione un tipo…</option>
                             <?php while ($tipo_sol = mysqli_fetch_assoc($tipos_solicitudes)): ?>
@@ -69,6 +74,7 @@
                             <?php endwhile; ?>
                         </select>
                     </div>
+
                 </div>
 
                 <div class="row g-3 mb-3">

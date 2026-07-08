@@ -8,20 +8,18 @@ $campos = [];
 $PKmodelo = "";
 $PKValue = "";
 
+$estado="";
 while ($fila = mysqli_fetch_assoc($atributos)) {
     $campos[] = $fila;
     if ($fila['Key'] == "PRI") {
-
         $PKmodelo = $fila['Field'];
     }
 }
-
 
 echo '<table class="table table-hover table-bordered align-middle">';
 echo '<thead class="table-light">';
 echo '<tr>';
 foreach ($campos as $campo) {
-
     $nombreColumna = ucfirst(strtolower(str_replace("_", " ", $campo['Field'])));
     echo '<th scope="col">' . $nombreColumna . '</th>';
 }
@@ -29,6 +27,14 @@ foreach ($campos as $campo) {
 echo '<th scope="col" class="text-center" style="width: 15%;">Acciones</th>';
 echo '</tr>';
 echo '</thead>';
+
+$dpto=$_SESSION['ID_departamento'];
+echo $dpto;
+
+if($modelo=="solicitud" && $_SESSION['tipo']=="Funcionario"){
+    $consulta="SELECT * FROM solicitud WHERE ID_departamento='$dpto'";
+    $resultado=mysqli_query($conexionDB,$consulta);
+}
 
 echo '<tbody>';
 while ($row = mysqli_fetch_assoc($resultado)) {
@@ -39,13 +45,25 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         }
         $aux = $row[$campo['Field']];
         echo '<td>' . $aux . '</td>';
+        if($campo['Field']=="Tipo_estado"){
+            $estado=$aux;
+        }
     }
 
+    echo '<td class="text-center text-nowrap">';
+    if($_SESSION["tipo"]=="Administrador"){
+    echo    '<a href="../recursos/componentes/Editar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-warning text-dark fw-medium px-3 shadow-sm"">Editar</a>';
+    echo    '<a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-danger fw-medium px-3 shadow-sm">Eliminar</a>';
+    }
+    
+    if($modelo=="solicitud" && $estado=="Recibida" && $_SESSION["tipo"]=="Funcionario"){
+        echo    '<a href="revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium px-3 shadow-sm">Revisar</a>';
+    }
+    if($modelo=="solicitud" && $estado=="Derivada" && $_SESSION["tipo"]=="Funcionario"){
+        echo    '<a href="Responder.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium px-3 shadow-sm">Responder</a>';
+    }
 
-    echo '<td class="text-center text-nowrap">
-                            <a href="../recursos/componentes/Editar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-warning text-dark fw-medium px-3 shadow-sm"">Editar</a>
-                            <a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-danger fw-medium px-3 shadow-sm">Eliminar</a>
-                          </td>';
+    echo    '</td>;';
     echo "</tr>";
 }
 echo '</tbody>';
