@@ -51,7 +51,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
     }
 
     echo '<td class="text-center text-nowrap">';
-    if($modelo=="solicitud" && $_SESSION["tipo"]=="Administrador"){
+    if($_SESSION["tipo"]=="Administrador"){
     echo    '<a href="../recursos/componentes/Editar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-warning text-dark fw-medium px-3 shadow-sm"">Editar</a>';
     echo    '<a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-danger fw-medium px-3 shadow-sm">Eliminar</a>';
     }
@@ -59,6 +59,10 @@ while ($row = mysqli_fetch_assoc($resultado)) {
     if($modelo=="solicitud" && $estado=="Recibida" && $_SESSION["tipo"]=="Funcionario"){
         echo    '<a href="revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium px-3 shadow-sm">Revisar</a>';
     }
+    if($modelo=="solicitud" && $estado=="Derivada" && $_SESSION["tipo"]=="Funcionario"){
+        echo    '<a href="Responder.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium px-3 shadow-sm">Responder</a>';
+    }
+
     echo    '</td>;';
     echo "</tr>";
 }

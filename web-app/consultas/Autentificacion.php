@@ -33,6 +33,7 @@
             
 
             if(mysqli_num_rows($esAdm) > 0){
+                $_SESSION["ID_departamento"] = "";
                 $_SESSION["tipo"] = "Administrador";
             }
             elseif(mysqli_num_rows($esFun) > 0){ 
@@ -44,6 +45,7 @@
                 $_SESSION["tipo"] = "Director";
             }
             elseif(mysqli_num_rows($esDev) > 0){
+                
                 $_SESSION["tipo"] = "Desarrollador";
             }
 
