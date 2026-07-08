@@ -10,14 +10,12 @@
 
     if(mysqli_num_rows($resultado) > 0){
         $datosUsuario = mysqli_fetch_assoc($resultado);
-
-
         if (password_verify($password, $datosUsuario["contraseña"])) {
             
             session_start();
             $_SESSION["usuario"] = $datosUsuario["nombre_usuario"];
             $_SESSION["ID_usuario"] = $datosUsuario["ID_usuario"];
-
+            
             $var = $_SESSION["ID_usuario"];
 
 
@@ -38,6 +36,8 @@
                 $_SESSION["tipo"] = "Administrador";
             }
             elseif(mysqli_num_rows($esFun) > 0){ 
+                $consulta="SELECT ID_departamento FROM Funcionario WHERE ID_usuario = '$var'; ";
+                $_SESSION["ID_departamento"] = mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta))['ID_departamento'];
                 $_SESSION["tipo"] = "Funcionario";
             }
             elseif(mysqli_num_rows($esDir) > 0){
