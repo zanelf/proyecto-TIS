@@ -2,11 +2,15 @@
     session_start();
     include('../base_de_datos/conexion.php');
     $consulta = "SELECT * FROM solicitud";
+    
     $resultado = mysqli_query($conexionDB,$consulta);
     $atributos = mysqli_query($conexionDB,"DESCRIBE solicitud");
+
     $tipos_solicitudes=mysqli_query($conexionDB,"SELECT * FROM tipo_solicitud");
     $tipo_sol=mysqli_fetch_assoc($tipos_solicitudes);
     $departamentos=mysqli_query($conexionDB,"SELECT * FROM departamento");
+
+
 
     if(!isset($_SESSION["usuario"])){
         header("Location: ../index.php");
@@ -46,6 +50,20 @@
         }
     ?>
     <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <form method="GET">
+                <input
+                    type="text"
+                    name="buscar"
+                    placeholder="Buscar trabajador..."
+                    value="<?php echo isset($_GET['buscar']) ? htmlspecialchars($_GET['buscar']) : ''; ?>"
+                >
+                <button type="submit">Buscar</button>
+            </form>
+            <button>MI DEPARTAMENTO</button>
+            </div>
+        </div>
         <div class="row">
             <div class="col-6">
                 <?php

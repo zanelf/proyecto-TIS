@@ -25,6 +25,10 @@
 <body>
     <?php
         include('../recursos/componentes/navbar1.php');
+<<<<<<< HEAD
+=======
+        ##echo "Bienvenido ".$_SESSION["usuario"];
+>>>>>>> leonardo
         $campos=[];
         while ($fila = mysqli_fetch_assoc($atributos)) {
             $campos[] = $fila;
