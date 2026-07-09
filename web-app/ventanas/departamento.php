@@ -43,37 +43,18 @@
     <div class="container">
 
         <div class="row">
-
-            <div class="col-12 mb-3">
-                <button class="btn btn-primary"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#formDepartamento">
-                    Nuevo departamento
-                </button>
+            <div class="col-6">
+                <h3>Formulario</h3>
+                <?php
+                    $Tipo_modelo = "departamento";
+                    include('../recursos/componentes/Formulario2.php');
+                ?>
             </div>
-
-            <div class="col-12">
-                <div class="collapse" id="formDepartamento">
-                    <div class="card card-body">
-
-                        <h3>Ingresar nuevo departamento</h3>
-
-                        <?php
-                            $Tipo_modelo = "departamento";
-                            include('../recursos/componentes/Formulario2.php');
-                        ?>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 mt-3">
+            <div class="col-6">
                 <?php
                     include('../recursos/componentes/Tabla.php');
                 ?>
             </div>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
         </div>
     </div>
 </body>

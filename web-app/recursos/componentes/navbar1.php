@@ -4,7 +4,7 @@ if(session_status() === PHP_SESSION_NONE) {
 }
 
 $tipoUsuario = isset($_SESSION["tipo"]) ? $_SESSION["tipo"] : "";
-
+echo $_SESSION["tipo"];
 // Opciones de menú
 $opcionesAdm = [
     "../index" => "Inicio",
@@ -35,9 +35,9 @@ $opcionesDir = [
 $opcionesActuales = [];
 if($tipoUsuario == "Administrador") {
     $opcionesActuales = $opcionesAdm;
-} elseif ($tipoUsuario == "Funcionario") {
+} elseif ($tipoUsuario == "funcionario") {
     $opcionesActuales = $opcionesFun;
-} elseif ($tipoUsuario == "Director") {
+} elseif ($tipoUsuario == "director") {
     $opcionesActuales = $opcionesDir;
 }
 ?>

@@ -33,12 +33,12 @@
                 $_SESSION["ID_departamento"] = "";
                 $_SESSION["tipo"] = "Administrador";
                 $_SESSION["ID_departamento"] = $datoDpto;
-            }elseif($datosTrabajador["tipo_trabajador"]==="Funcionario"){ 
+            }elseif($datosTrabajador["tipo_trabajador"]==="funcionario"){ 
                 $_SESSION["ID_departamento"] = mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta))['ID_departamento'];
-                $_SESSION["tipo"] = "Funcionario";
+                $_SESSION["tipo"] = "funcionario";
             }
-            elseif($datosTrabajador["tipo_trabajador"]==="Director"){
-                $_SESSION["tipo"] = "Director";
+            elseif($datosTrabajador["tipo_trabajador"]==="director"){
+                $_SESSION["tipo"] = "director";
                 $_SESSION["ID_departamento"] = mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta))['ID_departamento'];
             }
 
