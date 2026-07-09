@@ -31,11 +31,11 @@
 
             if((int)$datosUsuario["is_admin"]==1){
                 $_SESSION["ID_departamento"] = "";
-                $_SESSION["tipo"] = "Administrador";
+                $_SESSION["tipo"] = $datoTipo;
                 $_SESSION["ID_departamento"] = $datoDpto;
             }elseif($datosTrabajador["tipo_trabajador"]==="funcionario"){ 
                 $_SESSION["ID_departamento"] = mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta))['ID_departamento'];
-                $_SESSION["tipo"] = "funcionario";
+                $_SESSION["tipo"] = $datoTipo;
             }
             elseif($datosTrabajador["tipo_trabajador"]==="director"){
                 $_SESSION["tipo"] = "director";
