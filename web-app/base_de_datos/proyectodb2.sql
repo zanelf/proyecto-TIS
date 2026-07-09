@@ -156,26 +156,25 @@ INSERT INTO `funcionario` (`ID_usuario`, `ID_departamento`) VALUES
 -- Estructura de tabla para la tabla `solicitud`
 --
 
-CREATE TABLE `solicitud` (
+/* CREATE TABLE `solicitud` (
   `solicitud_ID` int(11) NOT NULL,
   `Tipo_estado` enum('Recibida','En revision','Derivada','En proceso','Respondida','Cerrada') DEFAULT NULL,
   `Asunto` varchar(100) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
   `Categoria` enum('Agua','Electrico','Transito') DEFAULT NULL,
-  `RUT_ciudadano` int(11) DEFAULT NULL,
+  `correo_ciudadano` varchar(100) DEFAULT NULL,
   `ID_departamento` int(11) DEFAULT NULL,
   `ID_tipo_solicitud` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; */
 
 
-/*
 
 CREATE TABLE solicitud (
     solicitud_ID INT(11) NOT NULL AUTO_INCREMENT,
     Tipo_estado ENUM('Felicitaciones','Reclamo','Sugerencia') DEFAULT NULL,
     Asunto VARCHAR(100) DEFAULT NULL,
     Descripcion VARCHAR(100) DEFAULT NULL,
-    RUT_ciudadano INT(11) DEFAULT NULL,
+    correo_electronico varchar(100) DEFAULT NULL,
     ID_departamento INT(11) DEFAULT NULL,
     ID_tipo_solicitud INT(11) DEFAULT NULL,
     estado_solicitud ENUM('Recibida','En Revisión','Derivada a Departamento','En Proceso','Respondida','Cerrada'
@@ -183,12 +182,10 @@ CREATE TABLE solicitud (
     fecha_respondida DATETIME NULL,
     token_encuesta VARCHAR(64) DEFAULT NULL,
     PRIMARY KEY (solicitud_ID),
-    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano),
+    FOREIGN KEY (correo_electronico) REFERENCES ciudadano(correo_electronico),
     FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento),
     FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud)
-);
-
-*/
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; */;
 
 
 

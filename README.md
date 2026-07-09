@@ -59,6 +59,8 @@ otros/                   # carpeta para ayudar al orden guardando cosas que comp
 web-app/                 # direccion del proyecto web
 ├── base-de-datos/       # scripts con el backup de inicializacion back-end del proyeccto 
 ├── consultas/           # alojamiento de las consultas a realizas del front-end al back-end 
+├── config/              # configuracion de elemento de las carpetas 
+├── libs/                # carpeta con la libreria para ocupar herramienta para mandar correos de forma simple
 ├── recursos/            # 
 │    ├── componentes/    # codigos genericos reutilizables 
 │    ├── css/            # ubicacion de los styles  

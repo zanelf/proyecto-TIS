@@ -8,7 +8,6 @@
 
     $tipos_solicitudes=mysqli_query($conexionDB,"SELECT * FROM tipo_solicitud");
     $departamentos=mysqli_query($conexionDB,"SELECT * FROM departamento");
-    echo "sdsdsd ";
 ?>
 
 <!DOCTYPE html>
