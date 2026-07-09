@@ -4,47 +4,35 @@
     $usuario = mysqli_real_escape_string($conexionDB, $_POST["usuario"]);
     $password = $_POST["password"];
     
-
-    $consulta = "SELECT * FROM usuario WHERE nombre_usuario='$usuario' LIMIT 1";
+    $consulta = "SELECT * FROM usuario WHERE rut_usuario='$usuario' LIMIT 1";
     $resultado = mysqli_query($conexionDB, $consulta);
 
+    
     if(mysqli_num_rows($resultado) > 0){
         $datosUsuario = mysqli_fetch_assoc($resultado);
-
 
         if (password_verify($password, $datosUsuario["contraseña"])) {
             
             session_start();
-            $_SESSION["usuario"] = $datosUsuario["nombre_usuario"];
+            $_SESSION["rut_usuario"] = $datosUsuario["rut_usuario"];
             $_SESSION["ID_usuario"] = $datosUsuario["ID_usuario"];
 
-            $var = $_SESSION["ID_usuario"];
+            $id_user = $_SESSION["ID_usuario"];
 
+            $query_trabajador = "SELECT * FROM trabajador WHERE ID_usuario='$id_user' LIMIT 1";
+            $res_trabajador = mysqli_query($conexionDB, $query_trabajador);
 
-            $adm = "SELECT * FROM administrador WHERE ID_usuario='$var';";
-            $esAdm = mysqli_query($conexionDB, $adm);
-
-            $func = "SELECT * FROM funcionario WHERE ID_usuario='$var';";
-            $esFun = mysqli_query($conexionDB, $func);
-
-            $dir = "SELECT * FROM director WHERE ID_usuario='$var';";
-            $esDir = mysqli_query($conexionDB, $dir);
-
-            $dev = "SELECT * FROM desarrollador WHERE ID_usuario='$var';";
-            $esDev = mysqli_query($conexionDB, $dev);
-            
-
-            if(mysqli_num_rows($esAdm) > 0){
-                $_SESSION["tipo"] = "Administrador";
-            }
-            elseif(mysqli_num_rows($esFun) > 0){ 
-                $_SESSION["tipo"] = "Funcionario";
-            }
-            elseif(mysqli_num_rows($esDir) > 0){
-                $_SESSION["tipo"] = "Director";
-            }
-            elseif(mysqli_num_rows($esDev) > 0){
-                $_SESSION["tipo"] = "Desarrollador";
+            if(mysqli_num_rows($res_trabajador) > 0) {
+                $datosTrabajador = mysqli_fetch_assoc($res_trabajador);
+                
+                $_SESSION["tipo"] = $datosTrabajador["tipo_trabajador"]; 
+                $_SESSION["ID_departamento"] = $datosTrabajador["ID_departamento"];
+            } else {
+                if($datosUsuario["is_admin"] == 1) {
+                    $_SESSION["tipo"] = "Administrador";
+                } else {
+                    $_SESSION["tipo"] = "Invitado";
+                }
             }
 
             if (isset($_SESSION["tipo"])) {

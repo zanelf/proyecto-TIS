@@ -8,11 +8,10 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGISC - Panel Analítico y SLA</title>
+    <title>SGISC</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-
     <link rel="stylesheet" href="recursos/css/style_index.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="recursos/css/style_metricas.css?v=<?php echo time(); ?>">
 </head>
@@ -39,6 +38,7 @@ session_start();
                         <a href="ventanas/departamento.php" class="btn-acceso">Departamentos</a>
                         <a href="ventanas/tipo_solicitud.php" class="btn-acceso">Tipos de solicitudes</a>
                         <a href="ventanas/Usuario.php" class="btn-acceso">Usuarios</a>
+                        <a href="ventanas/metricas.php" class="btn-acceso">Métricas</a>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION["tipo"]) && $_SESSION["tipo"] == "Funcionario"): ?>

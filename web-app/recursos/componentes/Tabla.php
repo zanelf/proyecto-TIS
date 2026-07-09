@@ -1,43 +1,188 @@
 <?php
-    include('../base_de_datos/conexion.php');
-    $modelo = $Tipo_modelo;
-    $atributos = mysqli_query($conexionDB,"DESCRIBE ".$modelo);
+include_once('../base_de_datos/conexion.php');
 
-    $campos=[];
-    $PKmodelo = "";
-    $PKValue="";
-    while ($fila = mysqli_fetch_assoc($atributos)) {
-        $campos[] = $fila;
-        if($fila['Key']=="PRI"){
-            echo "PRIMARIA".$fila['Field'];
-            $PKmodelo=$fila['Field'];
+$modelo = $Tipo_modelo;
+$atributos = mysqli_query($conexionDB, "DESCRIBE " . $modelo);
+
+$campos = [];
+$PKmodelo = "";
+$PKValue = "";
+
+$estado = "";
+while ($fila = mysqli_fetch_assoc($atributos)) {
+    $campos[] = $fila;
+    if ($fila['Key'] == "PRI") {
+        $PKmodelo = $fila['Field'];
+    }
+}
+
+// qué columnas mostrar por tabla, y su ancho
+$columnasVisibles = [
+    "usuario" => [
+        "rut_usuario"     => ["RUT", "18%"],
+        "correo_usuario"  => ["Correo", "29%"],
+        "Fecha_creacion"  => ["Creado", "20%"],
+        "Activo"          => ["Estado", "15%"],
+    ],
+    "solicitud" => [
+        "solicitud_ID"  => ["ID", "8%"],
+        "Asunto"        => ["Asunto", "27%"],
+        "Tipo_estado"   => ["Estado", "15%"],
+        "ID_departamento" => ["Depto.", "15%"],
+    ],
+    "departamento" => [
+        "nombre" => ["Nombre", "70%"],
+    ],
+    "ciudadano" => [
+        "RUT_ciudadano"       => ["RUT", "30%"],
+        "correo_electronico"  => ["Correo", "45%"],
+    ],
+    "tipo_solicitud" => [
+        "nombre"      => ["Nombre", "30%"],
+        "descripcion" => ["Descripción", "45%"],
+    ],
+];
+
+//Muestra tabla de acuerdo a la tabla
+$camposAMostrar = isset($columnasVisibles[$modelo]) ? $columnasVisibles[$modelo] : null;
+
+echo '<table class="table table-hover align-middle mb-0">';
+echo '<thead class="table-light">';
+echo '<tr>';
+if ($camposAMostrar !== null) {
+    foreach ($camposAMostrar as $campoNombre => $meta) {
+        echo '<th scope="col" style="width: ' . $meta[1] . ';">' . htmlspecialchars($meta[0]) . '</th>';
+    }
+} else {
+    foreach ($campos as $campo) {
+        $nombreColumna = ucfirst(strtolower(str_replace("_", " ", $campo['Field'])));
+        echo '<th scope="col">' . $nombreColumna . '</th>';
+    }
+}
+echo '<th scope="col" class="text-center" style="width: 18%;">Acciones</th>';
+echo '</tr>';
+echo '</thead>';
+
+$tipoUsuario = isset($_SESSION['tipo']) ? $_SESSION['tipo'] : "";
+$dpto = isset($_SESSION['ID_departamento']) && $_SESSION['ID_departamento'] !== "" ? $_SESSION['ID_departamento'] : null;
+
+$buscar = isset($_GET['buscar']) ? trim($_GET['buscar']) : "";
+$buscarEsc = mysqli_real_escape_string($conexionDB, $buscar);
+
+$resultado = mysqli_query($conexionDB, "SELECT * FROM " . $modelo);
+
+$where = [];
+
+if ($modelo == "solicitud") {
+    if (($tipoUsuario == "Funcionario" || $tipoUsuario == "Director") && $dpto !== null) {
+        $where[] = "ID_departamento = '" . mysqli_real_escape_string($conexionDB, $dpto) . "'";
+    }
+    if ($buscar !== "") {
+        $where[] = "(Asunto LIKE '%$buscarEsc%' OR Descripcion LIKE '%$buscarEsc%' OR solicitud_ID LIKE '%$buscarEsc%')";
+    }
+} elseif ($modelo == "usuario") {
+    // usuario no tiene departamento propio, se busca en funcionario/director
+    if ($tipoUsuario == "Director" && $dpto !== null) {
+        $dptoEsc = mysqli_real_escape_string($conexionDB, $dpto);
+        $where[] = "(
+            EXISTS (SELECT 1 FROM funcionario f WHERE f.ID_usuario = usuario.ID_usuario AND f.ID_departamento = '$dptoEsc')
+            OR EXISTS (SELECT 1 FROM director d WHERE d.ID_usuario = usuario.ID_usuario AND d.ID_departamento = '$dptoEsc')
+        )";
+    }
+    if ($buscar !== "") {
+        $where[] = "rut_usuario LIKE '%$buscarEsc%'";
+    }
+} elseif ($modelo == "departamento") {
+    if ($buscar !== "") {
+        $where[] = "nombre LIKE '%$buscarEsc%'";
+    }
+} elseif ($modelo == "ciudadano") {
+    if ($buscar !== "") {
+        $where[] = "(correo_electronico LIKE '%$buscarEsc%' OR RUT_ciudadano LIKE '%$buscarEsc%')";
+    }
+} elseif ($modelo == "tipo_solicitud") {
+    if ($buscar !== "") {
+        $where[] = "(nombre LIKE '%$buscarEsc%' OR descripcion LIKE '%$buscarEsc%')";
+    }
+}
+
+if (count($where) > 0) {
+    $consulta = "SELECT * FROM " . $modelo . " WHERE " . implode(" AND ", $where);
+    $resultado = mysqli_query($conexionDB, $consulta);
+}
+
+echo '<tbody>';
+if (mysqli_num_rows($resultado) === 0) {
+    $colspan = ($camposAMostrar !== null ? count($camposAMostrar) : count($campos)) + 1;
+    echo '<tr><td colspan="' . $colspan . '" class="text-center text-muted py-3">No se encontraron registros.</td></tr>';
+}
+while ($row = mysqli_fetch_assoc($resultado)) {
+    echo "<tr>";
+
+    $activoUsuario = null;
+    foreach ($campos as $campo) {
+        if ($campo['Key'] == "PRI") {
+            $PKValue = $row[$campo['Field']];
+        }
+        if ($campo['Field'] == "Tipo_estado") {
+            $estado = $row[$campo['Field']];
+        }
+        if ($modelo == "usuario" && $campo['Field'] == "Activo") {
+            $activoUsuario = (int)$row[$campo['Field']];
         }
     }
-    
-    echo '<table class="table">';
-        echo '<thead>';
-            foreach($campos as $campo){
-                echo '<th scope="col">'.strtolower(str_replace("_"," ",$campo['Field'])).'</th>';
-            }            
-        echo '</thead>';
-        echo '<tbody>';
-            while($row=mysqli_fetch_assoc($resultado)){
-                echo "<tr>";
-                    foreach($campos as $campo){
-                        if($campo['Key']=="PRI"){
-                            $PKValue=$row["".$campo['Field'].""];
-                        }
-                        $aux = $row["".$campo['Field'].""];
-                        echo '<td>'.$aux.'</td>';
-                    } 
-                    echo '<td>
-                            <a class="mx-2" href="Eliminar.php?id_enviado='.$PKValue.'&tipomod='.$modelo.'">Eliminar</a>
-                            
-                            <a href="editar.php?id_enviado='.$PKmodelo.'">Editar</a>
-                            </td>';
-                echo "</tr>";
-            }
-        echo '</tbody>';
-    echo '</table>';
 
-?>
+    if ($camposAMostrar !== null) {
+        foreach ($camposAMostrar as $campoNombre => $meta) {
+            $valor = $row[$campoNombre] ?? '';
+
+            if ($campoNombre == "Activo") {
+                echo (int)$valor === 1
+                    ? '<td><span class="badge bg-success-subtle text-success">Activo</span></td>'
+                    : '<td><span class="badge bg-danger-subtle text-danger">Inactivo</span></td>';
+            } elseif ($campoNombre == "Fecha_creacion" && $valor !== '') {
+                echo '<td>' . htmlspecialchars(date('d-m-Y', strtotime($valor))) . '</td>';
+            } else {
+                echo '<td>' . htmlspecialchars($valor) . '</td>';
+            }
+        }
+    } else {
+        foreach ($campos as $campo) {
+            echo '<td>' . htmlspecialchars($row[$campo['Field']] ?? '') . '</td>';
+        }
+    }
+
+    echo '<td class="text-center">';
+    echo '<div class="d-flex gap-1 justify-content-center flex-wrap">';
+
+    if ($modelo == "usuario" && $tipoUsuario == "Administrador") {
+        if ($activoUsuario === 1) {
+            echo '<a href="EditarUsuario.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-warning text-dark fw-medium shadow-sm px-2">Editar</a>';
+            echo '<a href="../recursos/componentes/Dardebajausuario.php?id_enviado=' . $PKValue . '"
+                    class="btn btn-sm btn-danger fw-medium shadow-sm px-2 text-nowrap"
+                    onclick="return confirm(\'¿Confirma dar de baja a este usuario? Esta acción es irreversible.\');">
+                    Baja
+                  </a>';
+        } else {
+            echo '<span class="badge bg-secondary-subtle text-secondary fw-semibold px-3 py-2">Sin acciones</span>';
+        }
+    } elseif ($modelo != "usuario" && $tipoUsuario == "Administrador") {
+        echo '<a href="../recursos/componentes/Editar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-warning text-dark fw-medium shadow-sm px-2">Editar</a>';
+        echo '<a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-danger fw-medium shadow-sm px-2">Eliminar</a>';
+    }
+
+    if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "Funcionario") {
+        echo '<a href="Revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Revisar</a>';
+    }
+    if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "Funcionario") {
+        echo '<a href="Responder.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Responder</a>';
+    }
+    if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $tipoUsuario == "Funcionario") {
+        echo '<span class="text-muted small">Sin acciones</span>';
+    }
+    echo '</div>';
+    echo '</td>';
+    echo "</tr>";
+}
+echo '</tbody>';
+echo '</table>';
