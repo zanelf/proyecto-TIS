@@ -13,11 +13,13 @@
             $conexionDB,
             "SELECT comprobante.ID_comprobante, comprobante.Fecha, comprobante.Hora,
                     solicitud.solicitud_ID, solicitud.Tipo_estado, solicitud.Asunto,
-                    solicitud.Descripcion, solicitud.Categoria, solicitud.RUT_ciudadano,
+                    solicitud.Descripcion, solicitud.correo_electronico,
+                    categoria.nombre AS categoria,
                     departamento.nombre AS departamento,
                     tipo_solicitud.nombre AS tipo_solicitud
             FROM comprobante
             INNER JOIN solicitud ON comprobante.solicitud_ID = solicitud.solicitud_ID
+            LEFT JOIN categoria ON solicitud.ID_categoria = categoria.ID_categoria
             LEFT JOIN departamento ON solicitud.ID_departamento = departamento.ID_departamento
             LEFT JOIN tipo_solicitud ON solicitud.ID_tipo_solicitud = tipo_solicitud.ID_tipo_solicitud
             WHERE comprobante.ID_comprobante = $ID_comprobante"
@@ -92,7 +94,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Categoria</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["Categoria"]; ?>" readonly>
+                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($Comp["categoria"]); ?>" readonly>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Tipo de solicitud</label>
@@ -103,8 +105,8 @@
                             <input type="text" class="form-control" value="<?php echo $Comp["departamento"]; ?>" readonly>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">RUT ciudadano</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["RUT_ciudadano"]; ?>" readonly>
+                            <label class="form-label">Correo</label>
+                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($Comp["correo_electronico"]); ?>" readonly>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Asunto</label>
