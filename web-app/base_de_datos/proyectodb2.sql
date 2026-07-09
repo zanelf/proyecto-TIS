@@ -167,6 +167,31 @@ CREATE TABLE `solicitud` (
   `ID_tipo_solicitud` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+/*
+
+CREATE TABLE solicitud (
+    solicitud_ID INT(11) NOT NULL AUTO_INCREMENT,
+    Tipo_estado ENUM('Felicitaciones','Reclamo','Sugerencia') DEFAULT NULL,
+    Asunto VARCHAR(100) DEFAULT NULL,
+    Descripcion VARCHAR(100) DEFAULT NULL,
+    RUT_ciudadano INT(11) DEFAULT NULL,
+    ID_departamento INT(11) DEFAULT NULL,
+    ID_tipo_solicitud INT(11) DEFAULT NULL,
+    estado_solicitud ENUM('Recibida','En Revisión','Derivada a Departamento','En Proceso','Respondida','Cerrada'
+    ) NOT NULL DEFAULT 'Recibida',
+    fecha_respondida DATETIME NULL,
+    token_encuesta VARCHAR(64) DEFAULT NULL,
+    PRIMARY KEY (solicitud_ID),
+    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano),
+    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento),
+    FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud)
+);
+
+*/
+
+
+
 -- --------------------------------------------------------
 
 --
@@ -205,9 +230,9 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`ID_usuario`, `nombre_usuario`, `contraseña`) VALUES
-(19, 'admin', 'admin'),
-(20, 'funcionario', 'funcionario'),
-(21, 'director', 'director');
+(19, 'admin', '$2a$12$4wY.vaDJ83/FRDWDfVN8TuaRCBV4uV6PfI4tw1iws2kn52kjejdtK'),
+(20, 'funcionario', '$2a$12$3Bfun8iYq0U3FDrc62AkBO3iy70FnUB5l5Xy3U0CGp9PNiT7SBq/O'),
+(21, 'director', '$2a$12$iylkTIo1ZImTbv/513JOruSDqehXVWsb6GJ5yU3sy41Bs7aZVLEfi');
 
 --
 -- Índices para tablas volcadas
