@@ -29,14 +29,15 @@
     }
 
     $rolActual = "";
-    if (mysqli_num_rows(mysqli_query($conexionDB, "SELECT ID_usuario FROM administrador WHERE ID_usuario = '$id_usuario'")) > 0) {
+    if ((int)$usuarioActual["is_admin"] === 1) {
         $rolActual = "Administrador";
     } elseif (mysqli_num_rows(mysqli_query($conexionDB, "SELECT ID_usuario FROM desarrollador WHERE ID_usuario = '$id_usuario'")) > 0) {
         $rolActual = "Desarrollador";
-    } elseif (mysqli_num_rows(mysqli_query($conexionDB, "SELECT ID_usuario FROM funcionario WHERE ID_usuario = '$id_usuario'")) > 0) {
-        $rolActual = "Funcionario";
-    } elseif (mysqli_num_rows(mysqli_query($conexionDB, "SELECT ID_usuario FROM director WHERE ID_usuario = '$id_usuario'")) > 0) {
-        $rolActual = "Director";
+    } else {
+        $trabajadorRol = mysqli_fetch_assoc(mysqli_query($conexionDB, "SELECT tipo_trabajador FROM trabajador WHERE ID_usuario = '$id_usuario'"));
+        if ($trabajadorRol) {
+            $rolActual = ucfirst($trabajadorRol["tipo_trabajador"]);
+        }
     }
 
     $requiereFicha = ($rolActual == "Funcionario" || $rolActual == "Director");
@@ -60,6 +61,7 @@
     <title>Editar Usuario - SGISC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../recursos/css/style_index.css">
     <link rel="stylesheet" href="../recursos/css/style_mantenedores.css">
 </head>
 <body class="bg-light">
@@ -123,7 +125,7 @@
                                     <label class="form-label fw-semibold">Previsión</label>
                                     <select name="prevision" class="form-select">
                                         <option value="Fonasa" <?php echo ($trabajadorActual['prevision'] == 'Fonasa') ? 'selected' : ''; ?>>Fonasa</option>
-                                        <option value="Isapre" <?php echo ($trabajadorActual['prevision'] == 'Isapre') ? 'selected' : ''; ?>>Isapre</option>
+                                        <option value="Isapres" <?php echo ($trabajadorActual['prevision'] == 'Isapres') ? 'selected' : ''; ?>>Isapre</option>
                                     </select>
                                 </div>
 
@@ -131,10 +133,10 @@
                                     <label class="form-label fw-semibold">AFP</label>
                                     <select name="afp" class="form-select">
                                         <?php
-                                            $afps = ["Capital", "Cuprum", "Habitat", "Modelo", "PlanVital", "Provida", "Uno"];
-                                            foreach ($afps as $afp) {
-                                                $sel = ($trabajadorActual['afp'] == $afp) ? 'selected' : '';
-                                                echo "<option value=\"$afp\" $sel>$afp</option>";
+                                            $afps = ["AFP Capital" => "Capital", "AFP Cuprum" => "Cuprum", "AFP Habitat" => "Habitat", "AFP Modelo" => "Modelo", "AFP Planvital" => "PlanVital", "AFP Provida" => "Provida", "AFPUno" => "Uno"];
+                                            foreach ($afps as $valor => $etiqueta) {
+                                                $sel = ($trabajadorActual['AFP'] == $valor) ? 'selected' : '';
+                                                echo "<option value=\"$valor\" $sel>$etiqueta</option>";
                                             }
                                         ?>
                                     </select>
@@ -156,5 +158,7 @@
             </div>
         </div>
     </div>
+
+    <?php include('../recursos/componentes/footer.php'); ?>
 </body>
 </html>
