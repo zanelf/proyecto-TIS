@@ -19,11 +19,10 @@ while ($fila = mysqli_fetch_assoc($atributos)) {
 // qué columnas mostrar por tabla, y su ancho
 $columnasVisibles = [
     "usuario" => [
-        "rut_usuario"     => ["RUT", "15%"],
-        "correo_usuario"  => ["Correo", "25%"],
-        "tipo_trabajador" => ["Tipo de trabajador", "17%"],
-        "Fecha_creacion"  => ["Creado", "15%"],
-        "activo"          => ["Estado", "10%"],
+        "rut_usuario"     => ["RUT", "18%"],
+        "correo_usuario"  => ["Correo", "29%"],
+        "Fecha_creacion"  => ["Creado", "20%"],
+        "Activo"          => ["Estado", "15%"],
     ],
     "solicitud" => [
         "solicitud_ID"  => ["ID", "8%"],
@@ -71,18 +70,6 @@ $buscar = isset($_GET['buscar']) ? trim($_GET['buscar']) : "";
 $buscarEsc = mysqli_real_escape_string($conexionDB, $buscar);
 
 $resultado = mysqli_query($conexionDB, "SELECT * FROM " . $modelo);
-if ($modelo == "usuario") {
-    $selectUsuario = "SELECT usuario.*, (
-        CASE
-            WHEN usuario.is_admin = 1 THEN 'Administrador'
-            WHEN EXISTS (SELECT 1 FROM desarrollador dev WHERE dev.ID_usuario = usuario.ID_usuario) THEN 'Desarrollador'
-            WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'funcionario') THEN 'Funcionario'
-            WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director') THEN 'Director'
-            ELSE 'Sin rol'
-        END
-    ) AS tipo_trabajador FROM usuario";
-    $resultado = mysqli_query($conexionDB, $selectUsuario);
-}
 
 $where = [];
 
@@ -97,7 +84,10 @@ if ($modelo == "solicitud") {
     // usuario no tiene departamento propio, se busca en funcionario/director
     if ($tipoUsuario == "Director" && $dpto !== null) {
         $dptoEsc = mysqli_real_escape_string($conexionDB, $dpto);
-        $where[] = "EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director' AND t.ID_departamento = '$dptoEsc')";
+        $where[] = "(
+            EXISTS (SELECT 1 FROM funcionario f WHERE f.ID_usuario = usuario.ID_usuario AND f.ID_departamento = '$dptoEsc')
+            OR EXISTS (SELECT 1 FROM director d WHERE d.ID_usuario = usuario.ID_usuario AND d.ID_departamento = '$dptoEsc')
+        )";
     }
     if ($buscar !== "") {
         $where[] = "rut_usuario LIKE '%$buscarEsc%'";
@@ -117,22 +107,17 @@ if ($modelo == "solicitud") {
 }
 
 if (count($where) > 0) {
-    $baseSelect = ($modelo == "usuario") ? $selectUsuario : "SELECT * FROM " . $modelo;
-    $consulta = $baseSelect . " WHERE " . implode(" AND ", $where);
+    $consulta = "SELECT * FROM " . $modelo . " WHERE " . implode(" AND ", $where);
     $resultado = mysqli_query($conexionDB, $consulta);
 }
 
-echo '<tbody id="tabla-cuerpo">';
+echo '<tbody>';
 if (mysqli_num_rows($resultado) === 0) {
     $colspan = ($camposAMostrar !== null ? count($camposAMostrar) : count($campos)) + 1;
     echo '<tr><td colspan="' . $colspan . '" class="text-center text-muted py-3">No se encontraron registros.</td></tr>';
 }
-$filasPorPagina = 10;
-$numeroFila = 0;
 while ($row = mysqli_fetch_assoc($resultado)) {
-    $numeroFila++;
-    $paginaFila = (int)ceil($numeroFila / $filasPorPagina);
-    echo '<tr data-pagina="' . $paginaFila . '">';
+    echo "<tr>";
 
     $activoUsuario = null;
     foreach ($campos as $campo) {
@@ -142,7 +127,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         if ($campo['Field'] == "Tipo_estado") {
             $estado = $row[$campo['Field']];
         }
-        if ($modelo == "usuario" && $campo['Field'] == "activo") {
+        if ($modelo == "usuario" && $campo['Field'] == "Activo") {
             $activoUsuario = (int)$row[$campo['Field']];
         }
     }
@@ -151,7 +136,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         foreach ($camposAMostrar as $campoNombre => $meta) {
             $valor = $row[$campoNombre] ?? '';
 
-            if ($campoNombre == "activo") {
+            if ($campoNombre == "Activo") {
                 echo (int)$valor === 1
                     ? '<td><span class="badge bg-success-subtle text-success">Activo</span></td>'
                     : '<td><span class="badge bg-danger-subtle text-danger">Inactivo</span></td>';
@@ -190,9 +175,12 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         echo '<a href="Revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Revisar</a>';
     }
     if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "Funcionario") {
-        echo '<a href="Responder.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Responder</a>';
+        echo '<a href="TomarSolicitud.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Tomar</a>';
     }
-    if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $tipoUsuario == "Funcionario") {
+    if ($modelo == "solicitud" && $estado == "En proceso" && $tipoUsuario == "Funcionario") {
+        echo '<a href="Responder.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Responder</a>';
+    }
+    if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $estado != "En proceso" && $tipoUsuario == "Funcionario") {
         echo '<span class="text-muted small">Sin acciones</span>';
     }
     echo '</div>';
@@ -201,54 +189,3 @@ while ($row = mysqli_fetch_assoc($resultado)) {
 }
 echo '</tbody>';
 echo '</table>';
-
-$totalPaginas = (int)ceil($numeroFila / $filasPorPagina);
-if ($totalPaginas > 1) {
-    echo '<div id="tabla-paginacion" class="d-flex justify-content-center align-items-center gap-2 py-3 flex-wrap"></div>';
-?>
-<script>
-(function() {
-    const filas = document.querySelectorAll('#tabla-cuerpo tr[data-pagina]');
-    const totalPaginas = <?php echo $totalPaginas; ?>;
-    const contenedorPaginacion = document.getElementById('tabla-paginacion');
-    let paginaActual = 1;
-
-    function mostrarPagina(pagina) {
-        paginaActual = pagina;
-        filas.forEach(function(fila) {
-            fila.style.display = (parseInt(fila.dataset.pagina) === pagina) ? '' : 'none';
-        });
-        renderizarControles();
-    }
-
-    function renderizarControles() {
-        contenedorPaginacion.innerHTML = '';
-
-        const btnAnterior = document.createElement('button');
-        btnAnterior.className = 'btn btn-sm btn-outline-secondary';
-        btnAnterior.textContent = 'Anterior';
-        btnAnterior.disabled = (paginaActual === 1);
-        btnAnterior.addEventListener('click', function() { mostrarPagina(paginaActual - 1); });
-        contenedorPaginacion.appendChild(btnAnterior);
-
-        for (let i = 1; i <= totalPaginas; i++) {
-            const btnPagina = document.createElement('button');
-            btnPagina.className = 'btn btn-sm ' + (i === paginaActual ? 'btn-primary text-white' : 'btn-outline-secondary');
-            btnPagina.textContent = i;
-            btnPagina.addEventListener('click', function() { mostrarPagina(i); });
-            contenedorPaginacion.appendChild(btnPagina);
-        }
-
-        const btnSiguiente = document.createElement('button');
-        btnSiguiente.className = 'btn btn-sm btn-outline-secondary';
-        btnSiguiente.textContent = 'Siguiente';
-        btnSiguiente.disabled = (paginaActual === totalPaginas);
-        btnSiguiente.addEventListener('click', function() { mostrarPagina(paginaActual + 1); });
-        contenedorPaginacion.appendChild(btnSiguiente);
-    }
-
-    mostrarPagina(1);
-})();
-</script>
-<?php
-}
