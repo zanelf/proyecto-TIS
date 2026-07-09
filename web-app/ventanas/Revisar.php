@@ -56,9 +56,15 @@
             <div class="col-6">
 
                 <form action="../consultas/CambiarEstadoSol.php" method="POST">
+                    <label for="">Aprobar/Rechazar</label>
+                    <input type="text">
                     <label for="">Acotacion</label>
+                    <input type="text">
+                    <label for="">Acotacion</label>
+                    <input type="text">                                        
                     <input type="hidden" value="<?php echo $id_solicitud ?>" name="ID_cambio">
-                    <input type="submit" value="Derivada" name="estadoSiguiente" class="btn bg-success">
+                    <input type="hidden" value="Para derivar" name="estadoSiguiente">
+                    <input type="submit" class="btn bg-success">
                 </form>
             </div>
         </div>
