@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 session_start();
 
 include('../base_de_datos/conexion.php');
@@ -9,7 +7,8 @@ if (!isset($_SESSION["usuario"])) {
     header("Location: Login.php");
     exit;
 }
-//Admin ve todo, el director solo lo de él
+
+// Administrador ve a todo el personal; Director ve solo el de su departamento (filtrado en Tabla.php)
 if ($_SESSION["tipo"] !== "Administrador" && $_SESSION["tipo"] !== "Director") {
     header("Location: Inicio.php?error=NoAutorizado");
     exit;
@@ -93,5 +92,7 @@ $Tipo_modelo = "usuario";
 
         </div>
     </div>
+
+    <?php include('../recursos/componentes/footer.php'); ?>
 </body>
 </html>

@@ -1,15 +1,13 @@
 <?php
     session_start();
     include("../base_de_datos/conexion.php");
-    $consulta = "SELECT * FROM tipo_solicitud";
-    $resultado = mysqli_query($conexionDB,$consulta);
-    $atributos = mysqli_query($conexionDB,"DESCRIBE tipo_solicitud");
 
-
-    if(!isset($_SESSION["usuario"])){
+    if (!isset($_SESSION["usuario"])) {
         header("Location: Login.php");
         exit;
     }
+
+    $Tipo_modelo = "tipo_solicitud";
 ?>
 
 <!DOCTYPE html>
@@ -21,26 +19,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../recursos/css/style_index.css">
     <link rel="stylesheet" href="../recursos/css/style_mantenedores.css">
 </head>
 <body class="bg-light">
-    <?php
-        include('../recursos/componentes/navbar1.php');
-        
-        $campos=[];
-        while ($fila = mysqli_fetch_assoc($atributos)) {
-            $campos[] = $fila;
-        }
-        foreach($campos as &$campo){
-            if(str_contains($campo['Type'],"int")){
-                $campo['Type'] = "number";
-            }
-            if(str_contains($campo['Type'],"varchar")){
-                $campo['Type'] = "text";
-            }
-        }
-        unset($campo);
-    ?>
+    <?php include('../recursos/componentes/navbar1.php'); ?>
     
     <div class="container mt-5">
         <div class="row">
@@ -52,7 +35,6 @@
                     </div>
                     <div class="card-body p-4 bg-white">
                         <?php
-                            $Tipo_modelo = "tipo_solicitud";
                             include("../recursos/componentes/Formulario2.php");
                         ?>
                     </div>
@@ -60,6 +42,30 @@
             </div>
 
             <div class="col-md-8">
+                <div class="card shadow-sm border mb-3" style="border-radius: 8px;">
+                    <div class="card-body p-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-12 col-md-8">
+                                <form method="GET" class="d-flex gap-2">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="buscar"
+                                        placeholder="Buscar por nombre o descripción..."
+                                        value="<?php echo isset($_GET['buscar']) ? htmlspecialchars($_GET['buscar']) : ''; ?>"
+                                    >
+                                    <button type="submit" class="btn btn-primary text-white px-4">Buscar</button>
+                                </form>
+                            </div>
+                            <div class="col-12 col-md-4 text-md-end">
+                                <span class="badge bg-secondary-subtle text-secondary fw-semibold px-3 py-2">
+                                    Catálogo global
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card shadow-sm border" style="border-radius: 8px; overflow: hidden;">
                     <div class="card-header custom-card-header-table py-3">
                         <h6 class="mb-0 fw-bold text-secondary text-uppercase small tracking-wider">Registros Actuales</h6>
@@ -75,5 +81,7 @@
 
         </div>
     </div>
+
+    <?php include('../recursos/componentes/footer.php'); ?>
 </body>
 </html>

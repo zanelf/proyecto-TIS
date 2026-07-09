@@ -61,5 +61,7 @@
             ?>
         </div>
     </div>
+
+    <?php include('../recursos/componentes/footer.php'); ?>
 </body>
 </html>
