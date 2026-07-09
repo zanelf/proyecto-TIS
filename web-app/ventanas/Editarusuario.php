@@ -60,6 +60,7 @@
     <title>Editar Usuario - SGISC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../recursos/css/style_index.css">
     <link rel="stylesheet" href="../recursos/css/style_mantenedores.css">
 </head>
 <body class="bg-light">
@@ -156,5 +157,7 @@
             </div>
         </div>
     </div>
+
+    <?php include('../recursos/componentes/footer.php'); ?>
 </body>
 </html>
