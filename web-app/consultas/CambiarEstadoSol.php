@@ -1,6 +1,7 @@
 <?php
     session_start();
     include('../base_de_datos/conexion.php');
+    require_once('GenerarTokenEncuesta.php');
 
     $IDsol=$_POST['ID_cambio'];
     $estadoSiguiente=$_POST['estadoSiguiente'];
@@ -19,6 +20,7 @@
         $consulta2="UPDATE solicitud SET Tiempo_asignado = '$tiempoAsignado'";
     }
     if($estadoSiguiente=="Respondida"){
+          generarTokenEncuesta($conexionDB,$IDsol);
     }
     
     if(!isset($_SESSION["usuario"])){
