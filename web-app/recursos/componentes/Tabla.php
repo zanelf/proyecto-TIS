@@ -19,10 +19,11 @@ while ($fila = mysqli_fetch_assoc($atributos)) {
 // qué columnas mostrar por tabla, y su ancho
 $columnasVisibles = [
     "usuario" => [
-        "rut_usuario"     => ["RUT", "18%"],
-        "correo_usuario"  => ["Correo", "29%"],
-        "Fecha_creacion"  => ["Creado", "20%"],
-        "Activo"          => ["Estado", "15%"],
+        "rut_usuario"     => ["RUT", "15%"],
+        "correo_usuario"  => ["Correo", "25%"],
+        "tipo_trabajador" => ["Tipo de trabajador", "17%"],
+        "Fecha_creacion"  => ["Creado", "15%"],
+        "Activo"          => ["Estado", "10%"],
     ],
     "solicitud" => [
         "solicitud_ID"  => ["ID", "8%"],
@@ -70,6 +71,18 @@ $buscar = isset($_GET['buscar']) ? trim($_GET['buscar']) : "";
 $buscarEsc = mysqli_real_escape_string($conexionDB, $buscar);
 
 $resultado = mysqli_query($conexionDB, "SELECT * FROM " . $modelo);
+if ($modelo == "usuario") {
+    $selectUsuario = "SELECT usuario.*, (
+        CASE
+            WHEN EXISTS (SELECT 1 FROM administrador a WHERE a.ID_usuario = usuario.ID_usuario) THEN 'Administrador'
+            WHEN EXISTS (SELECT 1 FROM desarrollador dev WHERE dev.ID_usuario = usuario.ID_usuario) THEN 'Desarrollador'
+            WHEN EXISTS (SELECT 1 FROM funcionario f WHERE f.ID_usuario = usuario.ID_usuario) THEN 'Funcionario'
+            WHEN EXISTS (SELECT 1 FROM director d WHERE d.ID_usuario = usuario.ID_usuario) THEN 'Director'
+            ELSE 'Sin rol'
+        END
+    ) AS tipo_trabajador FROM usuario";
+    $resultado = mysqli_query($conexionDB, $selectUsuario);
+}
 
 $where = [];
 
@@ -107,7 +120,8 @@ if ($modelo == "solicitud") {
 }
 
 if (count($where) > 0) {
-    $consulta = "SELECT * FROM " . $modelo . " WHERE " . implode(" AND ", $where);
+    $baseSelect = ($modelo == "usuario") ? $selectUsuario : "SELECT * FROM " . $modelo;
+    $consulta = $baseSelect . " WHERE " . implode(" AND ", $where);
     $resultado = mysqli_query($conexionDB, $consulta);
 }
 

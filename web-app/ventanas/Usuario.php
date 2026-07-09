@@ -32,7 +32,7 @@ $Tipo_modelo = "usuario";
 <body class="bg-light">
     <?php include('../recursos/componentes/navbar1.php'); ?>
 
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
             <h1 class="fw-bold text-dark m-0">Usuarios</h1>
             <?php if ($tipoUsuario == "Administrador"): ?>
