@@ -204,20 +204,31 @@ CREATE TABLE `solicitud` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-CREATE TABLE prioridad (
-    ID_prioridad INT PRIMARY KEY NOT NULL,
-    Nombre INT NOT NULL
-);
-CREATE TABLE Tiempo (
-    ID_prioridad INT NOT NULL,
-    ID_tipo_solicitud INT NOT NULL,
-    ID_departamento INT NOT NULL,
-    tiempo int NOT NULL,
-    PRIMARY KEY (ID_prioridad, ID_tipo_solicitud, ID_departamento),
-    FOREIGN KEY (ID_prioridad) REFERENCES prioridad(ID_prioridad),
-    FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud),
-    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento)
-);
+-- AQUI 2
+/* DROP TABLE IF EXISTS solicitud;
+CREATE TABLE solicitud (
+    solicitud_ID INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3,
+    Tipo_estado ENUM('Felicitaciones','Reclamo','Sugerencia') DEFAULT NULL,
+    Asunto VARCHAR(100) DEFAULT NULL,
+    Descripcion VARCHAR(100) DEFAULT NULL,
+    RUT_ciudadano INT(11) DEFAULT NULL,
+    ID_departamento INT(11) DEFAULT NULL,
+    ID_tipo_solicitud INT(11) DEFAULT NULL,
+    estado_solicitud ENUM(
+        'Recibida',
+        'En Revisión',
+        'Derivada a Departamento',
+        'En Proceso',
+        'Respondida',
+        'Cerrada'
+    ) NOT NULL DEFAULT 'Recibida',
+    fecha_respondida DATETIME NULL,
+    token_encuesta VARCHAR(64) DEFAULT NULL,
+    PRIMARY KEY (solicitud_ID),
+    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano),
+    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento),
+    FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;  */
 
 
 
@@ -429,4 +440,3 @@ ALTER TABLE `funcionario`
 !40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT ;
 !40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION ;*/
-
