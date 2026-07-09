@@ -125,13 +125,17 @@ if (count($where) > 0) {
     $resultado = mysqli_query($conexionDB, $consulta);
 }
 
-echo '<tbody>';
+echo '<tbody id="tabla-cuerpo">';
 if (mysqli_num_rows($resultado) === 0) {
     $colspan = ($camposAMostrar !== null ? count($camposAMostrar) : count($campos)) + 1;
     echo '<tr><td colspan="' . $colspan . '" class="text-center text-muted py-3">No se encontraron registros.</td></tr>';
 }
+$filasPorPagina = 5;
+$numeroFila = 0;
 while ($row = mysqli_fetch_assoc($resultado)) {
-    echo "<tr>";
+    $numeroFila++;
+    $paginaFila = (int)ceil($numeroFila / $filasPorPagina);
+    echo '<tr data-pagina="' . $paginaFila . '">';
 
     $activoUsuario = null;
     foreach ($campos as $campo) {
@@ -200,3 +204,54 @@ while ($row = mysqli_fetch_assoc($resultado)) {
 }
 echo '</tbody>';
 echo '</table>';
+
+$totalPaginas = (int)ceil($numeroFila / $filasPorPagina);
+if ($totalPaginas > 1) {
+    echo '<div id="tabla-paginacion" class="d-flex justify-content-center align-items-center gap-2 py-3 flex-wrap"></div>';
+?>
+<script>
+(function() {
+    const filas = document.querySelectorAll('#tabla-cuerpo tr[data-pagina]');
+    const totalPaginas = <?php echo $totalPaginas; ?>;
+    const contenedorPaginacion = document.getElementById('tabla-paginacion');
+    let paginaActual = 1;
+
+    function mostrarPagina(pagina) {
+        paginaActual = pagina;
+        filas.forEach(function(fila) {
+            fila.style.display = (parseInt(fila.dataset.pagina) === pagina) ? '' : 'none';
+        });
+        renderizarControles();
+    }
+
+    function renderizarControles() {
+        contenedorPaginacion.innerHTML = '';
+
+        const btnAnterior = document.createElement('button');
+        btnAnterior.className = 'btn btn-sm btn-outline-secondary';
+        btnAnterior.textContent = 'Anterior';
+        btnAnterior.disabled = (paginaActual === 1);
+        btnAnterior.addEventListener('click', function() { mostrarPagina(paginaActual - 1); });
+        contenedorPaginacion.appendChild(btnAnterior);
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btnPagina = document.createElement('button');
+            btnPagina.className = 'btn btn-sm ' + (i === paginaActual ? 'btn-primary text-white' : 'btn-outline-secondary');
+            btnPagina.textContent = i;
+            btnPagina.addEventListener('click', function() { mostrarPagina(i); });
+            contenedorPaginacion.appendChild(btnPagina);
+        }
+
+        const btnSiguiente = document.createElement('button');
+        btnSiguiente.className = 'btn btn-sm btn-outline-secondary';
+        btnSiguiente.textContent = 'Siguiente';
+        btnSiguiente.disabled = (paginaActual === totalPaginas);
+        btnSiguiente.addEventListener('click', function() { mostrarPagina(paginaActual + 1); });
+        contenedorPaginacion.appendChild(btnSiguiente);
+    }
+
+    mostrarPagina(1);
+})();
+</script>
+<?php
+}

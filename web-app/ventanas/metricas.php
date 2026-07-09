@@ -79,11 +79,11 @@ $list_deps = mysqli_query($conexionDB, "SELECT * FROM departamento");
     <link rel="stylesheet" href="../recursos/css/style_metricas.css?v=<?php echo time(); ?>">
 </head>
 
-<body style="background-color: #f8fafc; margin: 0;">
+<body class="bg-light">
 
     <?php include("../recursos/componentes/navbar1.php"); ?>
 
-    <div class="contenedor-metricas container py-4">
+    <div class="contenedor-metricas container">
         <h1 class="titulo-seccion mb-4 fw-bold text-dark">Panel Analítico y Desempeño (SLA)</h1>
 
         <form id="form-filtros" class="card p-4 border-0 shadow-sm mb-5 bg-white" style="border-radius: 12px;">

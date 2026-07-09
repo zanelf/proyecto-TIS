@@ -7,7 +7,7 @@ body {
 }
 
 body > .container {
-    flex: 1;
+    width: 100%;
 }
 
 .navbar-municipalidad {

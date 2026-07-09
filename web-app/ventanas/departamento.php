@@ -19,10 +19,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="../recursos/css/style_index.css?v=<?php echo time(); ?>">
 </head>
-<body style="background-color: #f8fafc;">
+<body class="bg-light">
     <?php include('../recursos/componentes/navbar1.php'); ?>
 
-    <div class="container py-4">
+    <div class="container mt-5 mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
             <h1 class="fw-bold text-dark m-0">Departamentos</h1>
             <button type="button" class="btn btn-success fw-medium shadow-sm px-4" data-bs-toggle="modal" data-bs-target="#modalNuevoDepartamento">
