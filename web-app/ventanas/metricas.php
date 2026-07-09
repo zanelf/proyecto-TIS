@@ -146,7 +146,6 @@ $list_deps = mysqli_query($conexionDB, "SELECT * FROM departamento");
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const form = document.getElementById('form-filtros');
-
            
             function renderizarDashboard(datos) {
                 document.getElementById('kpi-total').textContent = datos.kpis.total || 0;

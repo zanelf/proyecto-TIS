@@ -74,3 +74,23 @@ CREATE TABLE Desarrollador (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
     FOREIGN KEY (ID_usuario) REFERENCES Usuario(ID_usuario)
 );
+CREATE TABLE prioridad (
+    ID_prioridad INT PRIMARY KEY NOT NULL,
+    Nombre INT NOT NULL
+);
+CREATE TABLE Tiempo (
+    ID_prioridad INT NOT NULL,
+    ID_tipo_solicitud INT NOT NULL,
+    ID_departamento INT NOT NULL,
+	tiempo int NOT NULL,
+    PRIMARY KEY (ID_prioridad, ID_tipo_solicitud, ID_departamento),
+
+    FOREIGN KEY (ID_prioridad)
+        REFERENCES prioridad(ID_prioridad),
+
+    FOREIGN KEY (ID_tipo_solicitud)
+        REFERENCES tipo_solicitud(ID_tipo_solicitud),
+
+    FOREIGN KEY (ID_departamento)
+        REFERENCES departamento(ID_departamento)
+);

@@ -11,6 +11,12 @@
         header("Location: ../index.php");
         exit;
     }
+
+
+
+    $prioridadesQuery = "SELECT * FROM prioridad";
+    $prioridades = mysqli_query($conexionDB, $prioridadesQuery);
+
     echo $solicutdRevisar['solicitud_ID'];
     echo $solicutdRevisar['ID_tipo_solicitud'];
 ?>
@@ -29,6 +35,7 @@
     ?>
     <div class="container">
         <div class="row">
+            <h2>Solicitud a revisar</h2>
             <div class="col-6">
                 <table>
                     <thead>
@@ -52,16 +59,23 @@
                     </tbody>
                 </table>
             </div>
-
+        </div>
+        <div class="row">
+            <h2>Revision</h2>
             <div class="col-6">
-
                 <form action="../consultas/CambiarEstadoSol.php" method="POST">
-                    <label for="">Aprobar/Rechazar</label>
-                    <input type="text">
-                    <label for="">Acotacion</label>
-                    <input type="text">
-                    <label for="">Prioridad</label>
-                    <input type="text">                                  
+                    <label class="form-check-label" for="Aprobacion"> Aprobar</label>
+                    <input type="checkbox" name="Aprobracion" class="form-check-input" checked /><br>
+                    <label class="form-label">Acotacion</label>
+                    <input type="text" name="Acotacion" class="form-control">
+                    <label class="form-label">Seleccionar prioridad</label>
+                    <select name="ID_prioridad" class="form-select">
+                        <?php while($prioridad = mysqli_fetch_assoc($prioridades)) { ?>
+                            <option value="<?php echo $prioridad['ID_prioridad']; ?>">
+                                <?php echo $prioridad['Nombre']; ?>
+                            </option>
+                        <?php } ?>
+                    </select>                             
                     <input type="hidden" value="<?php echo $id_solicitud ?>" name="ID_cambio">
                     <input type="hidden" value="Derivada" name="estadoSiguiente">
                     <input type="submit" class="btn bg-success">

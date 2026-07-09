@@ -10,7 +10,11 @@
 
     $consulta="UPDATE solicitud SET Tipo_estado = '$estadoSiguiente' WHERE solicitud_ID='$IDsol'";
     $resultado=mysqli_query($conexionDB,$consulta);
+    $consulta="SELECT tiempo FROM tiempo WHERE "
 
+    if($estadoSiguiente=="Derivada"){
+        $consulta="SELECT tiempo FROM tiempo WHERE "
+    }
     
     if(!isset($_SESSION["usuario"])){
         header("Location: ../index.php");
