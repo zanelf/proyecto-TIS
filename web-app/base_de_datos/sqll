@@ -63,8 +63,10 @@ CREATE TABLE Archivo (
 
 CREATE TABLE Usuario (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
-    nombre_usuario VARCHAR(100) NOT NULL,
-    contraseña VARCHAR(100) NOT NULL
+    rut_usuario VARCHAR(100) NOT NULL,
+    contraseña VARCHAR(100) NOT NULL,
+    Fecha_creacion date,
+    Activo Boolean,
 );
 CREATE TABLE Funcionario (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
