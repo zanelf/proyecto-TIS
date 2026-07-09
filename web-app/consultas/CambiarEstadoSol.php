@@ -5,9 +5,11 @@
 
     $IDsol=$_POST['ID_cambio'];
     $estadoSiguiente=$_POST['estadoSiguiente'];
-    $prioridad= $_POST['ID_prioridad'];
-    $dpto= $_POST['ID_departamento'];
-    $IDtipoSol=$_POST['ID_tipo_solicitud'];
+
+    $prioridad = $_GET['ID_prioridad'] ?? '';
+$dpto = $_GET['ID_departamento'] ?? '';
+$IDtipoSol = $_GET['ID_tipo_solicitud'] ?? '';
+
     $consulta="UPDATE solicitud SET Tipo_estado = '$estadoSiguiente' WHERE solicitud_ID='$IDsol'";
     $resultado=mysqli_query($conexionDB,$consulta);
 

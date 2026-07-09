@@ -9,7 +9,7 @@ function generarTokenEncuesta($conexionDB, $idSolicitud) {
         SELECT solicitud.solicitud_ID, solicitud.Asunto, solicitud.token_encuesta,
                ciudadano.correo_electronico
         FROM solicitud
-        INNER JOIN ciudadano ON solicitud.RUT_ciudadano = ciudadano.RUT_ciudadano
+        INNER JOIN ciudadano ON solicitud.correo_electronico = ciudadano.correo_electronico
         WHERE solicitud.solicitud_ID = $idSolicitud
         LIMIT 1
     ";
@@ -35,7 +35,7 @@ if (!$solicitud) {
         $actualizar = "
             UPDATE solicitud
             SET token_encuesta = '$token',
-                estado_solicitud = 'Respondida',
+                Tipo_estado = 'Respondida',
                 fecha_respondida = NOW()
             WHERE solicitud_ID = $idSolicitud
         ";
