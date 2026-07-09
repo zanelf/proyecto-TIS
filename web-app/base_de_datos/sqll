@@ -1,6 +1,6 @@
 CREATE TABLE Ciudadano (
     RUT_ciudadano INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
-    correo_electronico VARCHAR(100) NOT NULL
+    correo_electronico VARCHAR(100) NOT NULL UNIQUE
 );
 CREATE TABLE Tipo_solicitud (
     ID_tipo_solicitud INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
@@ -11,19 +11,31 @@ CREATE TABLE Departamento (
     ID_departamento INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
     nombre VARCHAR(100) NOT NULL
 );
-CREATE TABLE Solicitud (
-    solicitud_ID INT PRIMARY KEY AUTO_INCREMENT,
-    Tipo_estado ENUM('Recibida', 'En revision', 'Derivada', 'En proceso', 'Respondida', 'Cerrada'),
-    Asunto VARCHAR(100),
-    Descripcion VARCHAR(100),
-    Categoria ENUM('Agua', 'Electrico', 'Transito'),
-    RUT_ciudadano INT, -- Mismo tipo de dato que la PK padre
-    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano),
-    ID_departamento INT, -- Mismo tipo de dato que la PK padre
+CREATE TABLE solicitud (
+    solicitud_ID INT(11) NOT NULL AUTO_INCREMENT,
+    Tipo_estado ENUM('Felicitaciones','Reclamo','Sugerencia') DEFAULT NULL,
+    Asunto VARCHAR(100) DEFAULT NULL,
+    Descripcion VARCHAR(100) DEFAULT NULL,
+    correo_electronico varchar(100) DEFAULT NULL UNIQUE,
+    ID_departamento INT(11) DEFAULT NULL,
+    ID_tipo_solicitud INT(11) DEFAULT NULL,
+    estado_solicitud ENUM(
+        'Recibida',
+        'En Revisión',
+        'Derivada a Departamento',
+        'En Proceso',
+        'Respondida',
+        'Cerrada'
+    ) NOT NULL DEFAULT 'Recibida',
+    fecha_creacion DATETIME NULL,
+    Tiempo_asignado int NULL,
+    fecha_respondida DATETIME NULL,
+    token_encuesta VARCHAR(64) DEFAULT NULL,
+    PRIMARY KEY (solicitud_ID),
+    FOREIGN KEY (correo_electronico) REFERENCES ciudadano(correo_electronico),
     FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento),
-    ID_tipo_solicitud INT, -- Mismo tipo de dato que la PK padre
     FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud)
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE Encuesta (
     ID_encuesta INT PRIMARY KEY AUTO_INCREMENT,
@@ -51,8 +63,10 @@ CREATE TABLE Archivo (
 
 CREATE TABLE Usuario (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
-    nombre_usuario VARCHAR(100) NOT NULL,
-    contraseña VARCHAR(100) NOT NULL
+    rut_usuario VARCHAR(100) NOT NULL,
+    contraseña VARCHAR(100) NOT NULL,
+    Fecha_creacion date,
+    Activo Boolean,
 );
 CREATE TABLE Funcionario (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
@@ -73,4 +87,24 @@ CREATE TABLE Director (
 CREATE TABLE Desarrollador (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
     FOREIGN KEY (ID_usuario) REFERENCES Usuario(ID_usuario)
+);
+CREATE TABLE prioridad (
+    ID_prioridad INT PRIMARY KEY NOT NULL,
+    Nombre INT NOT NULL
+);
+CREATE TABLE Tiempo (
+    ID_prioridad INT NOT NULL,
+    ID_tipo_solicitud INT NOT NULL,
+    ID_departamento INT NOT NULL,
+	tiempo int NOT NULL,
+    PRIMARY KEY (ID_prioridad, ID_tipo_solicitud, ID_departamento),
+
+    FOREIGN KEY (ID_prioridad)
+        REFERENCES prioridad(ID_prioridad),
+
+    FOREIGN KEY (ID_tipo_solicitud)
+        REFERENCES tipo_solicitud(ID_tipo_solicitud),
+
+    FOREIGN KEY (ID_departamento)
+        REFERENCES departamento(ID_departamento)
 );

@@ -1,6 +1,6 @@
 <?php
-    include('../base_de_datos/conexion.php');
     session_start();
+    include('../base_de_datos/conexion.php');
 
     $Comp = null;
     $busqueda = false;
@@ -13,11 +13,13 @@
             $conexionDB,
             "SELECT comprobante.ID_comprobante, comprobante.Fecha, comprobante.Hora,
                     solicitud.solicitud_ID, solicitud.Tipo_estado, solicitud.Asunto,
-                    solicitud.Descripcion, solicitud.Categoria, solicitud.RUT_ciudadano,
+                    solicitud.Descripcion, solicitud.correo_electronico,
+                    categoria.nombre AS categoria,
                     departamento.nombre AS departamento,
                     tipo_solicitud.nombre AS tipo_solicitud
             FROM comprobante
             INNER JOIN solicitud ON comprobante.solicitud_ID = solicitud.solicitud_ID
+            LEFT JOIN categoria ON solicitud.ID_categoria = categoria.ID_categoria
             LEFT JOIN departamento ON solicitud.ID_departamento = departamento.ID_departamento
             LEFT JOIN tipo_solicitud ON solicitud.ID_tipo_solicitud = tipo_solicitud.ID_tipo_solicitud
             WHERE comprobante.ID_comprobante = $ID_comprobante"
@@ -38,25 +40,7 @@
 </head>
 <body>
 
-<nav class="navbar-muni d-flex align-items-center justify-content-between">
-
-    <a href="../index.php" class="titulo-muni">SGISC</a>
-
-    <div class="d-flex align-items-center gap-2">
-        <?php if (isset($_SESSION["usuario"])): ?>
-
-            <span class="texto-bienvenida me-1">
-                <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
-            </span>
-
-        <?php else: ?>
-
-            <a href="Inicio.php" class="btn-acceso">Acceso</a>
-
-        <?php endif; ?>
-    </div>
-
-</nav>
+<?php include("../recursos/componentes/navbar1.php"); ?>
 
 <div class="cuerpo-pag">
     <div class="container" style="max-width:780px;">
@@ -110,7 +94,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Categoria</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["Categoria"]; ?>" readonly>
+                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($Comp["categoria"]); ?>" readonly>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Tipo de solicitud</label>
@@ -121,8 +105,8 @@
                             <input type="text" class="form-control" value="<?php echo $Comp["departamento"]; ?>" readonly>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">RUT ciudadano</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["RUT_ciudadano"]; ?>" readonly>
+                            <label class="form-label">Correo</label>
+                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($Comp["correo_electronico"]); ?>" readonly>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Asunto</label>

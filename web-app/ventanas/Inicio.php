@@ -28,7 +28,7 @@
                 </div>
 
                 <div style="font-size: 0.9rem;">
-                    <p class="mb-3 text-white-50">Portal interno para funcionarios municipales.</p>
+                    <p class="mb-3 text-white-50"></p>
                     <div class="d-flex flex-column gap-2 opacity-75">
                         <span class="d-flex align-items-center gap-2">
                             <i class="bi bi-shield-check"></i> Seguro
@@ -60,8 +60,8 @@
                         <div class="mb-2">
                             <label for="password" class="form-label fw-semibold text-dark mb-1" style="font-size: 0.85rem;">Contraseña</label>
                             <div class="input-group">
-                                <input type="contraseña" class="form-control py-2" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña" required>
-                                <span class="input-group-text bg-white text-muted border-start-0" style="cursor: pointer;">
+                                <input type="password" class="form-control py-2" id="password" name="password" placeholder="Ingrese su contraseña" required>
+                                <span class="input-group-text bg-white text-muted border-start-0" style="cursor: pointer;" id ="togglePassword">
                                     <i class="bi bi-eye"></i>
                                 </span>
                             </div>
@@ -86,6 +86,19 @@
         </div>
     </div>
 
+    <script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordInput = document.querySelector('#password');
+    const eyeIcon = document.querySelector('#eyeIcon');
+
+    togglePassword.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        eyeIcon.classList.toggle('bi-eye');
+        eyeIcon.classList.toggle('bi-eye-slash');
+    });
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

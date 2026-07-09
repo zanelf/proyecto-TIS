@@ -1,34 +1,45 @@
 <?php
-    include('../base_de_datos/conexion.php');
+include('../base_de_datos/conexion.php');
 
-    $consulta="";
+$correo = $_POST["correo"];
+$ID_departamento = $_POST["departamento"];
+$Asunto = $_POST["asunto"];
+$Descripcion = $_POST["descripcion"];
+$categoria = $_POST["categoria"];
+$ID_tipo_solicitud = $_POST["tipo"];
 
-    $correo=$_POST["correo"];
-    $ID_departamento=$_POST["departamento"];
-    $Asunto=$_POST["asunto"];
-    $Descripcion=$_POST["descripcion"];
-    $categoria=$_POST["categoria"];
+$consulta = "INSERT INTO solicitud (
+                Asunto,
+                Descripcion,
+                Categoria,
+                correo_electronico,
+                ID_departamento,
+                ID_tipo_solicitud,
+                fecha_creacion
+            ) VALUES (
+                '$Asunto',
+                '$Descripcion',
+                '$categoria',
+                '$correo',
+                '$ID_departamento',
+                '$ID_tipo_solicitud',
+                CURDATE()
+            )";
 
-    $ID_tipo_solicitud=$_POST["tipo"];
+$resultado = mysqli_query($conexionDB, $consulta);
 
-    $ciudadanoQuery= mysqli_query($conexionDB,"SELECT RUT_ciudadano FROM ciudadano WHERE correo_electronico='$correo'");
-    $ciudadano = mysqli_fetch_assoc($ciudadanoQuery);
-    $rut_ciudadano = 0;
-    if(mysqli_num_rows($ciudadanoQuery)==0){
-        echo "PEDIR RUT";
-    }
-    if(mysqli_num_rows($ciudadanoQuery)==1){
-                echo "".$ciudadano["RUT_ciudadano"];
-                $rut_ciudadano = $ciudadano["RUT_ciudadano"];
-                $consulta = "INSERT INTO solicitud (Asunto, Descripcion, Categoria, RUT_ciudadano, ID_departamento, ID_tipo_solicitud) VALUES ('$Asunto','$Descripcion','$categoria','$rut_ciudadano','$ID_departamento','$ID_tipo_solicitud')";// EN LA BASE DE DATOS CATEGORIA TIENE OTRO DOM
-                $resultado = mysqli_query($conexionDB,$consulta);
-                $ID_solicitud = mysqli_insert_id($conexionDB);
-                $InsertComprobante="INSERT INTO comprobante (Fecha, Hora, solicitud_ID) VALUES (CURDATE(), CURTIME(), $ID_solicitud);";
-                $resultado = mysqli_query($conexionDB,$InsertComprobante);
-                header('Location: ../index.php');
-    }
-    if(mysqli_num_rows($ciudadanoQuery) > 1){
-                echo "RUUUUUUUUUUUUUUUUT 12";
-    }
+if ($resultado) {
 
+    $ID_solicitud = mysqli_insert_id($conexionDB);
+
+    $InsertComprobante = "INSERT INTO comprobante
+                            (Fecha, Hora, solicitud_ID)
+                          VALUES
+                            (CURDATE(), CURTIME(), $ID_solicitud)";
+
+    mysqli_query($conexionDB, $InsertComprobante);
+}
+
+header("Location: ../index.php");
+exit;
 ?>

@@ -1,51 +1,106 @@
 <?php
-    include('conexion.php');
+    include('../base_de_datos/conexion.php');
+    require_once __DIR__ . '/../config/mail_config.php';
+    require_once __DIR__ . '/../libs/PHPMailer-master/src/Exception.php';
+    require_once __DIR__ . '/../libs/PHPMailer-master/src/PHPMailer.php';
+    require_once __DIR__ . '/../libs/PHPMailer-master/src/SMTP.php';
 
-    $nombre_usuario=$_POST["nombre_usuario"];
-    $contraseña=$_POST["contraseña"];
-    $tipo=$_POST["tipo"];
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
 
-    $consulta = "INSERT INTO usuario (nombre_usuario, contraseña)  VALUES ('$nombre_usuario','$contraseña')";
-    $resultado = mysqli_query($conexionDB,$consulta);
-    $consulta = "SELECT * FROM usuario WHERE nombre_usuario='$nombre_usuario' and contraseña='$contraseña'";
-    $resultado = mysqli_query($conexionDB,$consulta);
+    $rut_usuario = mysqli_real_escape_string($conexionDB, $_POST["rut_usuario"]);
+    $correo_usuario = mysqli_real_escape_string($conexionDB, $_POST["correo_usuario"]);
+    $tipo = $_POST["tipo"];
+    $id_departamento = isset($_POST["id_departamento"]) ? $_POST["id_departamento"] : null;
+    $nombre = isset($_POST["nombre"]) ? mysqli_real_escape_string($conexionDB, $_POST["nombre"]) : null;
+    $apellido = isset($_POST["apellido"]) ? mysqli_real_escape_string($conexionDB, $_POST["apellido"]) : null;
+    $prevision = isset($_POST["prevision"]) ? mysqli_real_escape_string($conexionDB, $_POST["prevision"]) : null;
+    $afp = isset($_POST["afp"]) ? mysqli_real_escape_string($conexionDB, $_POST["afp"]) : null;
 
-    $usuario= mysqli_fetch_assoc($resultado);
-    $id=$usuario["ID_usuario"];
-
-    if($tipo=="Administrador"){
-        $consulta = "INSERT INTO administrador (ID_usuario)  VALUES ('$id')";
-        $resultado = mysqli_query($conexionDB,$consulta);
-        header('Location: /xampp/php/funciones/AsignarDpto.php');
-    }
-    if($tipo=="Funcionario"){
-        $consulta = "INSERT INTO Funcionario (ID_usuario)  VALUES ('$id')";
-        $resultado = mysqli_query($conexionDB,$consulta);
-        echo '<form action="/xampp/php/funciones/AsignarDpto.php" method="POST">';
-            echo '<label class=form-label>Departamento del funcionario</label>';
-            echo '<input type="number" name="departamento" class="form-control">';
-            echo '<label class=form-label>USUARIO: '.$id.'</label>';
-            echo '<input type="hidden" name="usuario" value="'.$id.'" class="form-control" >';
-            echo '<label class=form-label>TIPO: '.$tipo.'</label>';
-            echo '<input type="hidden" name="tipo" value="Funcionario" class="form-control" >';
-            echo '<input type="submit" class="btn btn-success mt-4 w-100">';
-        echo '</form>';
-        //header('Location: /xampp/php/funciones/AsignarDpto.php');
-    }
-    if($tipo=="Director"){
-        $consulta = "INSERT INTO director (ID_usuario)  VALUES ('$id')";
-        $resultado = mysqli_query($conexionDB,$consulta);
-        echo '<form action="/xampp/php/funciones/AsignarDpto.php" method="POST">';
-            echo '<label class=form-label>Departamento del funcionario</label>';
-            echo '<input type="number" name="departamento" class="form-control">';
-            echo '<label class=form-label>USUARIO: '.$id.'</label>';
-            echo '<input type="hidden" name="usuario" value="'.$id.'" class="form-control" >';
-            echo '<label class=form-label>TIPO: '.$tipo.'</label>';
-            echo '<input type="hidden" name="tipo" value="Funcionario" class="form-control" >';
-            echo '<input type="submit" class="btn btn-success mt-4 w-100">';
-        echo '</form>';
-        //header('Location: /xampp/php/funciones/AsignarDpto.php');
+    // error por si el usuario ya existe
+    $consulta_existe = "SELECT ID_usuario FROM usuario WHERE rut_usuario = '$rut_usuario'";
+    $resultado_existe = mysqli_query($conexionDB, $consulta_existe);
+    if (mysqli_num_rows($resultado_existe) > 0) {
+        header('Location: ../ventanas/Usuario.php?error=usuarioExistente');
+        exit;
     }
 
     
+    $requiereFicha = ($tipo == "Funcionario" || $tipo == "Director");
+    if ($requiereFicha && (empty($nombre) || empty($apellido) || empty($id_departamento))) {
+        header('Location: ../ventanas/Usuario.php?error=datosTrabajadorIncompletos');
+        exit;
+    }
+
+    
+    $password_plana = substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8);
+    $contraseñahash = password_hash($password_plana, PASSWORD_BCRYPT);
+
+   
+    $esAdmin = ($tipo == "Administrador") ? 1 : 0;
+
+    $consulta_base = "INSERT INTO usuario (rut_usuario, correo_usuario, contraseña, Fecha_creacion, activo, cambio_contraseña, is_admin)
+                       VALUES ('$rut_usuario', '$correo_usuario', '$contraseñahash', CURDATE(), 1, 1, $esAdmin)";
+    $resultado_base = mysqli_query($conexionDB, $consulta_base);
+
+    if (!$resultado_base) {
+        echo "Error al registrar en la tabla usuario: " . mysqli_error($conexionDB);
+        exit;
+    }
+
+    $id_nuevo_usuario = mysqli_insert_id($conexionDB);
+
+
+    if ($requiereFicha) {
+        $tipoTrabajadorDB = strtolower($tipo); // 'funcionario' o 'director'
+        $consulta_trabajador = "INSERT INTO trabajador (rut_usuario, nombre, apellido, tipo_trabajador, prevision, AFP, ID_usuario, ID_departamento)
+                                 VALUES ('$rut_usuario', '$nombre', '$apellido', '$tipoTrabajadorDB', '$prevision', '$afp', '$id_nuevo_usuario', '$id_departamento')";
+        mysqli_query($conexionDB, $consulta_trabajador);
+    }
+
+    if ($tipo == "Desarrollador") {
+        mysqli_query($conexionDB, "INSERT INTO desarrollador (ID_usuario) VALUES ('$id_nuevo_usuario')");
+    }
+
+    // Se envía el correo con credenciale
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ];
+        $mail->Host = MAIL_HOST;
+        $mail->SMTPAuth = true;
+        $mail->Username = MAIL_USER;
+        $mail->Password = MAIL_PASS;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = MAIL_PORT;
+
+        $mail->CharSet = 'UTF-8';
+        $mail->setFrom(MAIL_USER, MAIL_FROM_NAME);
+        $mail->addAddress($correo_usuario);
+
+        $mail->isHTML(true);
+        $mail->Subject = "Credenciales de acceso - SGISC";
+        $mail->Body = "
+            <h2>Cuenta creada</h2>
+            <p>Se ha creado una cuenta de acceso al sistema SGISC con los siguientes datos:</p>
+            <p><strong>Usuario (RUT):</strong> $rut_usuario</p>
+            <p><strong>Contraseña:</strong> $password_plana</p>
+            <p>Se recomienda cambiar la contraseña en el primer inicio de sesión.</p>
+        ";
+
+        $mail->send();
+    } catch (Exception $e) {
+        // Si falla el envío del correo, redirige con un mensaje de error
+        header('Location: ../ventanas/Usuario.php?registro=ok&correo=fallo');
+        exit;
+    }
+
+    header('Location: ../ventanas/Usuario.php?registro=ok');
+    exit;
 ?>

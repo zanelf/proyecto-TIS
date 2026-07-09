@@ -1,37 +1,48 @@
 <?php
-    include('../base_de_datos/conexion.php');
 
+include_once('../base_de_datos/conexion.php');
 
+$modelo = $Tipo_modelo;
 
-    $modelo = $Tipo_modelo;
-    echo $modelo;
-    $atributos = mysqli_query($conexionDB,"DESCRIBE ".$modelo);
+$atributos = mysqli_query($conexionDB, "DESCRIBE " . $modelo);
+$campos = [];
 
-    $campos=[];
+while ($fila = mysqli_fetch_assoc($atributos)) {
+    $campos[] = $fila;
+}
 
-    while ($fila = mysqli_fetch_assoc($atributos)) {
-        $campos[] = $fila;
-    }
-    foreach($campos as &$campo){
-        if(str_contains($campo['Type'],"int")){
+foreach ($campos as &$campo) {
+
+    if (isset($campo['Type']) && $campo['Type'] !== null) {
+        if (str_contains((string)$campo['Type'], "int")) {
             $campo['Type'] = "number";
         }
-        if(str_contains($campo['Type'],"varchar")){
+        if (str_contains((string)$campo['Type'], "varchar")) {
             $campo['Type'] = "text";
         }
     }
-    unset($campo);
-    foreach($campos as $campo){
-        //echo $campo['Type']."<br>";
+}
+unset($campo);
+
+
+
+echo '<form action="../consultas/Insertar' . $modelo . '.php" method="POST">';
+
+foreach ($campos as $campo) {
+    if ($campo['Key'] != "PRI") {
+
+        $nombreLabel = ucfirst(strtolower(str_replace("_", " ", $campo['Field'])));
+
+
+        echo '<div class="mb-3">';
+        echo '  <label class="form-label fw-bold">' . $nombreLabel . '</label>';
+        echo '  <input type="' . $campo['Type'] . '" name="' . $campo['Field'] . '" class="form-control" required>';
+        echo '</div>';
     }
-    echo ' - form sobre archivo: Insertar'.$modelo.'.ph';
-    echo '<form action="Insertar'.$modelo.'.php" method="POST">';
-    foreach($campos as $campo){
-        if($campo['Key']!="PRI"){
-            echo '<label class=form-label>'.strtolower(str_replace("_"," ",$campo['Field'])).'</label>';
-        echo '<input type="'.$campo['Type'].'" name="'.$campo['Field'].'" class="form-control">';
-        }
-    }
-    echo '<input type="submit" class="btn btn-success mt-4 w-100">';
-    echo '</form>';
-?>
+}
+
+
+echo '<button type="submit" class="btn btn-sm btn-success fw-medium px-3 shadow-sm w-100 py-2">
+    Guardar
+      </button>';
+echo '</form>';

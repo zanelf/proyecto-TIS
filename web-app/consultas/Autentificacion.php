@@ -1,56 +1,69 @@
 <?php
     include('../base_de_datos/conexion.php');
     
-    $usuario=$_POST["usuario"];
-    $contraseña=$_POST["contraseña"];
+    $usuario = mysqli_real_escape_string($conexionDB, $_POST["usuario"]);
+    $password = $_POST["password"];
     
-    $adm="SELECT * FROM administrador WHERE nombre_usuario='$usuario' and contraseña='$contraseña'";
-    $func="SELECT * FROM funcionario WHERE nombre_usuario='$usuario' and contraseña='$contraseña'";
-    $dir="SELECT * FROM director WHERE nombre_usuario='$usuario' and contraseña='$contraseña'";
-    $dev="SELECT * FROM desarrollador WHERE nombre_usuario='$usuario' and contraseña='$contraseña'";
 
-
-    $consulta = "SELECT * FROM usuario WHERE nombre_usuario='$usuario' and contraseña='$contraseña'";
-    $resultado = mysqli_query($conexionDB,$consulta);
-
+    $consulta = "SELECT * FROM usuario WHERE rut_usuario='$usuario' LIMIT 1";
+    $resultado = mysqli_query($conexionDB, $consulta);
     if(mysqli_num_rows($resultado) > 0){
-        session_start();
-
         $datosUsuario = mysqli_fetch_assoc($resultado);
 
-        $_SESSION["usuario"] = $datosUsuario["nombre_usuario"];
-        $_SESSION["ID_usuario"] = $datosUsuario["ID_usuario"];
-
-        $var = $_SESSION["ID_usuario"];
-
-        $adm="SELECT * FROM administrador WHERE ID_usuario='$var';";
-        $esAdm=mysqli_query($conexionDB,$adm);
-
-        $func=mysqli_query($conexionDB,"SELECT * FROM funcionario WHERE ID_usuario='$var';");
-        $esFun=mysqli_fetch_assoc($func);
-
-        $dir="SELECT * FROM director WHERE ID_usuario='$var';";
-        $esDir=mysqli_query($conexionDB,$dir);
-
-        $dev="SELECT * FROM desarrollador WHERE ID_usuario='$var';";
-        $esDev=mysqli_query($conexionDB,$dev);
-        
-
-        if(mysqli_num_rows($esAdm) > 0){
-            $_SESSION["tipo"] = "Administrador";
+        if ((int)$datosUsuario["activo"] === 0) {
+            header('Location: ../ventanas/Inicio.php?error=inactivo');
+            exit;
         }
-        if(mysqli_num_rows($func) > 0){
-            $_SESSION["tipo"] = "Funcionario";
+
+        if (password_verify($password, $datosUsuario["contraseña"])) {
+            
+            session_start();
+            $_SESSION["usuario"] = $datosUsuario["rut_usuario"];
+            $_SESSION["ID_usuario"] = $datosUsuario["ID_usuario"];
+            
+            $var = $_SESSION["ID_usuario"];
+            
+            $consulta="SELECT * FROM Trabajador WHERE ID_usuario = '$var'";
+            $datosTrabajador=mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta));
+            
+            $datoDpto= $datosTrabajador['ID_departamento'];
+            $datoTipo= $datosTrabajador['tipo_trabajador'];
+
+            if((int)$datosUsuario["is_admin"]==1){
+                $_SESSION["ID_departamento"] = "";
+                $_SESSION["tipo"] = $datoTipo;
+                $_SESSION["ID_departamento"] = $datoDpto;
+            }elseif($datosTrabajador["tipo_trabajador"]==="funcionario"){ 
+                $_SESSION["ID_departamento"] = mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta))['ID_departamento'];
+                $_SESSION["tipo"] = $datoTipo;
+            }
+            elseif($datosTrabajador["tipo_trabajador"]==="director"){
+                $_SESSION["tipo"] = "director";
+                $_SESSION["ID_departamento"] = mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta))['ID_departamento'];
+            }
+
+            if ($datoTipo) {
+                switch ($datoTipo) {
+                    case "director":
+                        header('Location: ../ventanas/director.php');
+                        break;
+                    case "funcionario":
+                        header('Location: ../ventanas/solicitud.php');
+                        break;
+                    default:
+                        header('Location: ../ventanas/Inicio.php?error=RolInvalido');
+                        break;
+                }
+                exit;
+            }
+            exit;
+
+        } else {
+            header('Location: ../ventanas/Inicio.php?error=clave');
+            exit;
         }
-        if(mysqli_num_rows($esDir) > 0){
-            $_SESSION["tipo"] = "Director";
-        }
-        if(mysqli_num_rows($esDev) > 0){
-            $_SESSION["tipo"] = "Desarrollador";
-        }
-        header('Location: ../ventanas/Usuario.php');
+    } else {
+        header('Location: ../ventanas/Inicio.php?error=usuario');
         exit;
-    }else{
-        header('Location: Login.php');
     }
 ?>
