@@ -15,7 +15,7 @@ $opcionesAdm = [
     "metricas" => "Métricas",
     "../consultas/logout" => "Cerrar Sesión"
 ];
-echo $_SESSION["tipo"];
+
 $opcionesFun = [
     "../index" => "Inicio",
     "ciudadano" => "Ciudadanos",

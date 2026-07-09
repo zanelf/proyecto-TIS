@@ -95,7 +95,7 @@ if ($modelo == "solicitud") {
     }
 } elseif ($modelo == "usuario") {
     // usuario no tiene departamento propio, se busca en funcionario/director
-    if ($tipoUsuario == "Director" && $dpto !== null) {
+    if ($tipoUsuario == "director" && $dpto !== null) {
         $dptoEsc = mysqli_real_escape_string($conexionDB, $dpto);
         $where[] = "EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director' AND t.ID_departamento = '$dptoEsc')";
     }
@@ -186,10 +186,10 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         echo '<a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-danger fw-medium shadow-sm px-2">Eliminar</a>';
     }
 
-    if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "Funcionario") {
+    if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "funcionario") {
         echo '<a href="Revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Revisar</a>';
     }
-    if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "Funcionario") {
+    if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "funcionario") {
         echo '<a href="Responder.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Responder</a>';
     }
     if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $tipoUsuario == "Funcionario") {
