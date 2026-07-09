@@ -7,7 +7,7 @@
     $atributos = mysqli_query($conexionDB,"DESCRIBE solicitud");
 
     $tipos_solicitudes=mysqli_query($conexionDB,"SELECT * FROM tipo_solicitud");
-    $departamentos=mysqli_query($conexionDB,"SELECT * FROM departamento");
+    $categorias=mysqli_query($conexionDB,"SELECT * FROM categoria");
     
 ?>
 
@@ -78,28 +78,17 @@
                 </div>
 
                 <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label">
-                            Departamento destino <span class="rojito">*</span>
-                        </label>
-                        <select id="departamento" name="departamento" class="form-select" required>
-                            <option value="" disabled selected>Seleccione un departamento…</option>
-                            <?php while ($dpto = mysqli_fetch_assoc($departamentos)): ?>
-                                <option value="<?php echo $dpto["ID_departamento"]; ?>">
-                                    <?php echo htmlspecialchars($dpto["nombre"]); ?>
-                                </option>
-                            <?php endwhile; ?>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label class="form-label">
                             Categoría <span class="rojito">*</span>
                         </label>
                         <select id="categoria" name="categoria" class="form-select" required>
                             <option value="" disabled selected>Seleccione una categoría…</option>
-                            <option value="Agua">Agua</option>
-                            <option value="Eléctrico">Eléctrico</option>
-                            <option value="Transito">Transito</option>
+                            <?php while ($cat = mysqli_fetch_assoc($categorias)): ?>
+                                <option value="<?php echo $cat["ID_categoria"]; ?>">
+                                    <?php echo htmlspecialchars($cat["nombre"]); ?>
+                                </option>
+                            <?php endwhile; ?>
                         </select>
                     </div>
                 </div>
