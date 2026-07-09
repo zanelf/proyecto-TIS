@@ -4,7 +4,6 @@ if(session_status() === PHP_SESSION_NONE) {
 }
 
 $tipoUsuario = isset($_SESSION["tipo"]) ? $_SESSION["tipo"] : "";
-echo $_SESSION["tipo"];
 // Opciones de menú
 $opcionesAdm = [
     "../index" => "Inicio",
@@ -16,7 +15,7 @@ $opcionesAdm = [
     "metricas" => "Métricas",
     "../consultas/logout" => "Cerrar Sesión"
 ];
-
+echo $_SESSION["tipo"];
 $opcionesFun = [
     "../index" => "Inicio",
     "ciudadano" => "Ciudadanos",
