@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 18-06-2026 a las 19:31:21
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Jul 09, 2026 at 09:16 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,21 +18,25 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `proyectodb2`
+-- Database: `proyectodb2-2`
 --
+CREATE DATABASE IF NOT EXISTS `proyectodb2-2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `proyectodb2-2`;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `administrador`
+-- Table structure for table `administrador`
 --
 
-CREATE TABLE `administrador` (
-  `ID_usuario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `administrador`;
+CREATE TABLE IF NOT EXISTS `administrador` (
+  `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ID_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `administrador`
+-- Dumping data for table `administrador`
 --
 
 INSERT INTO `administrador` (`ID_usuario`) VALUES
@@ -41,49 +45,57 @@ INSERT INTO `administrador` (`ID_usuario`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ciudadano`
+-- Table structure for table `ciudadano`
 --
 
-CREATE TABLE `ciudadano` (
-  `RUT_ciudadano` int(11) NOT NULL,
-  `correo_electronico` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `ciudadano`;
+CREATE TABLE IF NOT EXISTS `ciudadano` (
+  `RUT_ciudadano` int(11) NOT NULL AUTO_INCREMENT,
+  `correo_electronico` varchar(100) NOT NULL,
+  PRIMARY KEY (`RUT_ciudadano`) USING BTREE,
+  KEY `correo_electronico` (`correo_electronico`)
+) ENGINE=InnoDB AUTO_INCREMENT=987654322 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `ciudadano`
+-- Dumping data for table `ciudadano`
 --
 
 INSERT INTO `ciudadano` (`RUT_ciudadano`, `correo_electronico`) VALUES
+(987654321, 'prueba2@gmail.com'),
 (112233445, 'prueba3@gmail.com'),
-(123456789, 'prueba@gmail.com'),
-(987654321, 'prueba2@gmail.com');
+(123456789, 'prueba@gmail.com');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `comprobante`
+-- Table structure for table `comprobante`
 --
 
-CREATE TABLE `comprobante` (
-  `ID_comprobante` int(11) NOT NULL,
+DROP TABLE IF EXISTS `comprobante`;
+CREATE TABLE IF NOT EXISTS `comprobante` (
+  `ID_comprobante` int(11) NOT NULL AUTO_INCREMENT,
   `Fecha` date DEFAULT NULL,
   `Hora` time DEFAULT NULL,
-  `solicitud_ID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `solicitud_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_comprobante`),
+  KEY `solicitud_ID` (`solicitud_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `departamento`
+-- Table structure for table `departamento`
 --
 
-CREATE TABLE `departamento` (
-  `ID_departamento` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `departamento`;
+CREATE TABLE IF NOT EXISTS `departamento` (
+  `ID_departamento` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID_departamento`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `departamento`
+-- Dumping data for table `departamento`
 --
 
 INSERT INTO `departamento` (`ID_departamento`, `nombre`) VALUES
@@ -94,26 +106,31 @@ INSERT INTO `departamento` (`ID_departamento`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `desarrollador`
+-- Table structure for table `desarrollador`
 --
 
-CREATE TABLE `desarrollador` (
-  `ID_usuario` int(11) NOT NULL
+DROP TABLE IF EXISTS `desarrollador`;
+CREATE TABLE IF NOT EXISTS `desarrollador` (
+  `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ID_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `director`
+-- Table structure for table `director`
 --
 
-CREATE TABLE `director` (
-  `ID_usuario` int(11) NOT NULL,
-  `ID_departamento` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `director`;
+CREATE TABLE IF NOT EXISTS `director` (
+  `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_departamento` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_usuario`),
+  KEY `ID_departamento` (`ID_departamento`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `director`
+-- Dumping data for table `director`
 --
 
 INSERT INTO `director` (`ID_usuario`, `ID_departamento`) VALUES
@@ -122,49 +139,113 @@ INSERT INTO `director` (`ID_usuario`, `ID_departamento`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `encuesta`
+-- Table structure for table `encuesta`
 --
 
-CREATE TABLE `encuesta` (
-  `ID_encuesta` int(11) NOT NULL,
+DROP TABLE IF EXISTS `encuesta`;
+CREATE TABLE IF NOT EXISTS `encuesta` (
+  `ID_encuesta` int(11) NOT NULL AUTO_INCREMENT,
   `Pregunta` varchar(100) DEFAULT NULL,
   `RUT_ciudadano` int(11) DEFAULT NULL,
-  `solicitud_ID` int(11) DEFAULT NULL
+  `solicitud_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_encuesta`),
+  KEY `RUT_ciudadano` (`RUT_ciudadano`),
+  KEY `solicitud_ID` (`solicitud_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `funcionario`
+-- Table structure for table `funcionario`
 --
 
-CREATE TABLE `funcionario` (
-  `ID_usuario` int(11) NOT NULL,
-  `ID_departamento` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `funcionario`;
+CREATE TABLE IF NOT EXISTS `funcionario` (
+  `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_departamento` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_usuario`),
+  KEY `ID_departamento` (`ID_departamento`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `funcionario`
+-- Dumping data for table `funcionario`
 --
 
 INSERT INTO `funcionario` (`ID_usuario`, `ID_departamento`) VALUES
 (20, 4);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prioridad`
+--
+
+DROP TABLE IF EXISTS `prioridad`;
+CREATE TABLE IF NOT EXISTS `prioridad` (
+  `ID_prioridad` int(11) NOT NULL,
+  `Nombre` int(11) NOT NULL,
+  PRIMARY KEY (`ID_prioridad`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_solicitud`
+-- Table structure for table `solicitud`
 --
 
-CREATE TABLE `tipo_solicitud` (
-  `ID_tipo_solicitud` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `descripcion` varchar(255) NOT NULL
+DROP TABLE IF EXISTS `solicitud`;
+CREATE TABLE IF NOT EXISTS `solicitud` (
+  `solicitud_ID` int(11) NOT NULL,
+  `Tipo_estado` enum('Recibida','En revision','Derivada','En proceso','Respondida','Cerrada') DEFAULT 'Recibida',
+  `Asunto` varchar(100) DEFAULT NULL,
+  `Descripcion` varchar(100) DEFAULT NULL,
+  `Categoria` enum('Agua','Electrico','Transito') DEFAULT NULL,
+  `correo_electronico` varchar(100) DEFAULT NULL,
+  `ID_departamento` int(11) DEFAULT NULL,
+  `ID_tipo_solicitud` int(11) DEFAULT NULL,
+  `fecha_respondida` datetime DEFAULT NULL,
+  `token_encuesta` varchar(64) DEFAULT NULL,
+  `tiempo_asignado` int(10) DEFAULT NULL,
+  `fecha_creacion` date NOT NULL,
+  PRIMARY KEY (`solicitud_ID`),
+  KEY `correo_electronico` (`correo_electronico`),
+  KEY `ID_departamento` (`ID_departamento`),
+  KEY `ID_tipo_solicitud` (`ID_tipo_solicitud`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `tipo_solicitud`
+-- Table structure for table `tiempo`
+--
+
+DROP TABLE IF EXISTS `tiempo`;
+CREATE TABLE IF NOT EXISTS `tiempo` (
+  `ID_prioridad` int(11) NOT NULL,
+  `ID_tipo_solicitud` int(11) NOT NULL,
+  `ID_departamento` int(11) NOT NULL,
+  `tiempo` int(11) NOT NULL,
+  PRIMARY KEY (`ID_prioridad`,`ID_tipo_solicitud`,`ID_departamento`),
+  KEY `ID_tipo_solicitud` (`ID_tipo_solicitud`),
+  KEY `ID_departamento` (`ID_departamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tipo_solicitud`
+--
+
+DROP TABLE IF EXISTS `tipo_solicitud`;
+CREATE TABLE IF NOT EXISTS `tipo_solicitud` (
+  `ID_tipo_solicitud` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID_tipo_solicitud`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tipo_solicitud`
 --
 
 INSERT INTO `tipo_solicitud` (`ID_tipo_solicitud`, `nombre`, `descripcion`) VALUES
@@ -175,268 +256,118 @@ INSERT INTO `tipo_solicitud` (`ID_tipo_solicitud`, `nombre`, `descripcion`) VALU
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario`
+-- Table structure for table `trabajador`
 --
-DROP TABLE IF EXISTS `usuario`;
-CREATE TABLE `usuario` (
-  `ID_usuario` int(11) NOT NULL,
-  `nombre_usuario` varchar(100) NOT NULL,
-  `contraseña` varchar(100) NOT NULL
+
+DROP TABLE IF EXISTS `trabajador`;
+CREATE TABLE IF NOT EXISTS `trabajador` (
+  `id_trabajador` int(11) NOT NULL AUTO_INCREMENT,
+  `rut_usuario` varchar(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `apellido` varchar(100) NOT NULL,
+  `tipo_trabajador` enum('director','funcionario','','') NOT NULL,
+  `prevision` enum('Fonasa','Isapres','') NOT NULL,
+  `AFP` enum('AFP Capital','AFPUno','AFP Provida','AFP Planvital','AFP Modelo','AFP Habitat','AFP Cuprum') NOT NULL,
+  `ID_usuario` int(11) DEFAULT NULL,
+  `ID_departamento` int(11) NOT NULL,
+  PRIMARY KEY (`id_trabajador`),
+  KEY `ID_usuario` (`ID_usuario`),
+  KEY `ID_departamento` (`ID_departamento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `solicitud`
+-- Table structure for table `usuario`
 --
 
-CREATE TABLE `solicitud` (
-  `solicitud_ID` int(11) NOT NULL,
-  `Tipo_estado` enum('Recibida','En revision','Derivada','En proceso','Respondida','Cerrada') DEFAULT NULL DEFAULT 'Recibida',
-  `Asunto` varchar(100) DEFAULT NULL,
-  `Descripcion` varchar(100) DEFAULT NULL,
-  `Categoria` enum('Agua','Electrico','Transito') DEFAULT NULL,
-  `correo_electronico` varchar(100) DEFAULT NULL,
-  `ID_departamento` int(11) DEFAULT NULL,
-  `ID_tipo_solicitud` int(11) DEFAULT NULL,
-  `fecha_respondida` DATETIME NULL,
-  `token_encuesta` VARCHAR(64) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
--- AQUI 2
-/* DROP TABLE IF EXISTS solicitud;
-CREATE TABLE solicitud (
-    solicitud_ID INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3,
-    Tipo_estado ENUM('Felicitaciones','Reclamo','Sugerencia') DEFAULT NULL,
-    Asunto VARCHAR(100) DEFAULT NULL,
-    Descripcion VARCHAR(100) DEFAULT NULL,
-    RUT_ciudadano INT(11) DEFAULT NULL,
-    ID_departamento INT(11) DEFAULT NULL,
-    ID_tipo_solicitud INT(11) DEFAULT NULL,
-    estado_solicitud ENUM(
-        'Recibida',
-        'En Revisión',
-        'Derivada a Departamento',
-        'En Proceso',
-        'Respondida',
-        'Cerrada'
-    ) NOT NULL DEFAULT 'Recibida',
-    fecha_respondida DATETIME NULL,
-    token_encuesta VARCHAR(64) DEFAULT NULL,
-    PRIMARY KEY (solicitud_ID),
-    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano),
-    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento),
-    FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;  */
-
-
+DROP TABLE IF EXISTS `usuario`;
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  `rut_usuario` varchar(100) NOT NULL,
+  `contraseña` varchar(100) NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `cambio_contraseña` tinyint(1) NOT NULL DEFAULT 0,
+  `Fecha_creacion` date NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`ID_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `usuario`
+-- Dumping data for table `usuario`
 --
 
-INSERT INTO `usuario` (`ID_usuario`, `nombre_usuario`, `contraseña`) VALUES
-(19, 'admin', '$2a$12$4wY.vaDJ83/FRDWDfVN8TuaRCBV4uV6PfI4tw1iws2kn52kjejdtK'),
-(20, 'funcionario', '$2a$12$3Bfun8iYq0U3FDrc62AkBO3iy70FnUB5l5Xy3U0CGp9PNiT7SBq/O'),
-(21, 'director', '$2a$12$iylkTIo1ZImTbv/513JOruSDqehXVWsb6GJ5yU3sy41Bs7aZVLEfi');
+INSERT INTO `usuario` (`ID_usuario`, `rut_usuario`, `contraseña`, `activo`, `cambio_contraseña`, `Fecha_creacion`) VALUES
+(19, 'admin', '$2a$12$4wY.vaDJ83/FRDWDfVN8TuaRCBV4uV6PfI4tw1iws2kn52kjejdtK', 0, 0, '2026-07-09'),
+(20, 'funcionario', '$2a$12$3Bfun8iYq0U3FDrc62AkBO3iy70FnUB5l5Xy3U0CGp9PNiT7SBq/O', 0, 0, '2026-07-09'),
+(21, 'director', '$2a$12$iylkTIo1ZImTbv/513JOruSDqehXVWsb6GJ5yU3sy41Bs7aZVLEfi', 0, 0, '2026-07-09');
 
 --
--- Índices para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Indices de la tabla `administrador`
---
-ALTER TABLE `administrador`
-  ADD PRIMARY KEY (`ID_usuario`);
-
---
--- Indices de la tabla `ciudadano`
---
-ALTER TABLE `ciudadano`
-  ADD PRIMARY KEY (`RUT_ciudadano`);
-
---
--- Indices de la tabla `comprobante`
---
-ALTER TABLE `comprobante`
-  ADD PRIMARY KEY (`ID_comprobante`),
-  ADD KEY `solicitud_ID` (`solicitud_ID`);
-
---
--- Indices de la tabla `departamento`
---
-ALTER TABLE `departamento`
-  ADD PRIMARY KEY (`ID_departamento`);
-
---
--- Indices de la tabla `desarrollador`
---
-ALTER TABLE `desarrollador`
-  ADD PRIMARY KEY (`ID_usuario`);
-
---
--- Indices de la tabla `director`
---
-ALTER TABLE `director`
-  ADD PRIMARY KEY (`ID_usuario`),
-  ADD KEY `ID_departamento` (`ID_departamento`);
-
---
--- Indices de la tabla `encuesta`
---
-ALTER TABLE `encuesta`
-  ADD PRIMARY KEY (`ID_encuesta`),
-  ADD KEY `RUT_ciudadano` (`RUT_ciudadano`),
-  ADD KEY `solicitud_ID` (`solicitud_ID`);
-
---
--- Indices de la tabla `funcionario`
---
-ALTER TABLE `funcionario`
-  ADD PRIMARY KEY (`ID_usuario`),
-  ADD KEY `ID_departamento` (`ID_departamento`);
-
---
--- Indices de la tabla `solicitud`
---
-ALTER TABLE `solicitud`
-  ADD PRIMARY KEY (`solicitud_ID`),
-  ADD KEY `correo_electronico` (`correo_electronico`),
-  ADD KEY `ID_departamento` (`ID_departamento`),
-  ADD KEY `ID_tipo_solicitud` (`ID_tipo_solicitud`);
-
---
--- Indices de la tabla `tipo_solicitud`
---
-ALTER TABLE `tipo_solicitud`
-  ADD PRIMARY KEY (`ID_tipo_solicitud`);
-
---
--- Indices de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`ID_usuario`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `administrador`
---
-ALTER TABLE `administrador`
-  MODIFY `ID_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT de la tabla `ciudadano`
---
-ALTER TABLE `ciudadano`
-  MODIFY `RUT_ciudadano` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=987654322;
-
---
--- AUTO_INCREMENT de la tabla `comprobante`
---
-ALTER TABLE `comprobante`
-  MODIFY `ID_comprobante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `departamento`
---
-ALTER TABLE `departamento`
-  MODIFY `ID_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `desarrollador`
---
-ALTER TABLE `desarrollador`
-  MODIFY `ID_usuario` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `director`
---
-ALTER TABLE `director`
-  MODIFY `ID_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- AUTO_INCREMENT de la tabla `encuesta`
---
-ALTER TABLE `encuesta`
-  MODIFY `ID_encuesta` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `funcionario`
---
-ALTER TABLE `funcionario`
-  MODIFY `ID_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
--- AUTO_INCREMENT de la tabla `solicitud`
---
-
-
-
---
--- AUTO_INCREMENT de la tabla `tipo_solicitud`
---
-ALTER TABLE `tipo_solicitud`
-  MODIFY `ID_tipo_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `ID_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `administrador`
+-- Constraints for table `administrador`
 --
 ALTER TABLE `administrador`
   ADD CONSTRAINT `administrador_ibfk_1` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`);
 
 --
--- Filtros para la tabla `comprobante`
+-- Constraints for table `comprobante`
 --
 ALTER TABLE `comprobante`
   ADD CONSTRAINT `comprobante_ibfk_1` FOREIGN KEY (`solicitud_ID`) REFERENCES `solicitud` (`solicitud_ID`);
 
 --
--- Filtros para la tabla `desarrollador`
+-- Constraints for table `desarrollador`
 --
 ALTER TABLE `desarrollador`
   ADD CONSTRAINT `desarrollador_ibfk_1` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`);
 
 --
--- Filtros para la tabla `director`
+-- Constraints for table `director`
 --
 ALTER TABLE `director`
   ADD CONSTRAINT `director_ibfk_1` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`),
   ADD CONSTRAINT `director_ibfk_2` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`);
 
 --
--- Filtros para la tabla `encuesta`
+-- Constraints for table `encuesta`
 --
 ALTER TABLE `encuesta`
   ADD CONSTRAINT `encuesta_ibfk_1` FOREIGN KEY (`RUT_ciudadano`) REFERENCES `ciudadano` (`RUT_ciudadano`),
   ADD CONSTRAINT `encuesta_ibfk_2` FOREIGN KEY (`solicitud_ID`) REFERENCES `solicitud` (`solicitud_ID`);
 
 --
--- Filtros para la tabla `funcionario`
+-- Constraints for table `funcionario`
 --
 ALTER TABLE `funcionario`
   ADD CONSTRAINT `funcionario_ibfk_1` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`),
   ADD CONSTRAINT `funcionario_ibfk_2` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`);
 
 --
--- Filtros para la tabla `solicitud`
+-- Constraints for table `solicitud`
 --
+ALTER TABLE `solicitud`
+  ADD CONSTRAINT `FK_ciudadano` FOREIGN KEY (`correo_electronico`) REFERENCES `ciudadano` (`correo_electronico`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_departamento` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_tipo_solicitud` FOREIGN KEY (`ID_tipo_solicitud`) REFERENCES `tipo_solicitud` (`ID_tipo_solicitud`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-/*COMMIT;
-!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT ;
-!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS ;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION ;*/
+--
+-- Constraints for table `tiempo`
+--
+ALTER TABLE `tiempo`
+  ADD CONSTRAINT `tiempo_ibfk_1` FOREIGN KEY (`ID_prioridad`) REFERENCES `prioridad` (`ID_prioridad`),
+  ADD CONSTRAINT `tiempo_ibfk_2` FOREIGN KEY (`ID_tipo_solicitud`) REFERENCES `tipo_solicitud` (`ID_tipo_solicitud`),
+  ADD CONSTRAINT `tiempo_ibfk_3` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`);
+
+--
+-- Constraints for table `trabajador`
+--
+ALTER TABLE `trabajador`
+  ADD CONSTRAINT `FK_departamento_trabajador` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_usuario` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
