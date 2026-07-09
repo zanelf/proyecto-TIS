@@ -11,8 +11,12 @@
         header("Location: ../index.php");
         exit;
     }
-    echo $solicutdRevisar['solicitud_ID'];
-    echo $solicutdRevisar['ID_tipo_solicitud'];
+
+
+
+    $prioridadesQuery = "SELECT * FROM prioridad";
+    $prioridades = mysqli_query($conexionDB, $prioridadesQuery);
+    $dpto=$_SESSION['ID_departamento'];
 ?>
 
 <!DOCTYPE html>
@@ -29,6 +33,7 @@
     ?>
     <div class="container">
         <div class="row">
+            <h2>Solicitud a revisar</h2>
             <div class="col-6">
                 <table>
                     <thead>
@@ -52,13 +57,27 @@
                     </tbody>
                 </table>
             </div>
-
+        </div>
+        <div class="row">
+            <h2>Revision</h2>
             <div class="col-6">
-
                 <form action="../consultas/CambiarEstadoSol.php" method="POST">
-                    <label for="">Acotacion</label>
+                    <label class="form-check-label" for="Aprobacion"> Aprobar</label>
+                    <input type="checkbox" name="Aprobracion" class="form-check-input" checked /><br>
+                    <label class="form-label">Acotacion</label>
+                    <input type="text" name="Acotacion" class="form-control">
+                    <label class="form-label">Seleccionar prioridad</label>
+                    <select name="ID_prioridad" class="form-select">
+                        <?php while($prioridad = mysqli_fetch_assoc($prioridades)) { ?>
+                            <option value="<?php echo $prioridad['ID_prioridad']; ?>">
+                                <?php echo $prioridad['Nombre']; ?>
+                            </option>
+                        <?php } ?>
+                    </select>                             
+                    <input type="hidden" value="<?php echo $solicutdRevisar['ID_departamento'] ?>" name="ID_cambio">
                     <input type="hidden" value="<?php echo $id_solicitud ?>" name="ID_cambio">
-                    <input type="submit" value="Derivada" name="estadoSiguiente" class="btn bg-success">
+                    <input type="hidden" value="Derivada" name="estadoSiguiente">
+                    <input type="submit" class="btn bg-success">
                 </form>
             </div>
         </div>
