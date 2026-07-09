@@ -3,12 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2026 at 06:41 PM
+-- Generation Time: Jul 09, 2026 at 08:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -19,6 +20,21 @@ START TRANSACTION;
 --
 -- Database: `proyectodb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categoria`
+--
+
+CREATE TABLE IF NOT EXISTS `categoria` (
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` varchar(150) NOT NULL,
+  `ID_departamento` int(11) NOT NULL,
+  `ID_categoria` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ID_categoria`),
+  KEY `ID_departamento` (`ID_departamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -182,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `prioridad` (
 --
 
 CREATE TABLE IF NOT EXISTS `solicitud` (
-  `solicitud_ID` int(11) NOT NULL,
+  `solicitud_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Tipo_estado` enum('Recibida','En revision','Derivada','En proceso','Respondida','Cerrada') DEFAULT 'Recibida',
   `Asunto` varchar(100) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
@@ -288,6 +304,12 @@ REPLACE INTO `usuario` (`ID_usuario`, `rut_usuario`, `contraseña`, `activo`, `c
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `categoria`
+--
+ALTER TABLE `categoria`
+  ADD CONSTRAINT `FK_departamento_categoria` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `comprobante`
