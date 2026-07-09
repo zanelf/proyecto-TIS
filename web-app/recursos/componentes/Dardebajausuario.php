@@ -9,7 +9,7 @@
     $id_usuario = mysqli_real_escape_string($conexionDB, $_GET['id_enviado']);
  
     //  no elimina fisicamente, solo da de baja
-    $consulta = "UPDATE usuario SET Activo = 0 WHERE ID_usuario = '$id_usuario'";
+    $consulta = "UPDATE usuario SET activo = 0 WHERE ID_usuario = '$id_usuario'";
     $resultado = mysqli_query($conexionDB, $consulta);
  
     if (!$resultado) {
@@ -20,4 +20,3 @@
     header("Location: ../../ventanas/Usuario.php?baja=ok");
     exit;
 ?>
- 

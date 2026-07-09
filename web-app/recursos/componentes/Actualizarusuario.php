@@ -27,13 +27,9 @@
             $afp = isset($_POST['afp']) ? mysqli_real_escape_string($conexionDB, $_POST['afp']) : null;
 
             $consulta_trabajador = "UPDATE trabajador
-                                     SET nombre = '$nombre', apellido = '$apellido', ID_departamento = '$id_departamento', prevision = '$prevision', afp = '$afp'
+                                     SET nombre = '$nombre', apellido = '$apellido', ID_departamento = '$id_departamento', prevision = '$prevision', AFP = '$afp'
                                      WHERE ID_usuario = '$id_usuario'";
             mysqli_query($conexionDB, $consulta_trabajador);
-
-            // por si cambió de departamento
-            mysqli_query($conexionDB, "UPDATE director SET ID_departamento = '$id_departamento' WHERE ID_usuario = '$id_usuario'");
-            mysqli_query($conexionDB, "UPDATE funcionario SET ID_departamento = '$id_departamento' WHERE ID_usuario = '$id_usuario'");
         }
 
         header("Location: ../../ventanas/Usuario.php?actualizado=ok");

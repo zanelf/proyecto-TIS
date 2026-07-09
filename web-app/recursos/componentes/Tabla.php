@@ -23,7 +23,7 @@ $columnasVisibles = [
         "correo_usuario"  => ["Correo", "25%"],
         "tipo_trabajador" => ["Tipo de trabajador", "17%"],
         "Fecha_creacion"  => ["Creado", "15%"],
-        "Activo"          => ["Estado", "10%"],
+        "activo"          => ["Estado", "10%"],
     ],
     "solicitud" => [
         "solicitud_ID"  => ["ID", "8%"],
@@ -74,10 +74,10 @@ $resultado = mysqli_query($conexionDB, "SELECT * FROM " . $modelo);
 if ($modelo == "usuario") {
     $selectUsuario = "SELECT usuario.*, (
         CASE
-            WHEN EXISTS (SELECT 1 FROM administrador a WHERE a.ID_usuario = usuario.ID_usuario) THEN 'Administrador'
+            WHEN usuario.is_admin = 1 THEN 'Administrador'
             WHEN EXISTS (SELECT 1 FROM desarrollador dev WHERE dev.ID_usuario = usuario.ID_usuario) THEN 'Desarrollador'
-            WHEN EXISTS (SELECT 1 FROM funcionario f WHERE f.ID_usuario = usuario.ID_usuario) THEN 'Funcionario'
-            WHEN EXISTS (SELECT 1 FROM director d WHERE d.ID_usuario = usuario.ID_usuario) THEN 'Director'
+            WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'funcionario') THEN 'Funcionario'
+            WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director') THEN 'Director'
             ELSE 'Sin rol'
         END
     ) AS tipo_trabajador FROM usuario";
@@ -97,10 +97,7 @@ if ($modelo == "solicitud") {
     // usuario no tiene departamento propio, se busca en funcionario/director
     if ($tipoUsuario == "Director" && $dpto !== null) {
         $dptoEsc = mysqli_real_escape_string($conexionDB, $dpto);
-        $where[] = "(
-            EXISTS (SELECT 1 FROM funcionario f WHERE f.ID_usuario = usuario.ID_usuario AND f.ID_departamento = '$dptoEsc')
-            OR EXISTS (SELECT 1 FROM director d WHERE d.ID_usuario = usuario.ID_usuario AND d.ID_departamento = '$dptoEsc')
-        )";
+        $where[] = "EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director' AND t.ID_departamento = '$dptoEsc')";
     }
     if ($buscar !== "") {
         $where[] = "rut_usuario LIKE '%$buscarEsc%'";
@@ -130,7 +127,7 @@ if (mysqli_num_rows($resultado) === 0) {
     $colspan = ($camposAMostrar !== null ? count($camposAMostrar) : count($campos)) + 1;
     echo '<tr><td colspan="' . $colspan . '" class="text-center text-muted py-3">No se encontraron registros.</td></tr>';
 }
-$filasPorPagina = 5;
+$filasPorPagina = 10;
 $numeroFila = 0;
 while ($row = mysqli_fetch_assoc($resultado)) {
     $numeroFila++;
@@ -145,7 +142,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         if ($campo['Field'] == "Tipo_estado") {
             $estado = $row[$campo['Field']];
         }
-        if ($modelo == "usuario" && $campo['Field'] == "Activo") {
+        if ($modelo == "usuario" && $campo['Field'] == "activo") {
             $activoUsuario = (int)$row[$campo['Field']];
         }
     }
@@ -154,7 +151,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         foreach ($camposAMostrar as $campoNombre => $meta) {
             $valor = $row[$campoNombre] ?? '';
 
-            if ($campoNombre == "Activo") {
+            if ($campoNombre == "activo") {
                 echo (int)$valor === 1
                     ? '<td><span class="badge bg-success-subtle text-success">Activo</span></td>'
                     : '<td><span class="badge bg-danger-subtle text-danger">Inactivo</span></td>';

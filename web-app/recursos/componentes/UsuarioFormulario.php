@@ -29,7 +29,7 @@
             echo '</select>';
         echo '</div>';
 
-        // Ficha de trabajador, solo para Funcionario y Director 
+        // Ficha de trabajador, solo para funcionario y director 
         echo '<div id="div_ficha_trabajador" style="display:none;">';
 
             echo '<div class="mb-3">';
@@ -56,7 +56,7 @@
                 echo '<select name="prevision" class="form-select">';
                     echo '<option value="" disabled selected>-- Seleccione --</option>';
                     echo '<option value="Fonasa">Fonasa</option>';
-                    echo '<option value="Isapre">Isapre</option>';
+                    echo '<option value="Isapres">Isapre</option>';
                 echo '</select>';
             echo '</div>';
 
@@ -64,13 +64,13 @@
                 echo '<label class="form-label fw-bold">AFP</label>';
                 echo '<select name="afp" class="form-select">';
                     echo '<option value="" disabled selected>-- Seleccione --</option>';
-                    echo '<option value="Capital">Capital</option>';
-                    echo '<option value="Cuprum">Cuprum</option>';
-                    echo '<option value="Habitat">Habitat</option>';
-                    echo '<option value="Modelo">Modelo</option>';
-                    echo '<option value="PlanVital">PlanVital</option>';
-                    echo '<option value="Provida">Provida</option>';
-                    echo '<option value="Uno">Uno</option>';
+                    echo '<option value="AFP Capital">Capital</option>';
+                    echo '<option value="AFP Cuprum">Cuprum</option>';
+                    echo '<option value="AFP Habitat">Habitat</option>';
+                    echo '<option value="AFP Modelo">Modelo</option>';
+                    echo '<option value="AFP Planvital">PlanVital</option>';
+                    echo '<option value="AFP Provida">Provida</option>';
+                    echo '<option value="AFPUno">Uno</option>';
                 echo '</select>';
             echo '</div>';
 
