@@ -16,9 +16,7 @@
 
     $prioridadesQuery = "SELECT * FROM prioridad";
     $prioridades = mysqli_query($conexionDB, $prioridadesQuery);
-
-    echo $solicutdRevisar['solicitud_ID'];
-    echo $solicutdRevisar['ID_tipo_solicitud'];
+    $dpto=$_SESSION['ID_departamento'];
 ?>
 
 <!DOCTYPE html>
@@ -76,6 +74,7 @@
                             </option>
                         <?php } ?>
                     </select>                             
+                    <input type="hidden" value="<?php echo $solicutdRevisar['ID_departamento'] ?>" name="ID_cambio">
                     <input type="hidden" value="<?php echo $id_solicitud ?>" name="ID_cambio">
                     <input type="hidden" value="Derivada" name="estadoSiguiente">
                     <input type="submit" class="btn bg-success">

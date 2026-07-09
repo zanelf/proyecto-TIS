@@ -11,19 +11,31 @@ CREATE TABLE Departamento (
     ID_departamento INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
     nombre VARCHAR(100) NOT NULL
 );
-CREATE TABLE Solicitud (
-    solicitud_ID INT PRIMARY KEY AUTO_INCREMENT,
-    Tipo_estado ENUM('Recibida', 'En revision', 'Derivada', 'En proceso', 'Respondida', 'Cerrada'),
-    Asunto VARCHAR(100),
-    Descripcion VARCHAR(100),
-    Categoria ENUM('Agua', 'Electrico', 'Transito'),
-    RUT_ciudadano INT, -- Mismo tipo de dato que la PK padre
-    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano),
-    ID_departamento INT, -- Mismo tipo de dato que la PK padre
+CREATE TABLE solicitud (
+    solicitud_ID INT(11) NOT NULL AUTO_INCREMENT,
+    Tipo_estado ENUM('Felicitaciones','Reclamo','Sugerencia') DEFAULT NULL,
+    Asunto VARCHAR(100) DEFAULT NULL,
+    Descripcion VARCHAR(100) DEFAULT NULL,
+    correo_electronico varchar(100) DEFAULT NULL,
+    ID_departamento INT(11) DEFAULT NULL,
+    ID_tipo_solicitud INT(11) DEFAULT NULL,
+    estado_solicitud ENUM(
+        'Recibida',
+        'En Revisión',
+        'Derivada a Departamento',
+        'En Proceso',
+        'Respondida',
+        'Cerrada'
+    ) NOT NULL DEFAULT 'Recibida',
+    fecha_creacion DATETIME NULL,
+    Tiempo_asignado int NULL,
+    fecha_respondida DATETIME NULL,
+    token_encuesta VARCHAR(64) DEFAULT NULL,
+    PRIMARY KEY (solicitud_ID),
+    FOREIGN KEY (correo_electronico) REFERENCES ciudadano(correo_electronico),
     FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento),
-    ID_tipo_solicitud INT, -- Mismo tipo de dato que la PK padre
     FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud)
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE Encuesta (
     ID_encuesta INT PRIMARY KEY AUTO_INCREMENT,

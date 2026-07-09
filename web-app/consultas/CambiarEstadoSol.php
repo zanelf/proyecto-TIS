@@ -1,19 +1,26 @@
 <?php
     session_start();
     include('../base_de_datos/conexion.php');
+    require_once('GenerarTokenEncuesta.php');
 
     $IDsol=$_POST['ID_cambio'];
     $estadoSiguiente=$_POST['estadoSiguiente'];
-
-    echo $IDsol;
-    echo $estadoSiguiente;
-
+    $prioridad= $_POST['ID_prioridad'];
+    $dpto= $_POST['ID_departamento'];
+    $IDtipoSol=$solicutdRevisar['ID_tipo_solicitud'];
     $consulta="UPDATE solicitud SET Tipo_estado = '$estadoSiguiente' WHERE solicitud_ID='$IDsol'";
     $resultado=mysqli_query($conexionDB,$consulta);
-    $consulta="SELECT tiempo FROM tiempo WHERE "
+
+    $consulta="SELECT tiempo FROM tiempo WHERE $IDtipoSol";
 
     if($estadoSiguiente=="Derivada"){
-        $consulta="SELECT tiempo FROM tiempo WHERE "
+        $consulta="SELECT tiempo FROM tiempo WHERE ID_prioridad='$prioridad' and ID_departamento = '$dpto' and ID_tipo_solicitud='$IDtipoSol'";
+        $resultado=mysqli_query($conexionDB,$consulta);
+        $tiempoAsignado=mysqli_fetch_assoc($resultado)['Tiempo'];
+        $consulta2="UPDATE solicitud SET Tiempo_asignado = '$tiempoAsignado'";
+    }
+    if($estadoSiguiente=="Respondida"){
+          generarTokenEncuesta($conexionDB,$IDsol);
     }
     
     if(!isset($_SESSION["usuario"])){

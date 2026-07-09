@@ -3,6 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+-- Generation Time: Jul 09, 2026 at 10:19 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+-- Host: 127.0.0.1
 -- Generation Time: Jul 09, 2026 at 10:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
@@ -25,16 +29,22 @@ SET time_zone = "+00:00";
 
 --
 -- Table structure for table `ciudadano`
+-- Table structure for table `ciudadano`
 --
 
 CREATE TABLE IF NOT EXISTS `ciudadano` (
+CREATE TABLE IF NOT EXISTS `ciudadano` (
   `RUT_ciudadano` int(11) NOT NULL,
+  `correo_electronico` varchar(100) NOT NULL,
+  PRIMARY KEY (`RUT_ciudadano`) USING BTREE,
+  KEY `correo_electronico` (`correo_electronico`)
   `correo_electronico` varchar(100) NOT NULL,
   PRIMARY KEY (`RUT_ciudadano`) USING BTREE,
   KEY `correo_electronico` (`correo_electronico`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `ciudadano`
 -- Dumping data for table `ciudadano`
 --
 
@@ -43,19 +53,27 @@ REPLACE INTO `ciudadano` (`RUT_ciudadano`, `correo_electronico`) VALUES
 (987654322, 'prueba2@gmail.com'),
 (112233445, 'prueba3@gmail.com'),
 (987654323, 'prueba3@gmail.com'),
+(987654323, 'prueba3@gmail.com'),
 (123456789, 'prueba@gmail.com'),
+(987654324, 'prueba@gmail.com');
 (987654324, 'prueba@gmail.com');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `comprobante`
+-- Table structure for table `comprobante`
 --
 
 CREATE TABLE IF NOT EXISTS `comprobante` (
   `ID_comprobante` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `comprobante` (
+  `ID_comprobante` int(11) NOT NULL AUTO_INCREMENT,
   `Fecha` date DEFAULT NULL,
   `Hora` time DEFAULT NULL,
+  `solicitud_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_comprobante`),
+  KEY `solicitud_ID` (`solicitud_ID`)
   `solicitud_ID` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID_comprobante`),
   KEY `solicitud_ID` (`solicitud_ID`)
@@ -65,8 +83,13 @@ CREATE TABLE IF NOT EXISTS `comprobante` (
 
 --
 -- Table structure for table `departamento`
+-- Table structure for table `departamento`
 --
 
+CREATE TABLE IF NOT EXISTS `departamento` (
+  `ID_departamento` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID_departamento`)
 CREATE TABLE IF NOT EXISTS `departamento` (
   `ID_departamento` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
@@ -74,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `departamento` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `departamento`
 -- Dumping data for table `departamento`
 --
 
@@ -96,13 +120,33 @@ REPLACE INTO `departamento` (`ID_departamento`, `nombre`) VALUES
 (17, 'Medio Ambiente'),
 (18, 'Tránsito'),
 (19, 'Salud y Educación');
+(4, 'Salud y Educación'),
+(5, 'Medio Ambiente'),
+(6, 'Tránsito'),
+(7, 'Salud y Educación'),
+(8, 'Medio Ambiente'),
+(9, 'Tránsito'),
+(10, 'Salud y Educación'),
+(11, 'Medio Ambiente'),
+(12, 'Tránsito'),
+(13, 'Salud y Educación'),
+(14, 'Medio Ambiente'),
+(15, 'Tránsito'),
+(16, 'Salud y Educación'),
+(17, 'Medio Ambiente'),
+(18, 'Tránsito'),
+(19, 'Salud y Educación');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `desarrollador`
+-- Table structure for table `desarrollador`
 --
 
+CREATE TABLE IF NOT EXISTS `desarrollador` (
+  `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ID_usuario`)
 CREATE TABLE IF NOT EXISTS `desarrollador` (
   `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ID_usuario`)
@@ -112,8 +156,14 @@ CREATE TABLE IF NOT EXISTS `desarrollador` (
 
 --
 -- Table structure for table `director`
+-- Table structure for table `director`
 --
 
+CREATE TABLE IF NOT EXISTS `director` (
+  `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_departamento` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_usuario`),
+  KEY `ID_departamento` (`ID_departamento`)
 CREATE TABLE IF NOT EXISTS `director` (
   `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
   `ID_departamento` int(11) DEFAULT NULL,
@@ -122,6 +172,7 @@ CREATE TABLE IF NOT EXISTS `director` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `director`
 -- Dumping data for table `director`
 --
 
@@ -132,12 +183,19 @@ REPLACE INTO `director` (`ID_usuario`, `ID_departamento`) VALUES
 
 --
 -- Table structure for table `encuesta`
+-- Table structure for table `encuesta`
 --
 
 CREATE TABLE IF NOT EXISTS `encuesta` (
   `ID_encuesta` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `encuesta` (
+  `ID_encuesta` int(11) NOT NULL AUTO_INCREMENT,
   `Pregunta` varchar(100) DEFAULT NULL,
   `RUT_ciudadano` int(11) DEFAULT NULL,
+  `solicitud_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_encuesta`),
+  KEY `RUT_ciudadano` (`RUT_ciudadano`),
+  KEY `solicitud_ID` (`solicitud_ID`)
   `solicitud_ID` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID_encuesta`),
   KEY `RUT_ciudadano` (`RUT_ciudadano`),
@@ -148,8 +206,14 @@ CREATE TABLE IF NOT EXISTS `encuesta` (
 
 --
 -- Table structure for table `funcionario`
+-- Table structure for table `funcionario`
 --
 
+CREATE TABLE IF NOT EXISTS `funcionario` (
+  `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_departamento` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_usuario`),
+  KEY `ID_departamento` (`ID_departamento`)
 CREATE TABLE IF NOT EXISTS `funcionario` (
   `ID_usuario` int(11) NOT NULL AUTO_INCREMENT,
   `ID_departamento` int(11) DEFAULT NULL,
@@ -158,6 +222,7 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `funcionario`
 -- Dumping data for table `funcionario`
 --
 
@@ -298,11 +363,13 @@ ALTER TABLE `comprobante`
 
 --
 -- Constraints for table `desarrollador`
+-- Constraints for table `desarrollador`
 --
 ALTER TABLE `desarrollador`
   ADD CONSTRAINT `desarrollador_ibfk_1` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`);
 
 --
+-- Constraints for table `director`
 -- Constraints for table `director`
 --
 ALTER TABLE `director`
@@ -311,6 +378,7 @@ ALTER TABLE `director`
 
 --
 -- Constraints for table `encuesta`
+-- Constraints for table `encuesta`
 --
 ALTER TABLE `encuesta`
   ADD CONSTRAINT `encuesta_ibfk_1` FOREIGN KEY (`RUT_ciudadano`) REFERENCES `ciudadano` (`RUT_ciudadano`),
@@ -318,12 +386,24 @@ ALTER TABLE `encuesta`
 
 --
 -- Constraints for table `funcionario`
+-- Constraints for table `funcionario`
 --
 ALTER TABLE `funcionario`
   ADD CONSTRAINT `funcionario_ibfk_1` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`),
   ADD CONSTRAINT `funcionario_ibfk_2` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`);
 
 --
+-- Constraints for table `solicitud`
+--
+ALTER TABLE `solicitud`
+  ADD CONSTRAINT `FK_ciudadano` FOREIGN KEY (`correo_electronico`) REFERENCES `ciudadano` (`correo_electronico`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_departamento` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_tipo_solicitud` FOREIGN KEY (`ID_tipo_solicitud`) REFERENCES `tipo_solicitud` (`ID_tipo_solicitud`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 -- Constraints for table `solicitud`
 --
 ALTER TABLE `solicitud`

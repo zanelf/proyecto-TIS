@@ -1,74 +1,97 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 session_start();
 
-    include('../base_de_datos/conexion.php');
+include('../base_de_datos/conexion.php');
 
-    if(!isset($_SESSION["usuario"])){
-        header("Location: Login.php");
-        exit;
-    }
+if (!isset($_SESSION["usuario"])) {
+    header("Location: Login.php");
+    exit;
+}
+//Admin ve todo, el director solo lo de él
+if ($_SESSION["tipo"] !== "Administrador" && $_SESSION["tipo"] !== "Director") {
+    header("Location: Inicio.php?error=NoAutorizado");
+    exit;
+}
 
-    if($_SESSION["tipo"] !== "Administrador"){
-        header("Location: Inicio.php?error=NoAutorizado");
-        exit;
-    }
-
-    $consulta = "SELECT * FROM usuario";
-    $resultado = mysqli_query($conexionDB,$consulta);
-    $atributos = mysqli_query($conexionDB,"DESCRIBE usuario");
-
-
+$tipoUsuario = $_SESSION["tipo"];
+$Tipo_modelo = "usuario";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Usuarios - SGISC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../recursos/css/style_mantenedores.css">
 </head>
+<body class="bg-light">
+    <?php include('../recursos/componentes/navbar1.php'); ?>
 
-<body>
-    <?php
-        include('../recursos/componentes/navbar1.php'); // barra superiror autenticada
-        $campos=[];
-        while ($fila = mysqli_fetch_assoc($atributos)) {
-            $campos[] = $fila; // No estoy tan seguro de esto o hacerlo directo, pero funca
-        }
-        foreach($campos as &$campo){
-            if(str_contains($campo['Type'],"int")){
-                $campo['Type'] = "number";
-            }
-            if(str_contains($campo['Type'],"varchar")){
-                $campo['Type'] = "text";
-            }
-        }
-        unset($campo);
-        foreach($campos as $campo){  
-
-        }
-    ?>
-
-    <div class="container">
-
+    <div class="container mt-5">
         <div class="row">
-            <div class="col-6">
-                <h3>Formulario</h3>
-                <?php
-                    $Tipo_modelo = "usuario";
-                    include('../recursos/componentes/UsuarioFormulario.php');
-                ?>
+
+            <?php if ($tipoUsuario == "Administrador"): ?>
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border" style="border-radius: 8px; overflow: hidden;">
+                    <div class="card-header custom-card-header py-3">
+                        <h6 class="mb-0 fw-bold text-primary text-uppercase small tracking-wider">Nuevo Usuario</h6>
+                    </div>
+                    <div class="card-body p-4 bg-white">
+                        <?php include('../recursos/componentes/UsuarioFormulario.php'); ?>
+                    </div>
+                </div>
             </div>
-            <div class="col-6">
-                <?php
-                    $Tipo_modelo = "usuario";
-                    include('../recursos/componentes/Tabla.php');
-                ?>
+            <?php endif; ?>
+
+            <div class="col-md-<?php echo $tipoUsuario == "Administrador" ? "8" : "12"; ?>">
+                <div class="card shadow-sm border mb-3" style="border-radius: 8px;">
+                    <div class="card-body p-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-12 col-md-8">
+                                <form method="GET" class="d-flex gap-2">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="buscar"
+                                        placeholder="Buscar por RUT..."
+                                        value="<?php echo isset($_GET['buscar']) ? htmlspecialchars($_GET['buscar']) : ''; ?>"
+                                    >
+                                    <button type="submit" class="btn btn-primary text-white px-4">Buscar</button>
+                                </form>
+                            </div>
+                            <div class="col-12 col-md-4 text-md-end">
+                                <?php if ($tipoUsuario == "Director"): ?>
+                                    <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2">
+                                        Mostrando solo tu departamento
+                                    </span>
+                                <?php else: ?>
+                                    <span class="badge bg-secondary-subtle text-secondary fw-semibold px-3 py-2">
+                                        Mostrando todos los usuarios
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border" style="border-radius: 8px; overflow: hidden;">
+                    <div class="card-header custom-card-header-table py-3">
+                        <h6 class="mb-0 fw-bold text-secondary text-uppercase small tracking-wider">Registros Actuales</h6>
+                    </div>
+                    <div class="card-body p-0"> <div class="table-responsive">
+                            <?php include('../recursos/componentes/Tabla.php'); ?>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
-    
 </body>
 </html>
