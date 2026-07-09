@@ -25,9 +25,9 @@ Este repositorio esta separado en 2 partes principales
 - Clonar proyecto en carpeta de servidor (`xampp/htdocs/xampp/`)
 - Abrir xammp o stack de preferencia 
 - Abrir gestor de base de datos de preferencia (por defecto mysql)
-- En el gestor crear una base de datos nueva llamada `proyectodb2`
+- En el gestor crear una base de datos nueva llamada `proyectodb`
 - Acceder a la carpeta `./web-app/base_de_datos/` 
-- Correr el respaldo `proyectodb2.sql` en la base de datos creada
+- Importar el respaldo de la base de datos que se encuentra en dicha carpeta con el nombre de  `backup base de datos`
 - En la misma carpeta verificar la configuracion del archivo `conexion.php` (las credenciales de la base de dato coincidan con las bases de datos creadas)
 - Acceder a la carpeta `./web-app/config/`
 - crear el archivo `mail_config.php`
