@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `prioridad` (
 --
 
 CREATE TABLE IF NOT EXISTS `solicitud` (
-  `solicitud_ID` int(11) NOT NULL,
+  `solicitud_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Tipo_estado` enum('Recibida','En revision','Derivada','En proceso','Respondida','Cerrada') DEFAULT 'Recibida',
   `Asunto` varchar(100) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
