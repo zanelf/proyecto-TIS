@@ -19,9 +19,9 @@
         echo '</div>';
 
         echo '<div class="mb-3">';
-            echo '<label class="form-label fw-semibold">ROL DE ACCESO</label>';
+            echo '<label class="form-label fw-semibold">TIPO DE TRABAJADOR</label>';
             echo '<select id="tipo" name="tipo" class="form-select" onchange="toggleFichaTrabajador(this.value)" required>';
-                echo '<option value="" disabled selected>-- Seleccione un Rol --</option>';
+                echo '<option value="" disabled selected>-- Seleccione un tipo --</option>';
                 echo '<option value="Director">Director</option>';
                 echo '<option value="Administrador">Administrador</option>';
                 echo '<option value="Funcionario">Funcionario</option>';
@@ -29,7 +29,7 @@
             echo '</select>';
         echo '</div>';
 
-        
+       //Despliega la ficha solo si es funcionario o director
         echo '<div id="div_ficha_trabajador" style="display:none;">';
 
             echo '<div class="mb-3">';
@@ -52,18 +52,26 @@
             echo '</div>';
 
             echo '<div class="mb-3">';
-                echo '<label class="form-label fw-semibold">TIPO DE TRABAJADOR</label>';
-                echo '<input type="text" name="tipo_trabajador" class="form-control">';
-            echo '</div>';
-
-            echo '<div class="mb-3">';
                 echo '<label class="form-label fw-semibold">PREVISIÓN</label>';
-                echo '<input type="text" name="prevision" class="form-control">';
+                echo '<select name="prevision" class="form-select">';
+                    echo '<option value="" disabled selected>-- Seleccione --</option>';
+                    echo '<option value="Fonasa">Fonasa</option>';
+                    echo '<option value="Isapre">Isapre</option>';
+                echo '</select>';
             echo '</div>';
 
             echo '<div class="mb-3">';
                 echo '<label class="form-label fw-semibold">AFP</label>';
-                echo '<input type="text" name="afp" class="form-control">';
+                echo '<select name="afp" class="form-select">';
+                    echo '<option value="" disabled selected>-- Seleccione --</option>';
+                    echo '<option value="Capital">Capital</option>';
+                    echo '<option value="Cuprum">Cuprum</option>';
+                    echo '<option value="Habitat">Habitat</option>';
+                    echo '<option value="Modelo">Modelo</option>';
+                    echo '<option value="PlanVital">PlanVital</option>';
+                    echo '<option value="Provida">Provida</option>';
+                    echo '<option value="Uno">Uno</option>';
+                echo '</select>';
             echo '</div>';
 
         echo '</div>';
