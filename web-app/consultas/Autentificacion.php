@@ -5,15 +5,21 @@
     $password = $_POST["password"];
     
 
-    $consulta = "SELECT * FROM usuario WHERE nombre_usuario='$usuario' LIMIT 1";
+    $consulta = "SELECT * FROM usuario WHERE rut_usuario='$usuario' LIMIT 1";
     $resultado = mysqli_query($conexionDB, $consulta);
 
     if(mysqli_num_rows($resultado) > 0){
         $datosUsuario = mysqli_fetch_assoc($resultado);
+
+        if ((int)$datosUsuario["Activo"] === 0) {
+            header('Location: ../ventanas/Inicio.php?error=inactivo');
+            exit;
+        }
+
         if (password_verify($password, $datosUsuario["contraseña"])) {
             
             session_start();
-            $_SESSION["usuario"] = $datosUsuario["nombre_usuario"];
+            $_SESSION["usuario"] = $datosUsuario["rut_usuario"];
             $_SESSION["ID_usuario"] = $datosUsuario["ID_usuario"];
             
             $var = $_SESSION["ID_usuario"];
