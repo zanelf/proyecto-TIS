@@ -150,44 +150,6 @@ CREATE TABLE `funcionario` (
 INSERT INTO `funcionario` (`ID_usuario`, `ID_departamento`) VALUES
 (20, 4);
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `solicitud`
---
-
-/* CREATE TABLE `solicitud` (
-  `solicitud_ID` int(11) NOT NULL,
-  `Tipo_estado` enum('Recibida','En revision','Derivada','En proceso','Respondida','Cerrada') DEFAULT NULL,
-  `Asunto` varchar(100) DEFAULT NULL,
-  `Descripcion` varchar(100) DEFAULT NULL,
-  `Categoria` enum('Agua','Electrico','Transito') DEFAULT NULL,
-  `correo_ciudadano` varchar(100) DEFAULT NULL,
-  `ID_departamento` int(11) DEFAULT NULL,
-  `ID_tipo_solicitud` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; */
-
-
-
-CREATE TABLE solicitud (
-    solicitud_ID INT(11) NOT NULL AUTO_INCREMENT,
-    Tipo_estado ENUM('Felicitaciones','Reclamo','Sugerencia') DEFAULT NULL,
-    Asunto VARCHAR(100) DEFAULT NULL,
-    Descripcion VARCHAR(100) DEFAULT NULL,
-    correo_electronico varchar(100) DEFAULT NULL,
-    ID_departamento INT(11) DEFAULT NULL,
-    ID_tipo_solicitud INT(11) DEFAULT NULL,
-    estado_solicitud ENUM('Recibida','En Revisión','Derivada a Departamento','En Proceso','Respondida','Cerrada'
-    ) NOT NULL DEFAULT 'Recibida',
-    fecha_respondida DATETIME NULL,
-    token_encuesta VARCHAR(64) DEFAULT NULL,
-    PRIMARY KEY (solicitud_ID),
-    FOREIGN KEY (correo_electronico) REFERENCES ciudadano(correo_electronico),
-    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento),
-    FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; */;
-
-
 
 -- --------------------------------------------------------
 
@@ -215,12 +177,60 @@ INSERT INTO `tipo_solicitud` (`ID_tipo_solicitud`, `nombre`, `descripcion`) VALU
 --
 -- Estructura de tabla para la tabla `usuario`
 --
-
+DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE `usuario` (
   `ID_usuario` int(11) NOT NULL,
   `nombre_usuario` varchar(100) NOT NULL,
   `contraseña` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `solicitud`
+--
+
+CREATE TABLE `solicitud` (
+  `solicitud_ID` int(11) NOT NULL,
+  `Tipo_estado` enum('Recibida','En revision','Derivada','En proceso','Respondida','Cerrada') DEFAULT NULL DEFAULT 'Recibida',
+  `Asunto` varchar(100) DEFAULT NULL,
+  `Descripcion` varchar(100) DEFAULT NULL,
+  `Categoria` enum('Agua','Electrico','Transito') DEFAULT NULL,
+  `correo_electronico` varchar(100) DEFAULT NULL,
+  `ID_departamento` int(11) DEFAULT NULL,
+  `ID_tipo_solicitud` int(11) DEFAULT NULL,
+  `fecha_respondida` DATETIME NULL,
+  `token_encuesta` VARCHAR(64) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- AQUI 2
+/* DROP TABLE IF EXISTS solicitud;
+CREATE TABLE solicitud (
+    solicitud_ID INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3,
+    Tipo_estado ENUM('Felicitaciones','Reclamo','Sugerencia') DEFAULT NULL,
+    Asunto VARCHAR(100) DEFAULT NULL,
+    Descripcion VARCHAR(100) DEFAULT NULL,
+    RUT_ciudadano INT(11) DEFAULT NULL,
+    ID_departamento INT(11) DEFAULT NULL,
+    ID_tipo_solicitud INT(11) DEFAULT NULL,
+    estado_solicitud ENUM(
+        'Recibida',
+        'En Revisión',
+        'Derivada a Departamento',
+        'En Proceso',
+        'Respondida',
+        'Cerrada'
+    ) NOT NULL DEFAULT 'Recibida',
+    fecha_respondida DATETIME NULL,
+    token_encuesta VARCHAR(64) DEFAULT NULL,
+    PRIMARY KEY (solicitud_ID),
+    FOREIGN KEY (RUT_ciudadano) REFERENCES ciudadano(RUT_ciudadano),
+    FOREIGN KEY (ID_departamento) REFERENCES departamento(ID_departamento),
+    FOREIGN KEY (ID_tipo_solicitud) REFERENCES tipo_solicitud(ID_tipo_solicitud)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;  */
+
+
 
 --
 -- Volcado de datos para la tabla `usuario`
@@ -293,7 +303,7 @@ ALTER TABLE `funcionario`
 --
 ALTER TABLE `solicitud`
   ADD PRIMARY KEY (`solicitud_ID`),
-  ADD KEY `RUT_ciudadano` (`RUT_ciudadano`),
+  ADD KEY `correo_electronico` (`correo_electronico`),
   ADD KEY `ID_departamento` (`ID_departamento`),
   ADD KEY `ID_tipo_solicitud` (`ID_tipo_solicitud`);
 
@@ -364,8 +374,8 @@ ALTER TABLE `funcionario`
 --
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
-ALTER TABLE `solicitud`
-  MODIFY `solicitud_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_solicitud`
@@ -425,12 +435,8 @@ ALTER TABLE `funcionario`
 --
 -- Filtros para la tabla `solicitud`
 --
-ALTER TABLE `solicitud`
-  ADD CONSTRAINT `solicitud_ibfk_1` FOREIGN KEY (`RUT_ciudadano`) REFERENCES `ciudadano` (`RUT_ciudadano`),
-  ADD CONSTRAINT `solicitud_ibfk_2` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`),
-  ADD CONSTRAINT `solicitud_ibfk_3` FOREIGN KEY (`ID_tipo_solicitud`) REFERENCES `tipo_solicitud` (`ID_tipo_solicitud`);
-COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*COMMIT;
+!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT ;
+!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS ;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION ;*/
