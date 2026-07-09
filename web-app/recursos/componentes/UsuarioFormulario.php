@@ -10,7 +10,7 @@
 
         echo '<div class="mb-3">';
             echo '<label class="form-label fw-semibold">RUT</label>';
-            echo '<input type="text" name="rut_usuario" class="form-control" required>';
+            echo '<input type="text" name="rut_usuario" id="rut_usuario" class="form-control" maxlength="12" required>';
         echo '</div>';
 
         echo '<div class="mb-3">';
@@ -97,4 +97,17 @@ function toggleFichaTrabajador(rol) {
         camposFicha.forEach(campo => campo.removeAttribute('required'));
     }
 }
+//Formateo del rut
+document.getElementById('rut_usuario').addEventListener('input', function(e) {
+    let valor = e.target.value.replace(/[^0-9kK]/g, ''); 
+    valor = valor.slice(0, 9); 
+    if (valor.length > 1) {
+        const cuerpo = valor.slice(0, -1);
+        const dv = valor.slice(-1).toUpperCase();
+        e.target.value = cuerpo + '-' + dv;
+    } else {
+        e.target.value = valor;
+    }
+});
 </script>
+
