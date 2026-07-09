@@ -60,10 +60,10 @@
                     <input type="text">
                     <label for="">Acotacion</label>
                     <input type="text">
-                    <label for="">Acotacion</label>
-                    <input type="text">                                        
+                    <label for="">Prioridad</label>
+                    <input type="text">                                  
                     <input type="hidden" value="<?php echo $id_solicitud ?>" name="ID_cambio">
-                    <input type="hidden" value="Para derivar" name="estadoSiguiente">
+                    <input type="hidden" value="Derivada" name="estadoSiguiente">
                     <input type="submit" class="btn bg-success">
                 </form>
             </div>
