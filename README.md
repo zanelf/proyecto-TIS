@@ -3,12 +3,14 @@
 Repositorio de trabajo para el proyecto semestral del ramo de Taller de Ingenieria Informatica, dentro del contexto 
 
 ## tabla de contenido 
-- [Descripción](#Descripción)
-- [Instalación](#instalacíon)
-- [Instrucciones de uso]("#Instrucciones-de-uso")
-- [Contribución](#Contribución)
-- [Estructura de carpetas](#Estructura-de-carpetas)
-- [Equipo](#Equipo)
+- [proyecto-TIS (SGISC)](#proyecto-tis-sgisc)
+  - [tabla de contenido](#tabla-de-contenido)
+- [Descripción](#descripción)
+- [Instalación](#instalación)
+- [Instrucciones-de-uso](#instrucciones-de-uso)
+- [Contribución](#contribución)
+- [Estructura-de-carpetas](#estructura-de-carpetas)
+- [Equipo](#equipo)
 
 # Descripción
 En vista de la problematica de falta de unificacion de las solicitudes ciudadanas, se creo el proyecto *SGISC* ( sistema de gestion integral de solicitudes ciudadanas).
@@ -20,11 +22,18 @@ Este repositorio esta separado en 2 partes principales
 
 # Instalación
 
-- clonar proyecto en carpeta de servidor  
-- en php crear una base de datos para el proyexto
-- acceder a la carpeta `web-app/base_de_datos/`
-- correr el respaldo `proyectodb2.sql` en la base de datos creada 
-- abrir desde el localhost
+- Clonar proyecto en carpeta de servidor (`xampp/htdocs/xampp/`)
+- Abrir xammp o stack de preferencia 
+- Abrir gestor de base de datos de preferencia (por defecto mysql)
+- En el gestor crear una base de datos nueva llamada `proyectodb2`
+- Acceder a la carpeta `./web-app/base_de_datos/` 
+- Correr el respaldo `proyectodb2.sql` en la base de datos creada
+- En la misma carpeta verificar la configuracion del archivo `conexion.php` (las credenciales de la base de dato coincidan con las bases de datos creadas)
+- Acceder a la carpeta `./web-app/config/`
+- crear el archivo `mail_config.php`
+- Copiar la informacion de `mail_config_example.php` 
+- Reemplazar el valor de `MAIL_PASS` por la contraseña de acceso del correo
+- Abrir desde el localhost
 
 # Instrucciones-de-uso
   - encender apache server
@@ -50,6 +59,8 @@ otros/                   # carpeta para ayudar al orden guardando cosas que comp
 web-app/                 # direccion del proyecto web
 ├── base-de-datos/       # scripts con el backup de inicializacion back-end del proyeccto 
 ├── consultas/           # alojamiento de las consultas a realizas del front-end al back-end 
+├── config/              # configuracion de elemento de las carpetas 
+├── libs/                # carpeta con la libreria para ocupar herramienta para mandar correos de forma simple
 ├── recursos/            # 
 │    ├── componentes/    # codigos genericos reutilizables 
 │    ├── css/            # ubicacion de los styles  
