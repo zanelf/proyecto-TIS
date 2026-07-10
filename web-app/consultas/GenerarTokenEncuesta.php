@@ -18,14 +18,14 @@ function generarTokenEncuesta($conexionDB, $idSolicitud) {
     $solicitud = mysqli_fetch_assoc($resultado);
 
     if (!$resultado) {
-    echo "Error SQL: " . mysqli_error($conexionDB);
-    return false;
-}
+        echo "Error SQL: " . mysqli_error($conexionDB);
+        return false;
+    }
 
-if (!$solicitud) {
-    echo "No se encontró la solicitud o no tiene ciudadano asociado.";
-    return false;
-}
+    if (!$solicitud) {
+        echo "No se encontró la solicitud o no tiene ciudadano asociado.";
+        return false;
+    }
 
     if ($solicitud["token_encuesta"] != null && $solicitud["token_encuesta"] != "") {
         $token = $solicitud["token_encuesta"];
@@ -40,10 +40,10 @@ if (!$solicitud) {
             WHERE solicitud_ID = $idSolicitud
         ";
 
-       if (!mysqli_query($conexionDB, $actualizar)) {
-    echo "Error al actualizar solicitud: " . mysqli_error($conexionDB);
-    return false;
-};
+        if (!mysqli_query($conexionDB, $actualizar)) {
+            echo "Error al actualizar solicitud: " . mysqli_error($conexionDB);
+            return false;
+        };
     }
 
     return enviarCorreoEncuesta(

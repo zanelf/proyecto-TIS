@@ -41,11 +41,11 @@
                     </form>
                 </div>
                 <div class="col-12 col-md-4 text-md-end">
-                    <?php if ($tieneDepartamento && ($tipoUsuario == "funcionario" || $tipoUsuario == "director")): ?>
+                    <?php if ($tieneDepartamento && ($tipoUsuario == "Funcionario" || $tipoUsuario == "Director")): ?>
                         <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2">
                             Mostrando solo tu departamento
                         </span>
-                    <?php elseif ($tipoUsuario == "administrador"): ?>
+                    <?php elseif ($tipoUsuario == "Administrador"): ?>
                         <span class="badge bg-secondary-subtle text-secondary fw-semibold px-3 py-2">
                             Mostrando todas las solicitudes
                         </span>

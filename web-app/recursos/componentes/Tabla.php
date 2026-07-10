@@ -19,11 +19,12 @@ while ($fila = mysqli_fetch_assoc($atributos)) {
 // qué columnas mostrar por tabla, y su ancho
 $columnasVisibles = [
     "usuario" => [
-        "rut_usuario"     => ["RUT", "15%"],
-        "correo_usuario"  => ["Correo", "25%"],
-        "tipo_trabajador" => ["Tipo de trabajador", "17%"],
-        "Fecha_creacion"  => ["Creado", "15%"],
-        "activo"          => ["Estado", "10%"],
+        "rut_usuario"     => ["RUT", "13%"],
+        "correo_usuario"  => ["Correo", "20%"],
+        "tipo_trabajador" => ["Tipo de trabajador", "14%"],
+        "nombre_departamento" => ["Departamento", "17%"],
+        "Fecha_creacion"  => ["Creado", "12%"],
+        "activo"          => ["Estado", "8%"],
     ],
     "solicitud" => [
         "solicitud_ID"  => ["ID", "8%"],
@@ -72,15 +73,20 @@ $buscarEsc = mysqli_real_escape_string($conexionDB, $buscar);
 
 $resultado = mysqli_query($conexionDB, "SELECT * FROM " . $modelo);
 if ($modelo == "usuario") {
-    $selectUsuario = "SELECT usuario.*, (
-        CASE
-            WHEN usuario.is_admin = 1 THEN 'Administrador'
-            WHEN EXISTS (SELECT 1 FROM desarrollador dev WHERE dev.ID_usuario = usuario.ID_usuario) THEN 'Desarrollador'
-            WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'funcionario') THEN 'Funcionario'
-            WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director') THEN 'Director'
-            ELSE 'Sin rol'
-        END
-    ) AS tipo_trabajador FROM usuario";
+    $selectUsuario = "SELECT usuario.*,
+        (
+            CASE
+                WHEN usuario.is_admin = 1 THEN 'Administrador'
+                WHEN EXISTS (SELECT 1 FROM desarrollador dev WHERE dev.ID_usuario = usuario.ID_usuario) THEN 'Desarrollador'
+                WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'funcionario') THEN 'Funcionario'
+                WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director') THEN 'Director'
+                ELSE 'Sin rol'
+            END
+        ) AS tipo_trabajador,
+        departamento.nombre AS nombre_departamento
+        FROM usuario
+        LEFT JOIN trabajador ON trabajador.ID_usuario = usuario.ID_usuario
+        LEFT JOIN departamento ON departamento.ID_departamento = trabajador.ID_departamento";
     $resultado = mysqli_query($conexionDB, $selectUsuario);
 }
 
@@ -170,7 +176,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
     echo '<td class="text-center">';
     echo '<div class="d-flex gap-1 justify-content-center flex-wrap">';
 
-    if ($modelo == "usuario" && $tipoUsuario == "administrador") {
+    if ($modelo == "usuario" && $tipoUsuario == "Administrador") {
         if ($activoUsuario === 1) {
             echo '<a href="EditarUsuario.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-warning text-dark fw-medium shadow-sm px-2">Editar</a>';
             echo '<a href="../recursos/componentes/Dardebajausuario.php?id_enviado=' . $PKValue . '"
@@ -181,18 +187,18 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         } else {
             echo '<span class="badge bg-secondary-subtle text-secondary fw-semibold px-3 py-2">Sin acciones</span>';
         }
-    } elseif ($modelo != "usuario" && $tipoUsuario == "administrador") {
+    } elseif ($modelo != "usuario" && $tipoUsuario == "Administrador") {
         echo '<a href="../recursos/componentes/Editar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-warning text-dark fw-medium shadow-sm px-2">Editar</a>';
         echo '<a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-danger fw-medium shadow-sm px-2">Eliminar</a>';
     }
 
-    if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "funcionario") {
+    if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "Funcionario") {
         echo '<a href="Revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Revisar</a>';
     }
     if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "Funcionario") {
-        echo '<a href="TomarSolicitud.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Tomar</a>';
+        echo '<a href="Tomarsolicitud.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Tomar</a>';
     }
-    if ($modelo == "solicitud" && $estado == "En proceso" && $tipoUsuario == "funcionario") {
+    if ($modelo == "solicitud" && $estado == "En proceso" && $tipoUsuario == "Funcionario") {
         echo '<a href="Responder.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Responder</a>';
     }
     if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $estado != "En proceso" && $tipoUsuario == "Funcionario") {

@@ -4,6 +4,7 @@ if(session_status() === PHP_SESSION_NONE) {
 }
 
 $tipoUsuario = isset($_SESSION["tipo"]) ? $_SESSION["tipo"] : "";
+
 // Opciones de menú
 $opcionesAdm = [
     "../index" => "Inicio",
@@ -34,9 +35,9 @@ $opcionesDir = [
 $opcionesActuales = [];
 if($tipoUsuario == "Administrador") {
     $opcionesActuales = $opcionesAdm;
-} elseif ($tipoUsuario == "funcionario") {
+} elseif ($tipoUsuario == "Funcionario") {
     $opcionesActuales = $opcionesFun;
-} elseif ($tipoUsuario == "director") {
+} elseif ($tipoUsuario == "Director") {
     $opcionesActuales = $opcionesDir;
 }
 ?>
@@ -61,13 +62,10 @@ if($tipoUsuario == "Administrador") {
 
             <?php foreach ($opcionesActuales as $opcion => $label): ?>
                 <?php 
-                    
                     $nombreOpcion = basename($opcion); 
                     $nombrePaginaActual = basename($_SERVER['PHP_SELF'], ".php"); 
                     
-                  
                     $claseExtra = (str_contains($opcion, 'logout')) ? 'btn-cerrar' : '';
-                    
                     
                     if ($nombreOpcion === $nombrePaginaActual && !str_contains($opcion, 'logout')) {
                         $claseExtra .= ' btn-activo';
