@@ -1,79 +1,87 @@
 # proyecto-TIS (SGISC)
 
-Repositorio de trabajo para el proyecto semestral del ramo de Taller de Ingenieria Informatica, dentro del contexto 
+Repositorio de trabajo para el proyecto semestral del ramo de Taller de Ingeniería Informática.
 
-## tabla de contenido 
+## Tabla de contenido
+
 - [proyecto-TIS (SGISC)](#proyecto-tis-sgisc)
-  - [tabla de contenido](#tabla-de-contenido)
+  - [Tabla de contenido](#tabla-de-contenido)
 - [Descripción](#descripción)
 - [Instalación](#instalación)
-- [Instrucciones-de-uso](#instrucciones-de-uso)
+- [Instrucciones de uso](#instrucciones-de-uso)
 - [Contribución](#contribución)
-- [Estructura-de-carpetas](#estructura-de-carpetas)
+- [Estructura de carpetas](#estructura-de-carpetas)
 - [Equipo](#equipo)
 
 # Descripción
-En vista de la problematica de falta de unificacion de las solicitudes ciudadanas, se creo el proyecto *SGISC* ( sistema de gestion integral de solicitudes ciudadanas).
-Este proyecto busca centralizar y gestionar el envio y recibo de las multiples solicitudes que se recibe la municipalidad con el fin de asegurar que estas llegen a los remitentes correspondientes y el ciudadano que emitio la solicitud pueda saber que esta sucediendo con su consulta. 
 
-Este repositorio esta separado en 2 partes principales
-- `web-app` Esta carpeta tendra el proyecto de web que actuara a modo de interfaz para gestionar todos lo requerimientos del proyecto 
-- `otros` Esta  carpeta tendra informacion de uso del grupo de trabajo y codigos que queden de legado, se usara principalmente para dar orden al proyecto.
+Debido a la problemática de la falta de unificación de las solicitudes ciudadanas, se creó el proyecto **SGISC** (Sistema de Gestión Integral de Solicitudes Ciudadanas).
+
+Este proyecto busca centralizar y gestionar el envío y la recepción de las múltiples solicitudes que recibe la municipalidad, con el fin de asegurar que estas lleguen a los remitentes correspondientes y que el ciudadano que emitió la solicitud pueda conocer el estado de su consulta.
+
+Este repositorio está separado en dos partes principales:
+
+- `web-app`: esta carpeta contiene el proyecto web, que actúa como interfaz para gestionar todos los requerimientos del proyecto.
+- `otros`: esta carpeta contiene información de uso del grupo de trabajo y código de legado. Se utiliza principalmente para mantener el orden del proyecto.
 
 # Instalación
 
-- Clonar proyecto en carpeta de servidor (`xampp/htdocs/xampp/`)
-- Abrir xammp o stack de preferencia 
-- Abrir gestor de base de datos de preferencia (por defecto mysql)
-- En el gestor crear una base de datos nueva llamada `proyectodb`
-- Acceder a la carpeta `./web-app/base_de_datos/` 
-- Importar el respaldo de la base de datos que se encuentra en dicha carpeta con el nombre de  `backup base de datos`
-- En la misma carpeta verificar la configuracion del archivo `conexion.php` (las credenciales de la base de dato coincidan con las bases de datos creadas)
-- Acceder a la carpeta `./web-app/config/`
-- crear el archivo `mail_config.php`
-- Copiar la informacion de `mail_config_example.php` 
-- Reemplazar el valor de `MAIL_PASS` por la contraseña de acceso del correo
-- Abrir desde el localhost
+- Clonar el proyecto en la carpeta del servidor (`xampp/htdocs/xampp/`).
+- Abrir XAMPP o el stack de preferencia.
+- Abrir el gestor de bases de datos de preferencia (por defecto, MySQL).
+- Crear una nueva base de datos llamada `proyectodb`.
+- Acceder a la carpeta `./web-app/base_de_datos/`.
+- Importar el respaldo de la base de datos ubicado en dicha carpeta con el nombre `backup base de datos`.
+- Verificar la configuración del archivo `conexion.php` para que las credenciales coincidan con la base de datos creada.
+- Acceder a la carpeta `./web-app/config/`.
+- Crear el archivo `mail_config.php`.
+- Copiar el contenido de `mail_config_example.php`.
+- Reemplazar el valor de `MAIL_PASS` por la contraseña del correo.
+- Abrir el proyecto desde `localhost`.
 
-# Instrucciones-de-uso
-  - encender apache server
-  - encender mysql server
-  - acceder al link local del servidor `localhost:80/xampp/proyecto-TIS/web-app/` desde un buscador web
-  - utilizar la pagina
-    
+# Instrucciones de uso
+
+- Encender el servidor Apache.
+- Encender el servidor MySQL.
+- Acceder a `localhost:80/xampp/proyecto-TIS/web-app/` desde un navegador web.
+- Utilizar la aplicación.
+
 # Contribución
+
 | Nombre | Módulos |
-| --- | --- | 
+| --- | --- |
 | Leonardo Acuña | |
-| Vicente Bastidas | | 
-| Cristian  Urrutia | |
-| Beatriz  Vidal | |
-| Franco  Videla | |
+| Vicente Bastidas | |
+| Cristian Urrutia | |
+| Beatriz Vidal | |
+| Franco Videla | |
 
-# Estructura-de-carpetas
+# Estructura de carpetas
+
+```text
+otros/                   # Carpeta para mantener el orden del proyecto, almacenando elementos que no pertenecen directamente a la aplicación web.
+└── legacy/
+    └── Mantenedores/    # Versiones originales de las interfaces de los mantenedores.
+
+web-app/                 # Proyecto principal de la aplicación web.
+├── base_de_datos/       # Scripts con el respaldo e inicialización de la base de datos.
+├── consultas/           # Consultas realizadas desde el front-end hacia el back-end.
+├── config/              # Archivos de configuración del proyecto.
+├── libs/                # Librerías utilizadas, por ejemplo, para el envío de correos.
+├── recursos/
+│   ├── componentes/     # Componentes reutilizables.
+│   ├── css/             # Hojas de estilo.
+│   ├── img/             # Recursos gráficos.
+│   └── js/              # Scripts JavaScript.
+└── ventanas/            # Interfaces del front-end.
 ```
-otros/                   # carpeta para ayudar al orden guardando cosas que competen al proyecto pero no a la pagina web
-└── legacy/              #
-    └── Mantenedores/    # version original de las interfases para los mantenedores 
 
-web-app/                 # direccion del proyecto web
-├── base-de-datos/       # scripts con el backup de inicializacion back-end del proyeccto 
-├── consultas/           # alojamiento de las consultas a realizas del front-end al back-end 
-├── config/              # configuracion de elemento de las carpetas 
-├── libs/                # carpeta con la libreria para ocupar herramienta para mandar correos de forma simple
-├── recursos/            # 
-│    ├── componentes/    # codigos genericos reutilizables 
-│    ├── css/            # ubicacion de los styles  
-│    ├── img/            # 
-│    └── js/             # 
-└── ventanas/            # alojamiento del front-end 
+# Equipo
 
-```
-# Equipo 
-| Nombre | github | rol |
+| Nombre | GitHub | Rol |
 | --- | --- | --- |
-| Leonardo Acuña | [@Aesedefe1](https://github.com/Aesedefe1) |backend|
-| Vicente Bastidas| [@zanelf](https://github.com/zanelf) | Analista |
-| Cristian  Urrutia| [@Currutiad](https://github.com/Currutiad) |frontend y backend|
-| Beatriz  Vidal| [@BeatrizVidalA](https://github.com/BeatrizVidalA) |frontend|
-| Franco  Videla| [@Jayaquelo](https://github.com/Jayaquelo) | Lider de grupo |
+| Leonardo Acuña | [@Aesedefe1](https://github.com/Aesedefe1) | Backend |
+| Vicente Bastidas | [@zanelf](https://github.com/zanelf) | Analista |
+| Cristian Urrutia | [@Currutiad](https://github.com/Currutiad) | Frontend y Backend |
+| Beatriz Vidal | [@BeatrizVidalA](https://github.com/BeatrizVidalA) | Frontend |
+| Franco Videla | [@Jayaquelo](https://github.com/Jayaquelo) | Líder de grupo |
