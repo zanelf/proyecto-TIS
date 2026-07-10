@@ -14,6 +14,7 @@
             "SELECT comprobante.ID_comprobante, comprobante.Fecha, comprobante.Hora,
                     solicitud.solicitud_ID, solicitud.Tipo_estado, solicitud.Asunto,
                     solicitud.Descripcion, solicitud.correo_electronico,
+                    solicitud.fecha_creacion,
                     categoria.nombre AS categoria,
                     departamento.nombre AS departamento,
                     tipo_solicitud.nombre AS tipo_solicitud
@@ -27,6 +28,20 @@
 
         $Comp = mysqli_fetch_assoc($consultaCompr);
     }
+
+    $flujoEstados = ['Recibida', 'En revision', 'Derivada', 'En proceso', 'Respondida', 'Cerrada'];
+    $etiquetas = [
+        'Recibida'    => 'Recibida',
+        'En revision' => 'En revisión',
+        'Derivada'    => 'Derivada a departamento',
+        'En proceso'  => 'En proceso',
+        'Respondida'  => 'Respondida',
+        'Cerrada'     => 'Cerrada',
+        'Anulada'     => 'Anulada',
+    ];
+
+    $estadoActual = $Comp['Tipo_estado'] ?? '';
+    $indiceActual = array_search($estadoActual, $flujoEstados);
 ?>
 
 <!DOCTYPE html>
@@ -37,6 +52,7 @@
     <title>Seguimiento de Solicitud - SGISC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="../recursos/css/style_enviar_solicitud_formulario.css">
+    <link rel="stylesheet" href="../recursos/css/style_seguimiento.css">
 </head>
 <body>
 
@@ -45,92 +61,95 @@
 <div class="cuerpo-pag">
     <div class="container" style="max-width:780px;">
 
-        <div class="tarjeta-formulario">
+        <div class="mb-3">
+            <a href="../index.php" class="text-decoration-none text-muted small">← Volver al inicio</a>
+        </div>
 
+        <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius:12px;">
             <h1 class="formulario-tarjeta-titulo">Seguimiento de Solicitud</h1>
-            <p class="formulario-tarjeta-subtitulo">Ingrese el codigo de comprobante para consultar el estado de su solicitud.</p>
-            <hr class="division">
+            <p class="formulario-tarjeta-subtitulo">Ingrese su código de comprobante para consultar el estado.</p>
 
-            <form action="Seguimiento.php" method="POST">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-8">
-                        <label class="form-label">
-                            Codigo de comprobante <span class="rojito">*</span>
-                        </label>
-                        <input type="number" name="ID_comprobante" class="form-control" placeholder="Ej: 1" required>
-                    </div>
-                    <div class="col-md-4">
-                        <button type="submit" class="btn-enviar w-100">Consultar</button>
-                    </div>
+            <form action="Seguimiento.php" method="POST" class="mt-3">
+                <div class="d-flex gap-2">
+                    <input type="number" name="ID_comprobante" class="form-control" placeholder="Ej: 1" required
+                           value="<?php echo isset($_POST['ID_comprobante']) ? intval($_POST['ID_comprobante']) : ''; ?>">
+                    <button type="submit" class="btn-enviar" style="white-space:nowrap;">Consultar</button>
                 </div>
             </form>
-
-            <?php if ($busqueda && $Comp != null): ?>
-                <div class="mt-4 pt-4 border-top" style="border-color: var(--card-border) !important;">
-                    <div class="alert alert-success mb-4">
-                        Solicitud encontrada correctamente.
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Comprobante</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["ID_comprobante"]; ?>" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Solicitud</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["solicitud_ID"]; ?>" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["Fecha"]; ?>" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Hora</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["Hora"]; ?>" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Estado</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["Tipo_estado"]; ?>" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Categoria</label>
-                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($Comp["categoria"]); ?>" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Tipo de solicitud</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["tipo_solicitud"]; ?>" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Departamento</label>
-                            <input type="text" class="form-control" value="<?php echo $Comp["departamento"]; ?>" readonly>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Correo</label>
-                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($Comp["correo_electronico"]); ?>" readonly>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Asunto</label>
-                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($Comp["Asunto"]); ?>" readonly>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Descripcion</label>
-                            <textarea class="form-control" readonly><?php echo htmlspecialchars($Comp["Descripcion"]); ?></textarea>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($busqueda && $Comp == null): ?>
-                <div class="alert alert-warning mt-4 mb-0">
-                    No se encontro una solicitud asociada al codigo ingresado.
-                </div>
-            <?php endif; ?>
-
-            <div class="d-flex justify-content-end align-items-center gap-2 pt-4 mt-4 border-top"
-                 style="border-color: var(--card-border) !important;">
-                <a href="../index.php" class="btn-cancelar">Volver</a>
-            </div>
         </div>
+
+        <?php if ($busqueda && $Comp == null): ?>
+            <div class="alert alert-warning">
+                No se encontró una solicitud asociada al código ingresado.
+            </div>
+        <?php endif; ?>
+
+        <?php if ($busqueda && $Comp != null): ?>
+
+            <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius:12px;">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h5 class="fw-bold mb-0">Solicitud #<?php echo htmlspecialchars($Comp['ID_comprobante']); ?></h5>
+                    <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2" style="border-radius:20px;">
+                        <?php echo htmlspecialchars($etiquetas[$estadoActual] ?? $estadoActual); ?>
+                    </span>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <span class="text-muted small">Tipo de solicitud: </span>
+                        <strong class="small"><?php echo htmlspecialchars($Comp['tipo_solicitud'] ?? '—'); ?></strong>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="text-muted small">Departamento: </span>
+                        <strong class="small"><?php echo htmlspecialchars($Comp['departamento'] ?? '—'); ?></strong>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="text-muted small">Fecha de creación: </span>
+                        <strong class="small"><?php echo htmlspecialchars(date('d-m-Y', strtotime($Comp['fecha_creacion']))); ?></strong>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="text-muted small">Categoría: </span>
+                        <strong class="small"><?php echo htmlspecialchars($Comp['categoria'] ?? '—'); ?></strong>
+                    </div>
+                </div>
+
+                <hr>
+
+                <p class="mb-1 text-muted small">Asunto</p>
+                <p class="fw-semibold"><?php echo htmlspecialchars($Comp['Asunto']); ?></p>
+
+                <p class="mb-1 text-muted small">Descripción</p>
+                <p class="mb-0"><?php echo nl2br(htmlspecialchars($Comp['Descripcion'])); ?></p>
+            </div>
+
+            <div class="card border-0 shadow-sm p-4" style="border-radius:12px;">
+                <h6 class="fw-bold mb-3">Historial de estados</h6>
+
+                <?php
+                $estadosMostrar = $estadoActual === 'Anulada' ? ['Anulada'] : $flujoEstados;
+                foreach ($estadosMostrar as $clave):
+                    $indice = array_search($clave, $flujoEstados);
+                    if ($clave === $estadoActual) {
+                        $claseCir = 'circulo-actual'; $claseNom = 'nombre-actual'; $icono = '●';
+                        $fecha = date('d-m-Y H:i', strtotime($Comp['Fecha'] . ' ' . $Comp['Hora']));
+                    } elseif ($indice < $indiceActual) {
+                        $claseCir = 'circulo-ok'; $claseNom = 'nombre-ok'; $icono = '✓'; $fecha = '—';
+                    } else {
+                        $claseCir = 'circulo-pendiente'; $claseNom = 'nombre-pendiente'; $icono = ''; $fecha = '—';
+                    }
+                ?>
+                    <div class="estado-fila">
+                        <div class="d-flex align-items-center">
+                            <div class="estado-circulo <?php echo $claseCir; ?>"><?php echo $icono; ?></div>
+                            <span class="<?php echo $claseNom; ?>"><?php echo $etiquetas[$clave] ?? $clave; ?></span>
+                        </div>
+                        <span class="fecha-estado"><?php echo $fecha; ?></span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        <?php endif; ?>
+
     </div>
 </div>
 
