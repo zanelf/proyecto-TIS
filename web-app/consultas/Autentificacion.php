@@ -7,6 +7,7 @@
 
     $consulta = "SELECT * FROM usuario WHERE rut_usuario='$usuario' LIMIT 1";
     $resultado = mysqli_query($conexionDB, $consulta);
+    
     if(mysqli_num_rows($resultado) > 0){
         $datosUsuario = mysqli_fetch_assoc($resultado);
 
