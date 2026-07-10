@@ -1,0 +1,4 @@
+1.	Registro de solicitudes
+- Registrar solicitud de los ciudadanos (Felicitaciones, reclamos o sugerencias)
+- Asignar codigo unico de seguimiento a la solicitud (Ticket)
+- Enviar un comprobante al correo electronico del ciudadano (numero de ticket, fecha, hora y resumen)
