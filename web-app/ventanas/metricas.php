@@ -16,9 +16,9 @@ $where_str = implode(" AND ", $where_clauses);
 
 $sql_kpi = "SELECT 
                 COUNT(*) as total,
-                SUM(CASE WHEN Tipo_estado = 'Pendiente' THEN 1 ELSE 0 END) as pendientes,
-                SUM(CASE WHEN Tipo_estado = 'En Proceso' THEN 1 ELSE 0 END) as en_proceso,
-                SUM(CASE WHEN Tipo_estado = 'Resuelto' THEN 1 ELSE 0 END) as resueltos
+                SUM(CASE WHEN Tipo_estado = 'Recibida' THEN 1 ELSE 0 END) as pendientes,
+                SUM(CASE WHEN Tipo_estado = 'En proceso' THEN 1 ELSE 0 END) as en_proceso,
+                SUM(CASE WHEN Tipo_estado IN ('Respondida', 'Cerrada') THEN 1 ELSE 0 END) as resueltos
             FROM solicitud s WHERE $where_str";
 $res_kpi = mysqli_query($conexionDB, $sql_kpi);
 $kpis = $res_kpi ? mysqli_fetch_assoc($res_kpi) : ['total'=>0, 'pendientes'=>0, 'en_proceso'=>0, 'resueltos'=>0];
@@ -39,7 +39,7 @@ if ($res_tipos) {
 
 $sql_deps = "SELECT d.*, 
                 COUNT(s.solicitud_ID) as total_dep,
-                SUM(CASE WHEN s.Tipo_estado = 'Resuelto' THEN 1 ELSE 0 END) as resueltas_dep
+                SUM(CASE WHEN s.Tipo_estado IN ('Respondida', 'Cerrada') THEN 1 ELSE 0 END) as resueltas_dep
              FROM solicitud s
              JOIN departamento d ON s.ID_departamento = d.ID_departamento
              WHERE $where_str GROUP BY d.ID_departamento";

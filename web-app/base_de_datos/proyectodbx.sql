@@ -198,7 +198,7 @@ INSERT INTO `prioridad` (`ID_prioridad`, `Nombre`) VALUES
 
 CREATE TABLE `solicitud` (
   `solicitud_ID` int(11) NOT NULL,
-  `Tipo_estado` enum('Recibida','En revision','Derivada','En proceso','Respondida','Cerrada') DEFAULT 'Recibida',
+  `Tipo_estado` enum('Recibida','En revision','Derivada','En proceso','Respondida','Cerrada','Anulada') DEFAULT 'Recibida',
   `Asunto` varchar(100) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
   `respuesta` text DEFAULT NULL,

@@ -62,13 +62,10 @@ if($tipoUsuario == "Administrador") {
 
             <?php foreach ($opcionesActuales as $opcion => $label): ?>
                 <?php 
-                    
                     $nombreOpcion = basename($opcion); 
                     $nombrePaginaActual = basename($_SERVER['PHP_SELF'], ".php"); 
                     
-                  
                     $claseExtra = (str_contains($opcion, 'logout')) ? 'btn-cerrar' : '';
-                    
                     
                     if ($nombreOpcion === $nombrePaginaActual && !str_contains($opcion, 'logout')) {
                         $claseExtra .= ' btn-activo';

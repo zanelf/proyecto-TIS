@@ -19,11 +19,12 @@ while ($fila = mysqli_fetch_assoc($atributos)) {
 // qué columnas mostrar por tabla, y su ancho
 $columnasVisibles = [
     "usuario" => [
-        "rut_usuario"     => ["RUT", "15%"],
-        "correo_usuario"  => ["Correo", "25%"],
-        "tipo_trabajador" => ["Tipo de trabajador", "17%"],
-        "Fecha_creacion"  => ["Creado", "15%"],
-        "Activo"          => ["Estado", "10%"],
+        "rut_usuario"     => ["RUT", "13%"],
+        "correo_usuario"  => ["Correo", "20%"],
+        "tipo_trabajador" => ["Tipo de trabajador", "14%"],
+        "nombre_departamento" => ["Departamento", "17%"],
+        "Fecha_creacion"  => ["Creado", "12%"],
+        "activo"          => ["Estado", "8%"],
     ],
     "solicitud" => [
         "solicitud_ID"  => ["ID", "8%"],
@@ -44,7 +45,7 @@ $columnasVisibles = [
     ],
 ];
 
-//Muestra tabla de acuerdo a la tabla
+// si el modelo no está en la lista, se muestran todas las columnas
 $camposAMostrar = isset($columnasVisibles[$modelo]) ? $columnasVisibles[$modelo] : null;
 
 echo '<table class="table table-hover align-middle mb-0">';
@@ -72,15 +73,20 @@ $buscarEsc = mysqli_real_escape_string($conexionDB, $buscar);
 
 $resultado = mysqli_query($conexionDB, "SELECT * FROM " . $modelo);
 if ($modelo == "usuario") {
-    $selectUsuario = "SELECT usuario.*, (
-        CASE
-            WHEN EXISTS (SELECT 1 FROM administrador a WHERE a.ID_usuario = usuario.ID_usuario) THEN 'Administrador'
-            WHEN EXISTS (SELECT 1 FROM desarrollador dev WHERE dev.ID_usuario = usuario.ID_usuario) THEN 'Desarrollador'
-            WHEN EXISTS (SELECT 1 FROM funcionario f WHERE f.ID_usuario = usuario.ID_usuario) THEN 'Funcionario'
-            WHEN EXISTS (SELECT 1 FROM director d WHERE d.ID_usuario = usuario.ID_usuario) THEN 'Director'
-            ELSE 'Sin rol'
-        END
-    ) AS tipo_trabajador FROM usuario";
+    $selectUsuario = "SELECT usuario.*,
+        (
+            CASE
+                WHEN usuario.is_admin = 1 THEN 'Administrador'
+                WHEN EXISTS (SELECT 1 FROM desarrollador dev WHERE dev.ID_usuario = usuario.ID_usuario) THEN 'Desarrollador'
+                WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'funcionario') THEN 'Funcionario'
+                WHEN EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director') THEN 'Director'
+                ELSE 'Sin rol'
+            END
+        ) AS tipo_trabajador,
+        departamento.nombre AS nombre_departamento
+        FROM usuario
+        LEFT JOIN trabajador ON trabajador.ID_usuario = usuario.ID_usuario
+        LEFT JOIN departamento ON departamento.ID_departamento = trabajador.ID_departamento";
     $resultado = mysqli_query($conexionDB, $selectUsuario);
 }
 
@@ -94,13 +100,10 @@ if ($modelo == "solicitud") {
         $where[] = "(Asunto LIKE '%$buscarEsc%' OR Descripcion LIKE '%$buscarEsc%' OR solicitud_ID LIKE '%$buscarEsc%')";
     }
 } elseif ($modelo == "usuario") {
-    // usuario no tiene departamento propio, se busca en funcionario/director
+    // usuario no tiene departamento propio, se busca en trabajador
     if ($tipoUsuario == "Director" && $dpto !== null) {
         $dptoEsc = mysqli_real_escape_string($conexionDB, $dpto);
-        $where[] = "(
-            EXISTS (SELECT 1 FROM funcionario f WHERE f.ID_usuario = usuario.ID_usuario AND f.ID_departamento = '$dptoEsc')
-            OR EXISTS (SELECT 1 FROM director d WHERE d.ID_usuario = usuario.ID_usuario AND d.ID_departamento = '$dptoEsc')
-        )";
+        $where[] = "EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director' AND t.ID_departamento = '$dptoEsc')";
     }
     if ($buscar !== "") {
         $where[] = "rut_usuario LIKE '%$buscarEsc%'";
@@ -145,7 +148,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         if ($campo['Field'] == "Tipo_estado") {
             $estado = $row[$campo['Field']];
         }
-        if ($modelo == "usuario" && $campo['Field'] == "Activo") {
+        if ($modelo == "usuario" && $campo['Field'] == "activo") {
             $activoUsuario = (int)$row[$campo['Field']];
         }
     }
@@ -154,7 +157,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         foreach ($camposAMostrar as $campoNombre => $meta) {
             $valor = $row[$campoNombre] ?? '';
 
-            if ($campoNombre == "Activo") {
+            if ($campoNombre == "activo") {
                 echo (int)$valor === 1
                     ? '<td><span class="badge bg-success-subtle text-success">Activo</span></td>'
                     : '<td><span class="badge bg-danger-subtle text-danger">Inactivo</span></td>';
@@ -193,9 +196,12 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         echo '<a href="Revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Revisar</a>';
     }
     if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "Funcionario") {
-        echo '<a href="Responder.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Responder</a>';
+        echo '<a href="Tomarsolicitud.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Tomar</a>';
     }
-    if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $tipoUsuario == "Funcionario") {
+    if ($modelo == "solicitud" && $estado == "En proceso" && $tipoUsuario == "Funcionario") {
+        echo '<a href="Responder.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Responder</a>';
+    }
+    if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $estado != "En proceso" && $tipoUsuario == "Funcionario") {
         echo '<span class="text-muted small">Sin acciones</span>';
     }
     echo '</div>';

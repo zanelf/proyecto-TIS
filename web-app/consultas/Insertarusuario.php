@@ -32,13 +32,15 @@
         exit;
     }
 
-    // contraseña automatica
+    
     $password_plana = substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8);
     $contraseñahash = password_hash($password_plana, PASSWORD_BCRYPT);
 
    
-    $consulta_base = "INSERT INTO usuario (rut_usuario, correo_usuario, contraseña, Fecha_creacion, Activo, cambioContra)
-                       VALUES ('$rut_usuario', '$correo_usuario', '$contraseñahash', NOW(), 1, 1)";
+    $esAdmin = ($tipo == "Administrador") ? 1 : 0;
+
+    $consulta_base = "INSERT INTO usuario (rut_usuario, correo_usuario, contraseña, Fecha_creacion, activo, cambio_contraseña, is_admin)
+                       VALUES ('$rut_usuario', '$correo_usuario', '$contraseñahash', CURDATE(), 1, 1, $esAdmin)";
     $resultado_base = mysqli_query($conexionDB, $consulta_base);
 
     if (!$resultado_base) {
@@ -50,20 +52,14 @@
 
 
     if ($requiereFicha) {
-        $consulta_trabajador = "INSERT INTO trabajador (ID_usuario, nombre, apellido, ID_departamento, prevision, afp)
-                                 VALUES ('$id_nuevo_usuario', '$nombre', '$apellido', '$id_departamento', '$prevision', '$afp')";
+        $tipoTrabajadorDB = strtolower($tipo); // 'funcionario' o 'director'
+        $consulta_trabajador = "INSERT INTO trabajador (rut_usuario, nombre, apellido, tipo_trabajador, prevision, AFP, ID_usuario, ID_departamento)
+                                 VALUES ('$rut_usuario', '$nombre', '$apellido', '$tipoTrabajadorDB', '$prevision', '$afp', '$id_nuevo_usuario', '$id_departamento')";
         mysqli_query($conexionDB, $consulta_trabajador);
     }
 
-    // registro en la tabla segun el usuario
-    if ($tipo == "Administrador") {
-        mysqli_query($conexionDB, "INSERT INTO administrador (ID_usuario) VALUES ('$id_nuevo_usuario')");
-    } elseif ($tipo == "Desarrollador") {
+    if ($tipo == "Desarrollador") {
         mysqli_query($conexionDB, "INSERT INTO desarrollador (ID_usuario) VALUES ('$id_nuevo_usuario')");
-    } elseif ($tipo == "Funcionario") {
-        mysqli_query($conexionDB, "INSERT INTO funcionario (ID_usuario, ID_departamento) VALUES ('$id_nuevo_usuario', '$id_departamento')");
-    } elseif ($tipo == "Director") {
-        mysqli_query($conexionDB, "INSERT INTO director (ID_usuario, ID_departamento) VALUES ('$id_nuevo_usuario', '$id_departamento')");
     }
 
     // Se envía el correo con credenciale

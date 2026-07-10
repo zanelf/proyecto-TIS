@@ -1,6 +1,6 @@
 CREATE TABLE Ciudadano (
     RUT_ciudadano INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
-    correo_electronico VARCHAR(100) NOT NULL
+    correo_electronico VARCHAR(100) NOT NULL UNIQUE
 );
 CREATE TABLE Tipo_solicitud (
     ID_tipo_solicitud INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
@@ -16,7 +16,7 @@ CREATE TABLE solicitud (
     Tipo_estado ENUM('Felicitaciones','Reclamo','Sugerencia') DEFAULT NULL,
     Asunto VARCHAR(100) DEFAULT NULL,
     Descripcion VARCHAR(100) DEFAULT NULL,
-    correo_electronico varchar(100) DEFAULT NULL,
+    correo_electronico varchar(100) DEFAULT NULL UNIQUE,
     ID_departamento INT(11) DEFAULT NULL,
     ID_tipo_solicitud INT(11) DEFAULT NULL,
     estado_solicitud ENUM(
@@ -63,8 +63,10 @@ CREATE TABLE Archivo (
 
 CREATE TABLE Usuario (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
-    nombre_usuario VARCHAR(100) NOT NULL,
-    contraseña VARCHAR(100) NOT NULL
+    rut_usuario VARCHAR(100) NOT NULL,
+    contraseña VARCHAR(100) NOT NULL,
+    Fecha_creacion date,
+    Activo Boolean,
 );
 CREATE TABLE Funcionario (
     ID_usuario INT PRIMARY KEY AUTO_INCREMENT, -- Cambiar a SERIAL en PostgreSQL
