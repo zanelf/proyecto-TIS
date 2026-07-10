@@ -189,7 +189,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
     if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "funcionario") {
         echo '<a href="Revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Revisar</a>';
     }
-    if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "funcionario") {
+    if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "Funcionario") {
         echo '<a href="TomarSolicitud.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Tomar</a>';
     }
     if ($modelo == "solicitud" && $estado == "En proceso" && $tipoUsuario == "funcionario") {
