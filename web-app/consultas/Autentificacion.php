@@ -7,7 +7,6 @@
 
     $consulta = "SELECT * FROM usuario WHERE rut_usuario='$usuario' LIMIT 1";
     $resultado = mysqli_query($conexionDB, $consulta);
-
     if(mysqli_num_rows($resultado) > 0){
         $datosUsuario = mysqli_fetch_assoc($resultado);
 
@@ -23,40 +22,32 @@
             $_SESSION["ID_usuario"] = $datosUsuario["ID_usuario"];
             
             $var = $_SESSION["ID_usuario"];
+            
+            $consulta="SELECT * FROM Trabajador WHERE ID_usuario = '$var'";
+            $datosTrabajador=mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta));
+            
+            $datoDpto= $datosTrabajador['ID_departamento'];
+            $datoTipo= $datosTrabajador['tipo_trabajador'];
 
-
-            $dev = "SELECT * FROM desarrollador WHERE ID_usuario='$var';";
-            $esDev = mysqli_query($conexionDB, $dev);
-
-            $trab = "SELECT * FROM trabajador WHERE ID_usuario='$var';";
-            $esTrab = mysqli_fetch_assoc(mysqli_query($conexionDB, $trab));
-
-            if ((int)$datosUsuario["is_admin"] === 1) {
+            if((int)$datosUsuario["is_admin"]==1){
                 $_SESSION["ID_departamento"] = "";
-                $_SESSION["tipo"] = "Administrador";
+                $_SESSION["tipo"] = $datoTipo;
+                $_SESSION["ID_departamento"] = $datoDpto;
+            }elseif($datosTrabajador["tipo_trabajador"]==="funcionario"){ 
+                $_SESSION["ID_departamento"] = mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta))['ID_departamento'];
+                $_SESSION["tipo"] = $datoTipo;
             }
-            elseif ($esTrab && $esTrab["tipo_trabajador"] == "funcionario") {
-                $_SESSION["ID_departamento"] = $esTrab["ID_departamento"];
-                $_SESSION["tipo"] = "Funcionario";
-            }
-            elseif ($esTrab && $esTrab["tipo_trabajador"] == "director") {
-                $_SESSION["ID_departamento"] = $esTrab["ID_departamento"];
-                $_SESSION["tipo"] = "Director";
-            }
-            elseif (mysqli_num_rows($esDev) > 0) {
-
-                $_SESSION["tipo"] = "Desarrollador";
+            elseif($datosTrabajador["tipo_trabajador"]==="director"){
+                $_SESSION["tipo"] = "director";
+                $_SESSION["ID_departamento"] = mysqli_fetch_assoc(mysqli_query($conexionDB,$consulta))['ID_departamento'];
             }
 
-            if (isset($_SESSION["tipo"])) {
-                switch ($_SESSION["tipo"]) {
-                    case "Administrador":
-                        header('Location: ../ventanas/Usuario.php');
-                        break;
-                    case "Director":
+            if ($datoTipo) {
+                switch ($datoTipo) {
+                    case "director":
                         header('Location: ../ventanas/director.php');
                         break;
-                    case "Funcionario":
+                    case "funcionario":
                         header('Location: ../ventanas/solicitud.php');
                         break;
                     default:

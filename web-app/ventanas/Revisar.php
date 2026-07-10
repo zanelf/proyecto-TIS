@@ -53,7 +53,7 @@
                         <td><?php echo $solicutdRevisar['Asunto']; ?></td>
                         <td><?php echo $solicutdRevisar['Descripcion']; ?></td>
                         <td><?php echo $solicutdRevisar['Categoria']; ?></td>
-                        <td><?php echo $solicutdRevisar['RUT_ciudadano']; ?></td>
+                        <td><?php echo $solicutdRevisar['correo_electronico']; ?></td>
                         <td><?php echo $solicutdRevisar['ID_tipo_solicitud']; ?></td>
                     </tbody>
                 </table>
@@ -75,7 +75,8 @@
                             </option>
                         <?php } ?>
                     </select>                             
-                    <input type="hidden" value="<?php echo $solicutdRevisar['ID_departamento'] ?>" name="ID_cambio">
+                    <input type="hidden" value="<?php echo $solicutdRevisar['ID_departamento'] ?>" name="ID_departamento">
+                    <input type="hidden" value="<?php echo $solicutdRevisar['ID_tipo_solicitud'] ?>" name="ID_tipo_solicitud">
                     <input type="hidden" value="<?php echo $id_solicitud ?>" name="ID_cambio">
                     <input type="hidden" value="Derivada" name="estadoSiguiente">
                     <input type="submit" class="btn bg-success">

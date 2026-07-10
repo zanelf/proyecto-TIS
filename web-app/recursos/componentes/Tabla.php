@@ -170,7 +170,7 @@ while ($row = mysqli_fetch_assoc($resultado)) {
     echo '<td class="text-center">';
     echo '<div class="d-flex gap-1 justify-content-center flex-wrap">';
 
-    if ($modelo == "usuario" && $tipoUsuario == "Administrador") {
+    if ($modelo == "usuario" && $tipoUsuario == "administrador") {
         if ($activoUsuario === 1) {
             echo '<a href="EditarUsuario.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-warning text-dark fw-medium shadow-sm px-2">Editar</a>';
             echo '<a href="../recursos/componentes/Dardebajausuario.php?id_enviado=' . $PKValue . '"
@@ -181,18 +181,18 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         } else {
             echo '<span class="badge bg-secondary-subtle text-secondary fw-semibold px-3 py-2">Sin acciones</span>';
         }
-    } elseif ($modelo != "usuario" && $tipoUsuario == "Administrador") {
+    } elseif ($modelo != "usuario" && $tipoUsuario == "administrador") {
         echo '<a href="../recursos/componentes/Editar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-warning text-dark fw-medium shadow-sm px-2">Editar</a>';
         echo '<a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-danger fw-medium shadow-sm px-2">Eliminar</a>';
     }
 
-    if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "Funcionario") {
+    if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "funcionario") {
         echo '<a href="Revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Revisar</a>';
     }
     if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "Funcionario") {
-        echo '<a href="Tomarsolicitud.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Tomar</a>';
+        echo '<a href="TomarSolicitud.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Tomar</a>';
     }
-    if ($modelo == "solicitud" && $estado == "En proceso" && $tipoUsuario == "Funcionario") {
+    if ($modelo == "solicitud" && $estado == "En proceso" && $tipoUsuario == "funcionario") {
         echo '<a href="Responder.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Responder</a>';
     }
     if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $estado != "En proceso" && $tipoUsuario == "Funcionario") {
