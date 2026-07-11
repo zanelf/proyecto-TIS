@@ -34,7 +34,7 @@ function enviarCorreoEncuesta($correoCiudadano, $asuntoSolicitud, $tokenEncuesta
         $mail->setFrom(MAIL_USER, MAIL_FROM_NAME);
         $mail->addAddress($correoCiudadano);
 
-        $linkEncuesta = "http://localhost/proyecto-TIS/web-app/ventanas/Encuesta.php?token=" . $tokenEncuesta;
+        $linkEncuesta = "http://localhost/xampp/proyecto-TIS/web-app/ventanas/Encuesta.php?token=" . $tokenEncuesta;
 
         $mail->isHTML(true);
         $mail->Subject = "Encuesta de satisfacción - SGISC";
