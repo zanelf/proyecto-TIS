@@ -10,7 +10,7 @@ if ($token != "") {
     $tokenSeguro = mysqli_real_escape_string($conexionDB, $token);
 
     $consulta = "
-        SELECT solicitud.solicitud_ID, solicitud.RUT_ciudadano, solicitud.Asunto, solicitud.estado_solicitud
+        SELECT solicitud.solicitud_ID, solicitud.Asunto
         FROM solicitud
         WHERE solicitud.token_encuesta = '$tokenSeguro'
         LIMIT 1
