@@ -106,7 +106,7 @@ if ($modelo == "solicitud") {
         $where[] = "EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director' AND t.ID_departamento = '$dptoEsc')";
     }
     if ($buscar !== "") {
-        $where[] = "rut_usuario LIKE '%$buscarEsc%'";
+        $where[] = "usuario.rut_usuario LIKE '%$buscarEsc%'";
     }
 } elseif ($modelo == "departamento") {
     if ($buscar !== "") {
