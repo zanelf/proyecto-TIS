@@ -8,7 +8,7 @@ if ($_POST) {
     $p3 = intval($_POST["respuesta_p3"]);
 
     $consultaSolicitud = "
-        SELECT solicitud_ID, RUT_ciudadano
+        SELECT solicitud_ID
         FROM solicitud
         WHERE token_encuesta = '$token'
         LIMIT 1
@@ -22,7 +22,6 @@ if ($_POST) {
     }
 
     $idSolicitud = $solicitud["solicitud_ID"];
-    $rutCiudadano = $solicitud["RUT_ciudadano"];
 
     $consultaExiste = "SELECT ID_encuesta FROM encuesta WHERE solicitud_ID = $idSolicitud LIMIT 1";
     $resultadoExiste = mysqli_query($conexionDB, $consultaExiste);
@@ -34,13 +33,11 @@ if ($_POST) {
 
     $insertar = "
         INSERT INTO encuesta (
-            RUT_ciudadano,
             solicitud_ID,
             respuesta_p1,
             respuesta_p2,
             respuesta_p3
         ) VALUES (
-            $rutCiudadano,
             $idSolicitud,
             $p1,
             $p2,
@@ -53,7 +50,7 @@ if ($_POST) {
     if ($resultadoInsertar) {
        $actualizarSolicitud = "
        UPDATE solicitud
-       SET estado_solicitud = 'Cerrada',
+       SET Tipo_estado = 'Cerrada',
           token_encuesta = NULL
        WHERE solicitud_ID = $idSolicitud
        ";
