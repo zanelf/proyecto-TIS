@@ -1,78 +1,43 @@
 <?php
 require(__DIR__ . '/../base_de_datos/conexion.php');
+require(__DIR__ . '/../consultas/CalcularMetricas.php');
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Acceso
+$rolUsuario = isset($_SESSION['tipo']) ? $_SESSION['tipo'] : '';
+if ($rolUsuario != 'Administrador' && $rolUsuario != 'Director') {
+    header("Location: ../index.php");
+    exit;
+}
+
+// Condición del director
+$esDirector = ($rolUsuario == 'Director');
+$dptoDirector = $esDirector ? $_SESSION['ID_departamento'] : '';
 
 $filter_tipo = isset($_GET['id_tipo_solicitud']) ? $_GET['id_tipo_solicitud'] : '';
-$filter_dep = isset($_GET['id_departamento']) ? $_GET['id_departamento'] : '';
+$filter_dep = $esDirector ? $dptoDirector : (isset($_GET['id_departamento']) ? $_GET['id_departamento'] : '');
 
 
-$where_clauses = ["1=1"];
-if (!empty($filter_tipo)) $where_clauses[] = "s.ID_tipo_solicitud = '$filter_tipo'";
-if (!empty($filter_dep)) $where_clauses[] = "s.ID_departamento = '$filter_dep'";
-$where_str = implode(" AND ", $where_clauses);
-
-$sql_kpi = "SELECT 
-                COUNT(*) as total,
-                SUM(CASE WHEN Tipo_estado = 'Recibida' THEN 1 ELSE 0 END) as pendientes,
-                SUM(CASE WHEN Tipo_estado = 'En proceso' THEN 1 ELSE 0 END) as en_proceso,
-                SUM(CASE WHEN Tipo_estado IN ('Respondida', 'Cerrada') THEN 1 ELSE 0 END) as resueltos
-            FROM solicitud s WHERE $where_str";
-$res_kpi = mysqli_query($conexionDB, $sql_kpi);
-$kpis = $res_kpi ? mysqli_fetch_assoc($res_kpi) : ['total'=>0, 'pendientes'=>0, 'en_proceso'=>0, 'resueltos'=>0];
-
-
-$sql_tipos = "SELECT ts.*, COUNT(s.solicitud_ID) as cantidad 
-              FROM solicitud s 
-              JOIN tipo_solicitud ts ON s.ID_tipo_solicitud = ts.ID_tipo_solicitud 
-              WHERE $where_str GROUP BY ts.ID_tipo_solicitud";
-$res_tipos = mysqli_query($conexionDB, $sql_tipos);
-$datosTipos = [];
-if ($res_tipos) {
-    while ($row = mysqli_fetch_array($res_tipos)) {
-        $datosTipos[] = ['nombre' => $row[1], 'cantidad' => (int)$row['cantidad']];
-    }
-}
-
-
-$sql_deps = "SELECT d.*, 
-                COUNT(s.solicitud_ID) as total_dep,
-                SUM(CASE WHEN s.Tipo_estado IN ('Respondida', 'Cerrada') THEN 1 ELSE 0 END) as resueltas_dep
-             FROM solicitud s
-             JOIN departamento d ON s.ID_departamento = d.ID_departamento
-             WHERE $where_str GROUP BY d.ID_departamento";
-$res_deps = mysqli_query($conexionDB, $sql_deps);
-$datosDeps = [];
-if ($res_deps) {
-    while ($row = mysqli_fetch_array($res_deps)) {
-        $datosDeps[] = ['nombre' => $row[1], 'totales' => (int)$row['total_dep'], 'resueltas' => (int)$row['resueltas_dep']];
-    }
-}
-
+$kpis = obtenerKpis($conexionDB, $filter_tipo, $filter_dep);
+$datosTipos = obtenerDistribucionTipos($conexionDB, $filter_tipo, $filter_dep);
+$datosDeps = obtenerResolucionDeptos($conexionDB, $filter_tipo, $filter_dep);
 
 if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
-    ob_clean(); 
+    ob_clean();
     header('Content-Type: application/json');
     echo json_encode([
         'kpis' => $kpis,
         'tipos' => $datosTipos,
         'deps' => $datosDeps
     ]);
-    exit; 
+    exit;
 }
-
 
 $list_tipos = mysqli_query($conexionDB, "SELECT * FROM tipo_solicitud");
 $list_deps = mysqli_query($conexionDB, "SELECT * FROM departamento");
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>SGISC - Panel Analítico y SLA</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../recursos/css/style_index.css?v=<?php echo time(); ?>">
@@ -84,7 +49,14 @@ $list_deps = mysqli_query($conexionDB, "SELECT * FROM departamento");
     <?php include("../recursos/componentes/navbar1.php"); ?>
 
     <div class="contenedor-metricas container">
-        <h1 class="titulo-seccion mb-4 fw-bold text-dark">Panel Analítico y Desempeño (SLA)</h1>
+        <h1 class="titulo-seccion mb-1 fw-bold text-dark">Panel Analítico y Desempeño (SLA)</h1>
+        <?php if ($esDirector):
+            $nombreDepDir = mysqli_fetch_assoc(mysqli_query($conexionDB, "SELECT nombre FROM departamento WHERE ID_departamento = '$dptoDirector' LIMIT 1"));
+        ?>
+            <p class="text-muted mb-4">Departamento de <?php echo htmlspecialchars($nombreDepDir['nombre'] ?? ''); ?></p>
+        <?php else: ?>
+            <div class="mb-4"></div>
+        <?php endif; ?>
 
         <form id="form-filtros" class="card p-4 border-0 shadow-sm mb-5 bg-white" style="border-radius: 12px;">
             <div class="row g-3">
@@ -96,6 +68,7 @@ $list_deps = mysqli_query($conexionDB, "SELECT * FROM departamento");
                     <label class="form-label fw-semibold text-secondary small">Fecha Fin</label>
                     <input type="date" class="form-control" name="fecha_fin">
                 </div>
+                <?php if (!$esDirector): ?>
                 <div class="col-12 col-md-3 d-flex flex-column">
                     <label class="form-label fw-semibold text-secondary small">Departamento</label>
                     <select class="form-select" name="id_departamento">
@@ -105,6 +78,7 @@ $list_deps = mysqli_query($conexionDB, "SELECT * FROM departamento");
                         <?php endwhile; ?>
                     </select>
                 </div>
+                <?php endif; ?>
                 <div class="col-12 col-md-3 d-flex flex-column">
                     <label class="form-label fw-semibold text-secondary small">Tipo Solicitud</label>
                     <select class="form-select" name="id_tipo_solicitud">
