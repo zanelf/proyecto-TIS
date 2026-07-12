@@ -46,6 +46,28 @@
 
         generarTokenEncuesta($conexionDB, $idSolicitud);
 
+    } elseif ($estadoSiguiente == 'Anulada') {
+        $motivo = isset($_POST['motivo_anulacion']) ? mysqli_real_escape_string($conexionDB, trim($_POST['motivo_anulacion'])) : '';
+        if ($motivo === '') {
+            echo "Por favor, ingrese un motivo de anulación.";
+            exit;
+        }
+
+        $consulta = "UPDATE solicitud
+                     SET Tipo_estado = 'Anulada', motivo_anulacion = '$motivo'
+                     WHERE solicitud_ID = '$idSolicitud'";
+        mysqli_query($conexionDB, $consulta);
+
+        if ($datosSol && $datosSol['correo_electronico']) {
+            enviarCorreoEstado(
+                $datosSol['correo_electronico'],
+                $datosSol['Asunto'],
+                $datosSol['ID_comprobante'],
+                'Anulada',
+                $motivo
+            );
+        }
+
     } else {
         $consulta = "UPDATE solicitud SET Tipo_estado = '$estadoSiguiente' WHERE solicitud_ID = '$idSolicitud'";
         mysqli_query($conexionDB, $consulta);
