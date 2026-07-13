@@ -1,5 +1,6 @@
 <?php
     include('../base_de_datos/conexion.php');
+    require_once('RegistrarLogEstado.php');
     require_once __DIR__ . '/../config/mail_config.php';
     require_once __DIR__ . '/../libs/PHPMailer-master/src/Exception.php';
     require_once __DIR__ . '/../libs/PHPMailer-master/src/PHPMailer.php';
@@ -45,6 +46,9 @@
 
     $comp = mysqli_fetch_assoc(mysqli_query($conexionDB, "SELECT ID_comprobante FROM comprobante WHERE solicitud_ID = $ID_solicitud LIMIT 1"));
     $ID_comprobante = $comp['ID_comprobante'];
+
+    // llamamos al log
+    registrarLogEstado($conexionDB, $ID_solicitud, null, 'Recibida', null);
 
     // envío de correo con comprobante
     $mail = new PHPMailer(true);

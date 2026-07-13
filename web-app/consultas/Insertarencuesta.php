@@ -1,5 +1,6 @@
 <?php
 include('../base_de_datos/conexion.php');
+require_once('RegistrarLogEstado.php');
 
 if ($_POST) {
     $token = mysqli_real_escape_string($conexionDB, $_POST["token"]);
@@ -56,6 +57,8 @@ if ($_POST) {
        ";
 
         mysqli_query($conexionDB, $actualizarSolicitud);
+
+        registrarLogEstado($conexionDB, $idSolicitud, 'Respondida', 'Cerrada', null);
 
         header("Location: ../ventanas/Encuesta.php?token=$token&gracias=1");
         exit;
