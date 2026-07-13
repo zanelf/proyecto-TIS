@@ -1,6 +1,7 @@
 <?php
     session_start();
     include('../base_de_datos/conexion.php');
+    require_once('../consultas/RegistrarLogEstado.php');
 
     $Comp = null;
     $busqueda = false;
@@ -42,6 +43,15 @@
 
     $estadoActual = $Comp['Tipo_estado'] ?? '';
     $indiceActual = array_search($estadoActual, $flujoEstados);
+
+    // historial de estados
+    $fechasPorEstado = [];
+    if ($Comp) {
+        $historial = obtenerLogEstado($conexionDB, $Comp['solicitud_ID']);
+        foreach ($historial as $evento) {
+            $fechasPorEstado[$evento['estado_nuevo']] = $evento['fecha_hora_cambio'];
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -129,13 +139,20 @@
                 $estadosMostrar = $estadoActual === 'Anulada' ? ['Anulada'] : $flujoEstados;
                 foreach ($estadosMostrar as $clave):
                     $indice = array_search($clave, $flujoEstados);
+                    // fecha del estado
+                    $fechaEstado = isset($fechasPorEstado[$clave])
+                        ? date('d-m-Y H:i', strtotime($fechasPorEstado[$clave]))
+                        : '—';
+
                     if ($clave === $estadoActual) {
                         $claseCir = 'circulo-actual'; $claseNom = 'nombre-actual'; $icono = '●';
-                        $fecha = date('d-m-Y H:i', strtotime($Comp['Fecha'] . ' ' . $Comp['Hora']));
+                        $fecha = $fechaEstado;
                     } elseif ($indice < $indiceActual) {
-                        $claseCir = 'circulo-ok'; $claseNom = 'nombre-ok'; $icono = '✓'; $fecha = '—';
+                        $claseCir = 'circulo-ok'; $claseNom = 'nombre-ok'; $icono = '✓';
+                        $fecha = $fechaEstado;
                     } else {
-                        $claseCir = 'circulo-pendiente'; $claseNom = 'nombre-pendiente'; $icono = ''; $fecha = '—';
+                        $claseCir = 'circulo-pendiente'; $claseNom = 'nombre-pendiente'; $icono = '';
+                        $fecha = '—';
                     }
                 ?>
                     <div class="estado-fila">
