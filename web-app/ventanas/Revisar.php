@@ -12,6 +12,8 @@
         exit;
     }
 
+    require_once('../consultas/RegistrarLogEstado.php');
+
     $id_solicitud = mysqli_real_escape_string($conexionDB, $_GET['id_enviado']);
 
     $consulta = "SELECT solicitud.*, categoria.nombre AS nombre_categoria
@@ -24,6 +26,14 @@
     if (!$solicutdRevisar) {
         echo "Solicitud no encontrada.";
         exit;
+    }
+
+    // abrir pasa a revisión 
+    if ($solicutdRevisar['Tipo_estado'] == 'Recibida') {
+        $idUsuario = isset($_SESSION['ID_usuario']) ? $_SESSION['ID_usuario'] : null;
+        mysqli_query($conexionDB, "UPDATE solicitud SET Tipo_estado = 'En revision' WHERE solicitud_ID = '$id_solicitud'");
+        registrarLogEstado($conexionDB, $id_solicitud, 'Recibida', 'En revision', $idUsuario);
+        $solicutdRevisar['Tipo_estado'] = 'En revision';
     }
 
     $prioridadesQuery = "SELECT * FROM prioridad";
