@@ -1,5 +1,5 @@
 <?php
-// (casi la misma lógica de tabla.php)
+//misma lógica que la de la tabla.php
 include_once('../base_de_datos/conexion.php');
 
 $tipoUsuario = isset($_SESSION['tipo']) ? $_SESSION['tipo'] : "";
@@ -19,7 +19,6 @@ $columnas = [
     'Cerrada'    => ['titulo' => 'Cerrada',     'estados' => ['Cerrada', 'Anulada']],
 ];
 
-// filtros 
 $where = [];
 if (($tipoUsuario == "Funcionario" || $tipoUsuario == "Director") && $dpto !== null) {
     $where[] = "s.ID_departamento = '" . mysqli_real_escape_string($conexionDB, $dpto) . "'";
@@ -37,7 +36,7 @@ $consulta = "SELECT s.solicitud_ID, s.Asunto, s.Tipo_estado, s.fecha_creacion,
              ORDER BY s.fecha_creacion DESC";
 $resultado = mysqli_query($conexionDB, $consulta);
 
-// sol por columna
+
 $solicitudesPorColumna = [];
 foreach ($columnas as $clave => $col) {
     $solicitudesPorColumna[$clave] = [];
@@ -51,7 +50,6 @@ while ($sol = mysqli_fetch_assoc($resultado)) {
     }
 }
 
-// botón según rol y estado
 function botonAccion($sol, $gestionaSolicitudes, $tipoUsuario) {
     $id = $sol['solicitud_ID'];
     $estado = $sol['Tipo_estado'];
@@ -62,6 +60,9 @@ function botonAccion($sol, $gestionaSolicitudes, $tipoUsuario) {
     }
     if ($estado == "Recibida" && $tipoUsuario == "Director") {
         $html .= ' <a href="Anular.php?id_enviado=' . $id . '" class="btn btn-sm btn-outline-danger">Anular</a>';
+    }
+    if ($estado == "En revision" && $gestionaSolicitudes) {
+        $html .= '<a href="Revisar.php?id_enviado=' . $id . '&tipomod=solicitud" class="btn btn-sm btn-success">Continuar revisión</a>';
     }
     if ($estado == "Derivada" && $gestionaSolicitudes) {
         $html .= '<a href="Tomarsolicitud.php?id_enviado=' . $id . '" class="btn btn-sm btn-success">Tomar</a>';
