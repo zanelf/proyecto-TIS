@@ -44,7 +44,7 @@
     $estadoActual = $Comp['Tipo_estado'] ?? '';
     $indiceActual = array_search($estadoActual, $flujoEstados);
 
-    // historial de cambios (estados)
+    // historial de cambios 
     $fechasPorEstado = [];
     if ($Comp) {
         $historial = obtenerLogEstado($conexionDB, $Comp['solicitud_ID']);
