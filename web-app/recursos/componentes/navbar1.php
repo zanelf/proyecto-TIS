@@ -5,10 +5,9 @@ if(session_status() === PHP_SESSION_NONE) {
 
 $tipoUsuario = isset($_SESSION["tipo"]) ? $_SESSION["tipo"] : "";
 
-// Opciones de menú
+// Menú
 $opcionesAdm = [
     "../index" => "Inicio",
-    "ciudadano" => "Ciudadanos",
     "solicitud" => "Solicitudes",
     "departamento" => "Departamentos",
     "usuario" => "Usuarios",
@@ -19,19 +18,18 @@ $opcionesAdm = [
 
 $opcionesFun = [
     "../index" => "Inicio",
-    "ciudadano" => "Ciudadanos",
     "solicitud" => "Solicitudes",
     "../consultas/logout" => "Cerrar Sesión"
 ];
 
 $opcionesDir = [
     "../index" => "Inicio",
-    "ciudadano" => "Ciudadanos",
+    "director" => "Panel",
     "solicitud" => "Solicitudes",
+    "metricas" => "Métricas",
     "../consultas/logout" => "Cerrar Sesión"
 ];
 
-// Seleccionar el arreglo de opciones correcto
 $opcionesActuales = [];
 if($tipoUsuario == "Administrador") {
     $opcionesActuales = $opcionesAdm;

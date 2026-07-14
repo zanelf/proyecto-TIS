@@ -34,7 +34,6 @@ session_start();
 
                     <?php if (isset($_SESSION["tipo"]) && $_SESSION["tipo"] == "Administrador"): ?>
                         <a href="ventanas/solicitud.php" class="btn-acceso">Solicitudes</a>
-                        <a href="ventanas/ciudadano.php" class="btn-acceso">Ciudadanos</a>
                         <a href="ventanas/departamento.php" class="btn-acceso">Departamentos</a>
                         <a href="ventanas/tipo_solicitud.php" class="btn-acceso">Tipos de solicitudes</a>
                         <a href="ventanas/Usuario.php" class="btn-acceso">Usuarios</a>
@@ -43,12 +42,12 @@ session_start();
 
                     <?php if (isset($_SESSION["tipo"]) && $_SESSION["tipo"] == "Funcionario"): ?>
                         <a href="ventanas/solicitud.php" class="btn-acceso">Solicitudes</a>
-                        <a href="ventanas/ciudadano.php" class="btn-acceso">Ciudadanos</a>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION["tipo"]) && $_SESSION["tipo"] == "Director"): ?>
+                        <a href="ventanas/director.php" class="btn-acceso">Panel</a>
                         <a href="ventanas/solicitud.php" class="btn-acceso">Solicitudes</a>
-                        <a href="ventanas/departamento.php" class="btn-acceso">Departamentos</a>
+                        <a href="ventanas/metricas.php" class="btn-acceso">Métricas</a>
                     <?php endif; ?>
 
                     <a href="./consultas/logout.php" class="btn-acceso btn-cerrar">Cerrar sesion</a>
