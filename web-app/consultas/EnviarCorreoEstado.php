@@ -9,7 +9,7 @@ require_once __DIR__ . '/../libs/PHPMailer-master/src/SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-function enviarCorreoEstado($correo, $asunto, $id_comprobante, $estado) {
+function enviarCorreoEstado($correo, $asunto, $id_comprobante, $estado, $motivo = '') {
     $mail = new PHPMailer(true);
 
     try {
@@ -32,11 +32,14 @@ function enviarCorreoEstado($correo, $asunto, $id_comprobante, $estado) {
         $mail->setFrom(MAIL_USER, MAIL_FROM_NAME);
         $mail->addAddress($correo);
 
+        $bloqueMotivo = ($estado == 'Anulada' && $motivo != '') ? "<p><strong>Motivo:</strong> $motivo</p>" : "";
+
         $mail->isHTML(true);
         $mail->Subject = "Actualización de su solicitud - SGISC";
         $mail->Body = "
             <h2>Actualización de su solicitud</h2>
             <p>Su solicitud <strong>$asunto</strong> cambió al estado: <strong>$estado</strong>.</p>
+            $bloqueMotivo
             <p>Puede consultar el estado con su código de comprobante: <strong>#$id_comprobante</strong>.</p>
             <p>Muchas gracias por comunicarse con la Municipalidad.</p>
         ";

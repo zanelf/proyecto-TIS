@@ -43,6 +43,9 @@ $columnasVisibles = [
         "nombre"      => ["Nombre", "30%"],
         "descripcion" => ["Descripción", "45%"],
     ],
+    "prioridad" => [
+        "Nombre" => ["Nombre", "70%"],
+    ],
 ];
 
 // si el modelo no está en la lista, se muestran todas las columnas
@@ -106,7 +109,7 @@ if ($modelo == "solicitud") {
         $where[] = "EXISTS (SELECT 1 FROM trabajador t WHERE t.ID_usuario = usuario.ID_usuario AND t.tipo_trabajador = 'director' AND t.ID_departamento = '$dptoEsc')";
     }
     if ($buscar !== "") {
-        $where[] = "rut_usuario LIKE '%$buscarEsc%'";
+        $where[] = "usuario.rut_usuario LIKE '%$buscarEsc%'";
     }
 } elseif ($modelo == "departamento") {
     if ($buscar !== "") {
@@ -119,6 +122,10 @@ if ($modelo == "solicitud") {
 } elseif ($modelo == "tipo_solicitud") {
     if ($buscar !== "") {
         $where[] = "(nombre LIKE '%$buscarEsc%' OR descripcion LIKE '%$buscarEsc%')";
+    }
+} elseif ($modelo == "prioridad") {
+    if ($buscar !== "") {
+        $where[] = "Nombre LIKE '%$buscarEsc%'";
     }
 }
 
@@ -192,16 +199,22 @@ while ($row = mysqli_fetch_assoc($resultado)) {
         echo '<a href="../recursos/componentes/Eliminar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-danger fw-medium shadow-sm px-2">Eliminar</a>';
     }
 
-    if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "Funcionario") {
+    $gestionaSolicitudes = ($tipoUsuario == "Funcionario" || $tipoUsuario == "Director");
+
+    if ($modelo == "solicitud" && $estado == "Recibida" && $gestionaSolicitudes) {
         echo '<a href="Revisar.php?id_enviado=' . $PKValue . '&tipomod=' . $modelo . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Revisar</a>';
     }
-    if ($modelo == "solicitud" && $estado == "Derivada" && $tipoUsuario == "Funcionario") {
+    if ($modelo == "solicitud" && $estado == "Derivada" && $gestionaSolicitudes) {
         echo '<a href="Tomarsolicitud.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Tomar</a>';
     }
-    if ($modelo == "solicitud" && $estado == "En proceso" && $tipoUsuario == "Funcionario") {
+    if ($modelo == "solicitud" && $estado == "En proceso" && $gestionaSolicitudes) {
         echo '<a href="Responder.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-success fw-medium shadow-sm px-2">Responder</a>';
     }
-    if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $estado != "En proceso" && $tipoUsuario == "Funcionario") {
+    // solo el director puede anular una solicitud recibida
+    if ($modelo == "solicitud" && $estado == "Recibida" && $tipoUsuario == "Director") {
+        echo '<a href="Anular.php?id_enviado=' . $PKValue . '" class="btn btn-sm btn-outline-danger fw-medium shadow-sm px-2">Anular</a>';
+    }
+    if ($modelo == "solicitud" && $estado != "Recibida" && $estado != "Derivada" && $estado != "En proceso" && $gestionaSolicitudes) {
         echo '<span class="text-muted small">Sin acciones</span>';
     }
     echo '</div>';
