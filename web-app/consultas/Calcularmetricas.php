@@ -1,6 +1,6 @@
 <?php
 
-// Filtros
+// Filtros: tipo, departamento y rango de fechas (por fecha_creacion)
 function construirWhereMetricas($filtroTipo, $filtroDep, $fechaInicio = '', $fechaFin = '') {
     $condiciones = ["1=1"];
     if (!empty($filtroTipo)) $condiciones[] = "s.ID_tipo_solicitud = '$filtroTipo'";
@@ -10,17 +10,21 @@ function construirWhereMetricas($filtroTipo, $filtroDep, $fechaInicio = '', $fec
     return implode(" AND ", $condiciones);
 }
 
-// KPIs
+// KPI generales
 function obtenerKpis($conexionDB, $filtroTipo = '', $filtroDep = '', $fechaInicio = '', $fechaFin = '') {
     $where = construirWhereMetricas($filtroTipo, $filtroDep, $fechaInicio, $fechaFin);
     $sql = "SELECT
                 COUNT(*) as total,
                 SUM(CASE WHEN Tipo_estado = 'Recibida' THEN 1 ELSE 0 END) as pendientes,
+                SUM(CASE WHEN Tipo_estado = 'En revision' THEN 1 ELSE 0 END) as en_revision,
+                SUM(CASE WHEN Tipo_estado = 'Derivada' THEN 1 ELSE 0 END) as derivadas,
                 SUM(CASE WHEN Tipo_estado = 'En proceso' THEN 1 ELSE 0 END) as en_proceso,
+                SUM(CASE WHEN Tipo_estado = 'Respondida' THEN 1 ELSE 0 END) as respondidas,
+                SUM(CASE WHEN Tipo_estado = 'Cerrada' THEN 1 ELSE 0 END) as cerradas,
                 SUM(CASE WHEN Tipo_estado IN ('Respondida', 'Cerrada') THEN 1 ELSE 0 END) as resueltos
             FROM solicitud s WHERE $where";
     $res = mysqli_query($conexionDB, $sql);
-    return $res ? mysqli_fetch_assoc($res) : ['total'=>0, 'pendientes'=>0, 'en_proceso'=>0, 'resueltos'=>0];
+    return $res ? mysqli_fetch_assoc($res) : ['total'=>0, 'pendientes'=>0, 'en_revision'=>0, 'derivadas'=>0, 'en_proceso'=>0, 'respondidas'=>0, 'cerradas'=>0, 'resueltos'=>0];
 }
 
 // Por tipo
@@ -59,7 +63,7 @@ function obtenerResolucionDeptos($conexionDB, $filtroTipo = '', $filtroDep = '',
     return $datos;
 }
 
-// Tiempo promedio de resolucioón
+// Tiempo promedio de resolucion en dias (desde creacion hasta respondida/cerrada)
 function obtenerTiempoPromedioResolucion($conexionDB, $filtroTipo = '', $filtroDep = '', $fechaInicio = '', $fechaFin = '') {
     $where = construirWhereMetricas($filtroTipo, $filtroDep, $fechaInicio, $fechaFin);
     $sql = "SELECT AVG(DATEDIFF(s.fecha_respondida, s.fecha_creacion)) as promedio
@@ -72,7 +76,7 @@ function obtenerTiempoPromedioResolucion($conexionDB, $filtroTipo = '', $filtroD
     return 0;
 }
 
-// Solicitudes respondidas dentro del plazo
+// Tasa de cumplimiento de SLA: % de solicitudes respondidas dentro del plazo
 function obtenerTasaCumplimientoSLA($conexionDB, $filtroTipo = '', $filtroDep = '', $fechaInicio = '', $fechaFin = '') {
     $where = construirWhereMetricas($filtroTipo, $filtroDep, $fechaInicio, $fechaFin);
     $sql = "SELECT
@@ -91,7 +95,7 @@ function obtenerTasaCumplimientoSLA($conexionDB, $filtroTipo = '', $filtroDep = 
     return 0;
 }
 
-// Solicitudes vencidas
+// Solicitudes vencidas: activas cuyo plazo ya paso
 function obtenerSolicitudesVencidas($conexionDB, $filtroTipo = '', $filtroDep = '', $fechaInicio = '', $fechaFin = '') {
     $where = construirWhereMetricas($filtroTipo, $filtroDep, $fechaInicio, $fechaFin);
     $sql = "SELECT COUNT(*) as vencidas
@@ -107,7 +111,7 @@ function obtenerSolicitudesVencidas($conexionDB, $filtroTipo = '', $filtroDep = 
     return 0;
 }
 
-// Solicitudes por mes
+// Tendencia historica: cantidad de solicitudes creadas por mes
 function obtenerTendenciaHistorica($conexionDB, $filtroTipo = '', $filtroDep = '', $fechaInicio = '', $fechaFin = '') {
     $where = construirWhereMetricas($filtroTipo, $filtroDep, $fechaInicio, $fechaFin);
     $sql = "SELECT DATE_FORMAT(s.fecha_creacion, '%Y-%m') as mes, COUNT(*) as cantidad

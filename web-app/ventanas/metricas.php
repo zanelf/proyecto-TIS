@@ -113,37 +113,49 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
 
         
         <div class="row g-3 mb-4">
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-3">
                 <div class="card border-0 shadow-sm p-3 bg-white h-100" style="border-radius: 10px;">
                     <span class="text-muted small fw-bold">Total</span>
                     <h3 class="fw-bold text-dark m-0 mt-1" id="kpi-total"><?php echo $kpis['total'] ?? 0; ?></h3>
                 </div>
             </div>
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm p-3 bg-white h-100" style="border-radius: 10px;">
+                    <span class="text-muted small fw-bold text-warning">Recibidas</span>
+                    <h3 class="fw-bold text-warning m-0 mt-1" id="kpi-recibidas"><?php echo $kpis['pendientes'] ?? 0; ?></h3>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm p-3 bg-white h-100" style="border-radius: 10px;">
+                    <span class="text-muted small fw-bold text-secondary">En Revisión</span>
+                    <h3 class="fw-bold text-secondary m-0 mt-1" id="kpi-revision"><?php echo $kpis['en_revision'] ?? 0; ?></h3>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
                 <div class="card border-0 shadow-sm p-3 bg-white h-100" style="border-radius: 10px;">
                     <span class="text-muted small fw-bold text-primary">En Proceso</span>
                     <h3 class="fw-bold text-primary m-0 mt-1" id="kpi-proceso"><?php echo $kpis['en_proceso'] ?? 0; ?></h3>
                 </div>
             </div>
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-3">
                 <div class="card border-0 shadow-sm p-3 bg-white h-100" style="border-radius: 10px;">
                     <span class="text-muted small fw-bold text-success">Resueltas</span>
                     <h3 class="fw-bold text-success m-0 mt-1" id="kpi-resueltas"><?php echo $kpis['resueltos'] ?? 0; ?></h3>
                 </div>
             </div>
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-3">
                 <div class="card border-0 shadow-sm p-3 bg-white h-100" style="border-radius: 10px;">
                     <span class="text-muted small fw-bold">Tiempo Prom.</span>
                     <h3 class="fw-bold text-dark m-0 mt-1"><span id="kpi-tiempo"><?php echo $tiempoProm; ?></span> <small class="text-muted" style="font-size:0.9rem;">días</small></h3>
                 </div>
             </div>
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-3">
                 <div class="card border-0 shadow-sm p-3 bg-white h-100" style="border-radius: 10px;">
                     <span class="text-muted small fw-bold text-info">Cumpl. SLA</span>
                     <h3 class="fw-bold text-info m-0 mt-1"><span id="kpi-sla"><?php echo $tasaSLA; ?></span>%</h3>
                 </div>
             </div>
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-3">
                 <div class="card border-0 shadow-sm p-3 bg-white h-100" style="border-radius: 10px;">
                     <span class="text-muted small fw-bold text-danger">Vencidas</span>
                     <h3 class="fw-bold text-danger m-0 mt-1" id="kpi-vencidas"><?php echo $vencidas; ?></h3>
@@ -162,7 +174,7 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
             <div class="col-12 col-lg-7">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
                     <h5 class="fw-bold text-dark mb-4"><i class="bi bi-bar-chart-line-fill text-success me-2"></i>Solicitudes por Departamento</h5>
-                    <div style="position:relative; height:280px;"><canvas id="chartDeptos"></canvas></div>
+                    <div style="position:relative; height:280px;"><canvas id="chartTipos"></canvas></div>
                 </div>
             </div>
         </div>
@@ -171,14 +183,14 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
         <div class="row g-4">
             <div class="col-12 col-lg-5">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
-                    <h5 class="fw-bold text-dark mb-4"><i class="bi bi-clipboard-check text-info me-2"></i>En Proceso vs Cerradas</h5>
-                    <div style="position:relative; height:280px;"><canvas id="chartEstados"></canvas></div>
+                    <h5 class="fw-bold text-dark mb-4"><i class="bi bi-clipboard-check text-info me-2"></i>Solicitudes por Estado</h5>
+                    <div style="position:relative; height:280px;"><canvas id="chartTipos"></canvas></div>
                 </div>
             </div>
             <div class="col-12 col-lg-7">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
                     <h5 class="fw-bold text-dark mb-4"><i class="bi bi-graph-up text-warning me-2"></i>Tendencia Histórica</h5>
-                    <div style="position:relative; height:280px;"><canvas id="chartTendencia"></canvas></div>
+                    <div style="position:relative; height:280px;"><canvas id="chartTipos"></canvas></div>
                 </div>
             </div>
         </div>
@@ -224,10 +236,10 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
         const chartEstados = new Chart(document.getElementById('chartEstados'), {
             type: 'bar',
             data: {
-                labels: ['En Proceso', 'Resueltas', 'Pendientes'],
+                labels: ['Recibida', 'En revisión', 'Derivada', 'En proceso', 'Respondida', 'Cerrada'],
                 datasets: [{
-                    data: [kpis.en_proceso, kpis.resueltos, kpis.pendientes],
-                    backgroundColor: ['#0d6efd', '#198754', '#ffc107']
+                    data: [kpis.pendientes, kpis.en_revision, kpis.derivadas, kpis.en_proceso, kpis.respondidas, kpis.cerradas],
+                    backgroundColor: ['#ffc107', '#6c757d', '#0dcaf0', '#0d6efd', '#198754', '#343a40']
                 }]
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
@@ -261,6 +273,8 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
                 .then(data => {
                     // KPIs
                     document.getElementById('kpi-total').textContent = data.kpis.total;
+                    document.getElementById('kpi-recibidas').textContent = data.kpis.pendientes;
+                    document.getElementById('kpi-revision').textContent = data.kpis.en_revision;
                     document.getElementById('kpi-proceso').textContent = data.kpis.en_proceso;
                     document.getElementById('kpi-resueltas').textContent = data.kpis.resueltos;
                     document.getElementById('kpi-tiempo').textContent = data.tiempoProm;
@@ -277,7 +291,7 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
                     chartDeptos.data.datasets[1].data = data.deps.map(d => d.resueltas);
                     chartDeptos.update();
 
-                    chartEstados.data.datasets[0].data = [data.kpis.en_proceso, data.kpis.resueltos, data.kpis.pendientes];
+                    chartEstados.data.datasets[0].data = [data.kpis.pendientes, data.kpis.en_revision, data.kpis.derivadas, data.kpis.en_proceso, data.kpis.respondidas, data.kpis.cerradas];
                     chartEstados.update();
 
                     chartTendencia.data.labels = data.tendencia.map(t => t.mes);
