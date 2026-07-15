@@ -68,3 +68,13 @@
     text-align: center;
     padding: 20px 0;
 }
+
+.kanban-tarjeta.tarjeta-por-vencer {
+    border-left: 4px solid #ffc107;
+    background: #fffdf5;
+}
+
+.kanban-tarjeta.tarjeta-vencida {
+    border-left: 4px solid #dc3545;
+    background: #fff5f5;
+}

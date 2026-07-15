@@ -29,9 +29,11 @@ if ($buscar !== "") {
 $whereSql = count($where) > 0 ? "WHERE " . implode(" AND ", $where) : "";
 
 $consulta = "SELECT s.solicitud_ID, s.Asunto, s.Tipo_estado, s.fecha_creacion,
-                    c.nombre AS categoria
+                    s.fecha_vencimiento, s.tiempo_asignado,
+                    c.nombre AS categoria, p.Nombre AS prioridad
              FROM solicitud s
              LEFT JOIN categoria c ON s.ID_categoria = c.ID_categoria
+             LEFT JOIN prioridad p ON s.ID_prioridad = p.ID_prioridad
              $whereSql
              ORDER BY s.fecha_creacion DESC";
 $resultado = mysqli_query($conexionDB, $consulta);
@@ -48,6 +50,41 @@ while ($sol = mysqli_fetch_assoc($resultado)) {
             break;
         }
     }
+}
+
+
+function claseBadgePrioridad($prioridad) {
+    $p = strtolower(trim($prioridad));
+    if ($p == 'alta' || $p == 'urgente') return 'bg-danger';
+    if ($p == 'media') return 'bg-warning text-dark';
+    if ($p == 'baja') return 'bg-success';
+    return 'bg-secondary';
+}
+
+
+function estadoSLA($sol) {
+    $estadosActivos = ['Derivada', 'En proceso'];
+    if (empty($sol['fecha_vencimiento']) || !in_array($sol['Tipo_estado'], $estadosActivos)) {
+        return '';
+    }
+
+    $ahora = new DateTime();
+    $vencimiento = new DateTime($sol['fecha_vencimiento']);
+
+    if ($ahora > $vencimiento) {
+        return 'vencido';
+    }
+
+    // por si está por vencer (20% era??)
+    $dias = (int)($sol['tiempo_asignado'] ?? 0);
+    if ($dias > 0) {
+        $totalSegundos = $dias * 24 * 3600;
+        $restanteSegundos = $vencimiento->getTimestamp() - $ahora->getTimestamp();
+        if ($restanteSegundos <= ($totalSegundos * 0.20)) {
+            return 'por_vencer';
+        }
+    }
+    return '';
 }
 
 function botonAccion($sol, $gestionaSolicitudes, $tipoUsuario) {
@@ -85,8 +122,11 @@ function botonAccion($sol, $gestionaSolicitudes, $tipoUsuario) {
             <?php if (count($solicitudesPorColumna[$clave]) === 0): ?>
                 <p class="kanban-vacio">Sin solicitudes</p>
             <?php else: ?>
-                <?php foreach ($solicitudesPorColumna[$clave] as $sol): ?>
-                    <div class="kanban-tarjeta">
+                <?php foreach ($solicitudesPorColumna[$clave] as $sol):
+                    $sla = estadoSLA($sol);
+                    $claseSLA = $sla === 'vencido' ? 'tarjeta-vencida' : ($sla === 'por_vencer' ? 'tarjeta-por-vencer' : '');
+                ?>
+                    <div class="kanban-tarjeta <?php echo $claseSLA; ?>">
                         <div class="kanban-tarjeta-meta">
                             #<?php echo htmlspecialchars($sol['solicitud_ID']); ?>
                             <?php if ($sol['categoria']): ?>
@@ -94,8 +134,25 @@ function botonAccion($sol, $gestionaSolicitudes, $tipoUsuario) {
                             <?php endif; ?>
                         </div>
                         <div class="kanban-tarjeta-asunto"><?php echo htmlspecialchars($sol['Asunto']); ?></div>
+
+                        <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
+                            <?php if (!empty($sol['prioridad'])): ?>
+                                <span class="badge <?php echo claseBadgePrioridad($sol['prioridad']); ?>" style="font-size:10px;">
+                                    <?php echo htmlspecialchars($sol['prioridad']); ?>
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($sla === 'vencido'): ?>
+                                <span class="badge bg-danger" style="font-size:10px;">Vencido</span>
+                            <?php elseif ($sla === 'por_vencer'): ?>
+                                <span class="badge bg-warning text-dark" style="font-size:10px;">Por vencer</span>
+                            <?php endif; ?>
+                        </div>
+
                         <div class="kanban-tarjeta-fecha">
                             <?php echo htmlspecialchars(date('d-m-Y', strtotime($sol['fecha_creacion']))); ?>
+                            <?php if (!empty($sol['fecha_vencimiento']) && in_array($sol['Tipo_estado'], ['Derivada','En proceso'])): ?>
+                                <br><span style="font-size:10px;">Vence: <?php echo htmlspecialchars(date('d-m-Y', strtotime($sol['fecha_vencimiento']))); ?></span>
+                            <?php endif; ?>
                         </div>
                         <?php
                             $boton = botonAccion($sol, $gestionaSolicitudes, $tipoUsuario);
