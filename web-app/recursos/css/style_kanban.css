@@ -1,0 +1,70 @@
+.kanban-board {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+}
+
+.kanban-columna {
+    background: #f1f3f5;
+    border-radius: 12px;
+    padding: 12px;
+    min-width: 250px;
+    flex: 1;
+}
+
+.kanban-columna-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+
+.kanban-columna-titulo span:first-child {
+    font-size: 14px;
+    font-weight: 600;
+    color: #343a40;
+}
+
+.kanban-contador {
+    font-size: 12px;
+    padding: 2px 9px;
+    border-radius: 10px;
+    background: #e9ecef;
+    color: #495057;
+}
+
+.kanban-tarjeta {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.kanban-tarjeta-meta {
+    font-size: 11px;
+    color: #adb5bd;
+    margin-bottom: 4px;
+}
+
+.kanban-tarjeta-asunto {
+    font-size: 13px;
+    font-weight: 500;
+    color: #212529;
+    margin-bottom: 8px;
+}
+
+.kanban-tarjeta-fecha {
+    font-size: 11px;
+    color: #868e96;
+    margin-bottom: 8px;
+}
+
+.kanban-vacio {
+    font-size: 12px;
+    color: #adb5bd;
+    text-align: center;
+    padding: 20px 0;
+}

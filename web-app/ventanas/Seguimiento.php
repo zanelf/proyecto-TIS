@@ -1,6 +1,7 @@
 <?php
     session_start();
     include('../base_de_datos/conexion.php');
+    require_once('../consultas/RegistrarLogEstado.php');
 
     $Comp = null;
     $busqueda = false;
@@ -42,6 +43,15 @@
 
     $estadoActual = $Comp['Tipo_estado'] ?? '';
     $indiceActual = array_search($estadoActual, $flujoEstados);
+
+    // historial de cambios (estados)
+    $fechasPorEstado = [];
+    if ($Comp) {
+        $historial = obtenerLogEstado($conexionDB, $Comp['solicitud_ID']);
+        foreach ($historial as $evento) {
+            $fechasPorEstado[$evento['estado_nuevo']] = $evento['fecha_hora_cambio'];
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +62,7 @@
     <title>Seguimiento de Solicitud - SGISC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="../recursos/css/style_enviar_solicitud_formulario.css">
-    <link rel="stylesheet" href="../recursos/css/style_seguimiento.css">
+    <link rel="stylesheet" href="../recursos/css/style_seguimiento.css?v=1">
 </head>
 <body>
 
@@ -123,29 +133,49 @@
             </div>
 
             <div class="card border-0 shadow-sm p-4" style="border-radius:12px;">
-                <h6 class="fw-bold mb-3">Historial de estados</h6>
+                <h6 class="fw-bold mb-4">Seguimiento de la solicitud</h6>
 
-                <?php
-                $estadosMostrar = $estadoActual === 'Anulada' ? ['Anulada'] : $flujoEstados;
-                foreach ($estadosMostrar as $clave):
-                    $indice = array_search($clave, $flujoEstados);
-                    if ($clave === $estadoActual) {
-                        $claseCir = 'circulo-actual'; $claseNom = 'nombre-actual'; $icono = '●';
-                        $fecha = date('d-m-Y H:i', strtotime($Comp['Fecha'] . ' ' . $Comp['Hora']));
-                    } elseif ($indice < $indiceActual) {
-                        $claseCir = 'circulo-ok'; $claseNom = 'nombre-ok'; $icono = '✓'; $fecha = '—';
-                    } else {
-                        $claseCir = 'circulo-pendiente'; $claseNom = 'nombre-pendiente'; $icono = ''; $fecha = '—';
-                    }
-                ?>
-                    <div class="estado-fila">
-                        <div class="d-flex align-items-center">
-                            <div class="estado-circulo <?php echo $claseCir; ?>"><?php echo $icono; ?></div>
-                            <span class="<?php echo $claseNom; ?>"><?php echo $etiquetas[$clave] ?? $clave; ?></span>
+                <?php if ($estadoActual === 'Anulada'): ?>
+                    <div class="tracker-anulada">
+                        <div class="tracker-circulo circulo-anulada">✕</div>
+                        <div>
+                            <div class="nombre-actual">Solicitud anulada</div>
+                            <div class="fecha-estado"><?php echo isset($fechasPorEstado['Anulada']) ? date('d-m-Y H:i', strtotime($fechasPorEstado['Anulada'])) : '—'; ?></div>
                         </div>
-                        <span class="fecha-estado"><?php echo $fecha; ?></span>
                     </div>
-                <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="tracker">
+                        <?php foreach ($flujoEstados as $clave):
+                            $indice = array_search($clave, $flujoEstados);
+                            $fechaEstado = isset($fechasPorEstado[$clave])
+                                ? date('d-m-Y', strtotime($fechasPorEstado[$clave]))
+                                : '';
+                            $horaEstado = isset($fechasPorEstado[$clave])
+                                ? date('H:i', strtotime($fechasPorEstado[$clave]))
+                                : '';
+
+                            if ($clave === $estadoActual) {
+                                $clasePaso = 'paso-actual'; $icono = '●';
+                            } elseif ($indice < $indiceActual) {
+                                $clasePaso = 'paso-ok'; $icono = '✓';
+                            } else {
+                                $clasePaso = 'paso-pendiente'; $icono = '';
+                            }
+                        ?>
+                            <div class="tracker-paso <?php echo $clasePaso; ?>">
+                                <div class="tracker-circulo"><?php echo $icono; ?></div>
+                                <div class="tracker-etiqueta"><?php echo $etiquetas[$clave] ?? $clave; ?></div>
+                                <div class="tracker-fecha">
+                                    <?php if ($fechaEstado): ?>
+                                        <?php echo $fechaEstado; ?><br><span class="tracker-hora"><?php echo $horaEstado; ?></span>
+                                    <?php else: ?>
+                                        —
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
 
         <?php endif; ?>
