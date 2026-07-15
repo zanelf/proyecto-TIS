@@ -50,12 +50,9 @@ if($tipoUsuario == "Administrador") {
         <a href="../index.php" class="navbar-brand-text text-uppercase text-decoration-none me-2">SGISC</a>
 
         <div class="d-flex align-items-center">
-            <?php if (isset($_SESSION["usuario"])): ?>
+            <?php if (isset($_SESSION["usuario"]) && $tipoUsuario): ?>
                 <span class="texto-bienvenida me-2">
-                    Bienvenido, <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
-                    <?php if ($tipoUsuario): ?>
-                        (<?php echo htmlspecialchars($tipoUsuario); ?>)
-                    <?php endif; ?>
+                    Bienvenido, <?php echo htmlspecialchars($tipoUsuario); ?>
                 </span>
             <?php endif; ?>
 
