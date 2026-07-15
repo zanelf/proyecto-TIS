@@ -174,7 +174,7 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
             <div class="col-12 col-lg-7">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
                     <h5 class="fw-bold text-dark mb-4"><i class="bi bi-bar-chart-line-fill text-success me-2"></i>Solicitudes por Departamento</h5>
-                    <div style="position:relative; height:280px;"><canvas id="chartTipos"></canvas></div>
+                    <div style="position:relative; height:280px;"><canvas id="chartDeptos"></canvas></div>
                 </div>
             </div>
         </div>
@@ -184,13 +184,13 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
             <div class="col-12 col-lg-5">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
                     <h5 class="fw-bold text-dark mb-4"><i class="bi bi-clipboard-check text-info me-2"></i>Solicitudes por Estado</h5>
-                    <div style="position:relative; height:280px;"><canvas id="chartTipos"></canvas></div>
+                    <div style="position:relative; height:280px;"><canvas id="chartEstados"></canvas></div>
                 </div>
             </div>
             <div class="col-12 col-lg-7">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
                     <h5 class="fw-bold text-dark mb-4"><i class="bi bi-graph-up text-warning me-2"></i>Tendencia Histórica</h5>
-                    <div style="position:relative; height:280px;"><canvas id="chartTipos"></canvas></div>
+                    <div style="position:relative; height:280px;"><canvas id="chartTendencia"></canvas></div>
                 </div>
             </div>
         </div>

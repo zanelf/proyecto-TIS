@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-07-2026 a las 03:05:13
+-- Tiempo de generación: 15-07-2026 a las 17:33:15
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `proyectodb2`
+-- Base de datos: `proyectodb`
 --
 
 -- --------------------------------------------------------
@@ -62,7 +62,9 @@ CREATE TABLE `ciudadano` (
 --
 
 INSERT INTO `ciudadano` (`RUT_ciudadano`, `correo_electronico`) VALUES
+(987654327, 'elziberiano@gmail.com'),
 (987654325, 'franco.videlat@gmail.com'),
+(987654326, 'lacuna@ing.ucsc.cl'),
 (987654321, 'prueba2@gmail.com'),
 (987654322, 'prueba2@gmail.com'),
 (112233445, 'prueba3@gmail.com'),
@@ -88,7 +90,15 @@ CREATE TABLE `comprobante` (
 --
 
 INSERT INTO `comprobante` (`ID_comprobante`, `Fecha`, `Hora`, `solicitud_ID`) VALUES
-(1, '2026-07-09', '15:04:42', 1);
+(1, '2026-07-09', '15:04:42', 1),
+(2, '2026-07-09', '23:06:17', 2),
+(3, '2026-07-09', '23:26:53', 3),
+(4, '2026-07-10', '14:30:57', 4),
+(5, '2026-07-13', '17:23:23', 5),
+(6, '2026-07-13', '17:58:08', 6),
+(7, '2026-07-13', '18:42:46', 7),
+(8, '2026-07-14', '21:39:12', 8),
+(9, '2026-07-14', '22:11:36', 9);
 
 -- --------------------------------------------------------
 
@@ -131,13 +141,6 @@ CREATE TABLE `director` (
   `ID_departamento` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `director`
---
-
-INSERT INTO `director` (`ID_usuario`, `ID_departamento`) VALUES
-(21, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -165,12 +168,43 @@ CREATE TABLE `funcionario` (
   `ID_departamento` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `funcionario`
+-- Estructura de tabla para la tabla `log_estado`
 --
 
-INSERT INTO `funcionario` (`ID_usuario`, `ID_departamento`) VALUES
-(20, 4);
+CREATE TABLE `log_estado` (
+  `ID_log` int(11) NOT NULL,
+  `solicitud_ID` int(11) NOT NULL,
+  `estado_anterior` varchar(50) DEFAULT NULL,
+  `estado_nuevo` varchar(50) NOT NULL,
+  `ID_usuario` int(11) DEFAULT NULL,
+  `fecha_hora_cambio` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `log_estado`
+--
+
+INSERT INTO `log_estado` (`ID_log`, `solicitud_ID`, `estado_anterior`, `estado_nuevo`, `ID_usuario`, `fecha_hora_cambio`) VALUES
+(1, 5, '', 'Recibida', NULL, '2026-07-13 17:23:23'),
+(2, 5, 'Recibida', 'Derivada', 28, '2026-07-13 17:26:03'),
+(3, 5, 'Derivada', 'En proceso', 28, '2026-07-13 17:26:28'),
+(4, 5, 'En proceso', 'Respondida', 28, '2026-07-13 17:27:14'),
+(5, 6, '', 'Recibida', NULL, '2026-07-13 17:58:08'),
+(6, 6, 'Recibida', 'Derivada', 28, '2026-07-13 18:41:00'),
+(7, 7, '', 'Recibida', NULL, '2026-07-13 18:42:46'),
+(8, 7, 'Recibida', 'En revision', 28, '2026-07-13 18:50:22'),
+(9, 7, 'En revision', 'Derivada', 28, '2026-07-14 19:40:02'),
+(10, 7, 'Derivada', 'En proceso', 28, '2026-07-14 19:43:32'),
+(11, 8, '', 'Recibida', NULL, '2026-07-14 21:39:12'),
+(12, 8, 'Recibida', 'En revision', 28, '2026-07-14 21:39:20'),
+(13, 8, 'En revision', 'Derivada', 28, '2026-07-14 21:39:25'),
+(14, 9, '', 'Recibida', NULL, '2026-07-14 22:11:36'),
+(15, 9, 'Recibida', 'En revision', 28, '2026-07-14 22:11:47'),
+(16, 9, 'En revision', 'Derivada', 28, '2026-07-14 22:11:51'),
+(17, 9, 'Derivada', 'En proceso', 28, '2026-07-14 22:12:23');
 
 -- --------------------------------------------------------
 
@@ -188,7 +222,10 @@ CREATE TABLE `prioridad` (
 --
 
 INSERT INTO `prioridad` (`ID_prioridad`, `Nombre`) VALUES
-(1, 'urgente');
+(1, 'Urgente'),
+(2, 'Alta'),
+(3, 'Media'),
+(4, 'Baja');
 
 -- --------------------------------------------------------
 
@@ -202,6 +239,7 @@ CREATE TABLE `solicitud` (
   `Asunto` varchar(100) DEFAULT NULL,
   `Descripcion` varchar(100) DEFAULT NULL,
   `respuesta` text DEFAULT NULL,
+  `motivo_anulacion` text DEFAULT NULL,
   `ID_categoria` int(11) DEFAULT NULL,
   `correo_electronico` varchar(100) DEFAULT NULL,
   `ID_departamento` int(11) DEFAULT NULL,
@@ -209,6 +247,7 @@ CREATE TABLE `solicitud` (
   `fecha_respondida` datetime DEFAULT NULL,
   `token_encuesta` varchar(64) DEFAULT NULL,
   `tiempo_asignado` int(10) DEFAULT NULL,
+  `fecha_vencimiento` datetime DEFAULT NULL,
   `fecha_creacion` date NOT NULL,
   `ID_prioridad` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -217,8 +256,16 @@ CREATE TABLE `solicitud` (
 -- Volcado de datos para la tabla `solicitud`
 --
 
-INSERT INTO `solicitud` (`solicitud_ID`, `Tipo_estado`, `Asunto`, `Descripcion`, `respuesta`, `ID_categoria`, `correo_electronico`, `ID_departamento`, `ID_tipo_solicitud`, `fecha_respondida`, `token_encuesta`, `tiempo_asignado`, `fecha_creacion`, `ID_prioridad`) VALUES
-(1, 'Respondida', 'Corte de agua', 'Me cortaron el agua', 'dadasdasd', 1, 'franco.videlat@gmail.com', 2, 5, '2026-07-09 14:02:59', 'a876c140fd2082b74b5c3944f2b9e5eca9de048631e503663a8ca6296b3f8e97', NULL, '2026-07-09', NULL);
+INSERT INTO `solicitud` (`solicitud_ID`, `Tipo_estado`, `Asunto`, `Descripcion`, `respuesta`, `motivo_anulacion`, `ID_categoria`, `correo_electronico`, `ID_departamento`, `ID_tipo_solicitud`, `fecha_respondida`, `token_encuesta`, `tiempo_asignado`, `fecha_vencimiento`, `fecha_creacion`, `ID_prioridad`) VALUES
+(1, 'Respondida', 'Corte de agua', 'Me cortaron el agua', 'dadasdasd', NULL, 1, 'franco.videlat@gmail.com', 2, 5, '2026-07-09 14:02:59', 'a876c140fd2082b74b5c3944f2b9e5eca9de048631e503663a8ca6296b3f8e97', NULL, NULL, '2026-07-09', NULL),
+(2, 'Respondida', 'Pasto feo', 'El pasto está muy feo, hay un indigente que orina ahí siempre', 'Listo, matamos al indigente', NULL, 3, 'franco.videlat@gmail.com', 2, 5, '2026-07-09 23:19:11', '24b8820f6e6c75028e121d8f7be07524491f5cb7ea500a8123dffc2e97873500', NULL, NULL, '2026-07-09', NULL),
+(3, 'Respondida', 'Gracias', 'Ahora ya no está el indigente', 'Gracias por la espera', NULL, 3, 'franco.videlat@gmail.com', 2, 6, '2026-07-09 23:32:24', 'f155baad1601bbf1de21f6ffb1e13ebb8a11849763d658dfc1d9b61468ca1c0c', NULL, NULL, '2026-07-09', NULL),
+(4, 'Respondida', 'PRUEBA', 'PRUEBA', 'No', NULL, 3, 'lacuna@ing.ucsc.cl', 2, 5, '2026-07-12 19:27:50', 'b87309d45dbe32a538597dc06112accd479fa38d968a330dc46f917d533046fd', NULL, NULL, '2026-07-10', NULL),
+(5, 'Respondida', 'Pasto en horrible estado', 'El pasto está muy mal cuidado y está seco y feo', 'Unidades de la municipalidad se dirigirán al lugar para observar el estado del pasto', NULL, 3, 'elziberiano@gmail.com', 2, 5, '2026-07-13 17:27:14', '27fde7342d650d3c2dbfcc014622a2f72ce954e443934353b10805cb91b9df44', NULL, NULL, '2026-07-13', NULL),
+(6, 'Derivada', 'El pasto podría cuidarse de mejor forma', 'Podrían darle más mantenimiento al pasto de la plaza', NULL, NULL, 3, 'elziberiano@gmail.com', 2, 7, NULL, NULL, NULL, NULL, '2026-07-13', NULL),
+(7, 'En proceso', 'Prueba 2', 'Prueba2', NULL, NULL, 3, 'elziberiano@gmail.com', 2, 5, NULL, NULL, NULL, NULL, '2026-07-13', NULL),
+(8, 'Derivada', 'PRUEBA FECHA VENCIMEINTO', 'PRUEBAAAA', NULL, NULL, 3, 'franco.videlat@gmail.com', 2, 5, NULL, NULL, 1, '2026-07-16 03:39:25', '2026-07-14', 1),
+(9, 'En proceso', 'PRUEBA 5', 'PRUEBA 5', NULL, NULL, 3, 'franco.videlat@gmail.com', 2, 6, NULL, NULL, NULL, NULL, '2026-07-14', 1);
 
 -- --------------------------------------------------------
 
@@ -238,7 +285,33 @@ CREATE TABLE `tiempo` (
 --
 
 INSERT INTO `tiempo` (`ID_prioridad`, `ID_tipo_solicitud`, `ID_departamento`, `tiempo`) VALUES
-(1, 5, 2, 6);
+(1, 5, 2, 1),
+(1, 5, 3, 1),
+(1, 5, 4, 1),
+(1, 7, 2, 3),
+(1, 7, 3, 3),
+(1, 7, 4, 3),
+(2, 5, 2, 2),
+(2, 5, 3, 2),
+(2, 5, 4, 2),
+(2, 7, 2, 4),
+(2, 7, 3, 4),
+(2, 7, 4, 4),
+(3, 5, 2, 3),
+(3, 5, 3, 3),
+(3, 5, 4, 3),
+(3, 7, 2, 5),
+(3, 7, 3, 5),
+(3, 7, 4, 5),
+(4, 5, 2, 5),
+(4, 5, 3, 5),
+(4, 5, 4, 5),
+(4, 6, 2, 7),
+(4, 6, 3, 7),
+(4, 6, 4, 7),
+(4, 7, 2, 6),
+(4, 7, 3, 6),
+(4, 7, 4, 6);
 
 -- --------------------------------------------------------
 
@@ -257,9 +330,9 @@ CREATE TABLE `tipo_solicitud` (
 --
 
 INSERT INTO `tipo_solicitud` (`ID_tipo_solicitud`, `nombre`, `descripcion`) VALUES
-(5, 'Reclamo', 'Un reclamo sobre algo de la comuna'),
-(6, 'Felicitacion', ''),
-(7, 'Sugerencia', 'Sugiere algun cambio para hacer en la comuna');
+(5, 'Reclamo', 'Informe una situación en la que considere que existió una deficiencia, incumplimiento, demora o inconveniente relacionado con un servicio, procedimiento o atención brindada por la municipalidad. Su reclamo será registrado para su revisión y gestión.'),
+(6, 'Felicitacion', 'Reconoce y destaca la buena atención, gestión o desempeño de un funcionario, departamento o servicio municipal. Tu opinión ayuda a valorar las buenas prácticas y fomentar un mejor servicio a la comunidad.'),
+(7, 'Sugerencia', 'Proponga ideas o recomendaciones que contribuyan a mejorar los servicios, procesos, infraestructura o atención entregada por la municipalidad. Su sugerencia será evaluada por el departamento correspondiente.');
 
 -- --------------------------------------------------------
 
@@ -284,8 +357,9 @@ CREATE TABLE `trabajador` (
 --
 
 INSERT INTO `trabajador` (`id_trabajador`, `rut_usuario`, `nombre`, `apellido`, `tipo_trabajador`, `prevision`, `AFP`, `ID_usuario`, `ID_departamento`) VALUES
-(1, '20000000-0', 'Jorge', 'Jara', 'funcionario', 'Fonasa', 'AFP Planvital', 20, 3),
-(2, '20000230-0', 'Jorge', 'Jara', 'funcionario', 'Fonasa', 'AFP Planvital', 19, 3);
+(3, '20342935-5', 'Waldo', 'Ponce', 'funcionario', 'Fonasa', 'AFP Planvital', 25, 2),
+(4, '10966216-4', 'Dani', 'Olmo', 'director', 'Fonasa', 'AFP Modelo', 27, 3),
+(5, '96610223-5', 'Arturo', 'Vidal', 'director', 'Fonasa', 'AFP Habitat', 28, 2);
 
 -- --------------------------------------------------------
 
@@ -309,12 +383,10 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`ID_usuario`, `rut_usuario`, `correo_usuario`, `contraseña`, `activo`, `cambio_contraseña`, `Fecha_creacion`, `is_admin`) VALUES
-(19, 'admin', '', '$2a$12$4wY.vaDJ83/FRDWDfVN8TuaRCBV4uV6PfI4tw1iws2kn52kjejdtK', 1, 0, '2026-07-09', 1),
-(20, 'funcionario', '', '$2a$12$3Bfun8iYq0U3FDrc62AkBO3iy70FnUB5l5Xy3U0CGp9PNiT7SBq/O', 1, 0, '2026-07-09', 1),
-(21, 'director', '', '$2a$12$iylkTIo1ZImTbv/513JOruSDqehXVWsb6GJ5yU3sy41Bs7aZVLEfi', 1, 0, '2026-07-09', 1),
-(22, '10000000-0', 'franco.videlat@gmail.com', '$2y$10$9xq723BndmcPrxNbvADfEOW.Tl3xsmum4HNaQAy00l50966jWNHOm', 1, 1, '2026-07-09', 1),
-(23, '20000000-0', 'franco.videlat@gmail.com', '$2y$10$iWBfJKW4ePU0.nmfStmY5ecGGjtLdnp5p8VpvuyQRuvnQostCFaTS', 1, 1, '2026-07-09', 0),
-(24, '20379140-2', 'franco.videlat@gmail.com', '$2y$10$kJISsAxEim.1V0enLZegNe7zwsAkRxDmyXi7NcdlaFI.IxQZcN/Y2', 1, 1, '2026-07-09', 1);
+(25, '20342935-5', 'franco.videlat@gmail.com', '$2y$10$zcqOtm4eIc/2PdKU74KAjOhwkeXkQdXAGblbrAMBqgvd3tuWWjDHC', 1, 1, '2026-07-09', 0),
+(26, '2034237-9', 'franco.videlat@gmail.com', '$2y$10$cIGz24wIxGM3a5W6KB1lk.i8TQTUBr2hEgl.IlmJLQuM/24p6JHcK', 1, 1, '2026-07-09', 1),
+(27, '10966216-4', 'franco.videlat@gmail.com', '$2y$10$iwM9TYpbqqUWqvkkcrmV9OWRSkCTk3tWcpKICh4qS40h.GbV4dRvm', 1, 1, '2026-07-10', 0),
+(28, '96610223-5', 'franco.videlat@gmail.com', '$2y$10$BP7QFY43YxA7SlpR2sdxruN8ZEti8T6Dqs0PY4rKTUoZRgUA.juwS', 1, 1, '2026-07-12', 0);
 
 --
 -- Índices para tablas volcadas
@@ -376,6 +448,14 @@ ALTER TABLE `funcionario`
   ADD KEY `ID_departamento` (`ID_departamento`);
 
 --
+-- Indices de la tabla `log_estado`
+--
+ALTER TABLE `log_estado`
+  ADD PRIMARY KEY (`ID_log`),
+  ADD KEY `solicitud_ID` (`solicitud_ID`),
+  ADD KEY `ID_usuario` (`ID_usuario`);
+
+--
 -- Indices de la tabla `prioridad`
 --
 ALTER TABLE `prioridad`
@@ -434,7 +514,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `comprobante`
 --
 ALTER TABLE `comprobante`
-  MODIFY `ID_comprobante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_comprobante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `departamento`
@@ -467,28 +547,40 @@ ALTER TABLE `funcionario`
   MODIFY `ID_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
+-- AUTO_INCREMENT de la tabla `log_estado`
+--
+ALTER TABLE `log_estado`
+  MODIFY `ID_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de la tabla `prioridad`
+--
+ALTER TABLE `prioridad`
+  MODIFY `ID_prioridad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `solicitud_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `solicitud_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_solicitud`
 --
 ALTER TABLE `tipo_solicitud`
-  MODIFY `ID_tipo_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID_tipo_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `trabajador`
 --
 ALTER TABLE `trabajador`
-  MODIFY `id_trabajador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_trabajador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `ID_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `ID_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Restricciones para tablas volcadas
@@ -531,6 +623,13 @@ ALTER TABLE `encuesta`
 ALTER TABLE `funcionario`
   ADD CONSTRAINT `funcionario_ibfk_1` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`),
   ADD CONSTRAINT `funcionario_ibfk_2` FOREIGN KEY (`ID_departamento`) REFERENCES `departamento` (`ID_departamento`);
+
+--
+-- Filtros para la tabla `log_estado`
+--
+ALTER TABLE `log_estado`
+  ADD CONSTRAINT `log_estado_ibfk_1` FOREIGN KEY (`solicitud_ID`) REFERENCES `solicitud` (`solicitud_ID`),
+  ADD CONSTRAINT `log_estado_ibfk_2` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`);
 
 --
 -- Filtros para la tabla `solicitud`

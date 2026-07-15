@@ -46,14 +46,12 @@ if($tipoUsuario == "Administrador") {
 <link rel="stylesheet" href="../recursos/css/style_index.css?v=<?php echo time(); ?>">
 
 <nav class="navbar navbar-expand-lg navbar-municipalidad py-3 shadow-sm mb-4">
-    <div class="container">
-        
-        <a href="../index.php" class="navbar-brand-text text-uppercase text-decoration-none">SGISC</a>
+    <div class="container-fluid">
+        <a href="../index.php" class="navbar-brand-text text-uppercase text-decoration-none me-2">SGISC</a>
 
-        <div class="d-flex flex-wrap align-items-center gap-2">
-            
+        <div class="d-flex align-items-center">
             <?php if (isset($_SESSION["usuario"])): ?>
-                <span class="texto-bienvenida">
+                <span class="texto-bienvenida me-2">
                     Bienvenido, <?php echo htmlspecialchars($_SESSION["usuario"]); ?>
                     <?php if ($tipoUsuario): ?>
                         (<?php echo htmlspecialchars($tipoUsuario); ?>)
@@ -61,22 +59,23 @@ if($tipoUsuario == "Administrador") {
                 </span>
             <?php endif; ?>
 
-            <?php foreach ($opcionesActuales as $opcion => $label): ?>
-                <?php 
-                    $nombreOpcion = basename($opcion); 
-                    $nombrePaginaActual = basename($_SERVER['PHP_SELF'], ".php"); 
-                    
-                    $claseExtra = (str_contains($opcion, 'logout')) ? 'btn-cerrar' : '';
-                    
-                    if ($nombreOpcion === $nombrePaginaActual && !str_contains($opcion, 'logout')) {
-                        $claseExtra .= ' btn-activo';
-                    }
-                ?>
-                <a href="<?php echo $opcion; ?>.php" class="btn-acceso <?php echo trim($claseExtra); ?>">
-                    <?php echo $label; ?>
-                </a>
-            <?php endforeach; ?>
-
+            <div class="d-flex flex-wrap align-items-center gap-2" style="flex: 1; overflow-x: auto;">
+                <?php foreach ($opcionesActuales as $opcion => $label): ?>
+                    <?php 
+                        $nombreOpcion = basename($opcion); 
+                        $nombrePaginaActual = basename($_SERVER['PHP_SELF'], ".php"); 
+                        
+                        $claseExtra = (str_contains($opcion, 'logout')) ? 'btn-cerrar' : '';
+                        
+                        if ($nombreOpcion === $nombrePaginaActual && !str_contains($opcion, 'logout')) {
+                            $claseExtra .= ' btn-activo';
+                        }
+                    ?>
+                    <a href="<?php echo $opcion; ?>.php" class="btn-acceso <?php echo trim($claseExtra); ?>">
+                        <?php echo $label; ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 </nav>
