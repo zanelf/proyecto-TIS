@@ -36,6 +36,8 @@ session_start();
                         <a href="ventanas/solicitud.php" class="btn-acceso">Solicitudes</a>
                         <a href="ventanas/departamento.php" class="btn-acceso">Departamentos</a>
                         <a href="ventanas/tipo_solicitud.php" class="btn-acceso">Tipos de solicitudes</a>
+                        <a href="ventanas/prioridad.php" class="btn-acceso">Prioridades</a>
+                        <a href="ventanas/tiempo.php" class="btn-acceso">Tiempos SLA</a>
                         <a href="ventanas/Usuario.php" class="btn-acceso">Usuarios</a>
                         <a href="ventanas/metricas.php" class="btn-acceso">Métricas</a>
                     <?php endif; ?>
@@ -47,6 +49,7 @@ session_start();
                     <?php if (isset($_SESSION["tipo"]) && $_SESSION["tipo"] == "Director"): ?>
                         <a href="ventanas/director.php" class="btn-acceso">Panel</a>
                         <a href="ventanas/solicitud.php" class="btn-acceso">Solicitudes</a>
+                        <a href="ventanas/tiempo.php" class="btn-acceso">Tiempos SLA</a>
                         <a href="ventanas/metricas.php" class="btn-acceso">Métricas</a>
                     <?php endif; ?>
 

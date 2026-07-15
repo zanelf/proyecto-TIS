@@ -5,13 +5,15 @@ if(session_status() === PHP_SESSION_NONE) {
 
 $tipoUsuario = isset($_SESSION["tipo"]) ? $_SESSION["tipo"] : "";
 
-// Menú
+
 $opcionesAdm = [
     "../index" => "Inicio",
     "solicitud" => "Solicitudes",
     "departamento" => "Departamentos",
     "usuario" => "Usuarios",
     "tipo_solicitud" => "Tipos de solicitudes",
+    "prioridad" => "Prioridades",
+    "tiempo" => "Tiempos SLA",
     "metricas" => "Métricas",
     "../consultas/logout" => "Cerrar Sesión"
 ];
@@ -26,6 +28,7 @@ $opcionesDir = [
     "../index" => "Inicio",
     "director" => "Panel",
     "solicitud" => "Solicitudes",
+    "tiempo" => "Tiempos SLA",
     "metricas" => "Métricas",
     "../consultas/logout" => "Cerrar Sesión"
 ];

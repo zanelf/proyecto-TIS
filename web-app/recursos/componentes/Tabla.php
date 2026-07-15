@@ -43,6 +43,9 @@ $columnasVisibles = [
         "nombre"      => ["Nombre", "30%"],
         "descripcion" => ["Descripción", "45%"],
     ],
+    "prioridad" => [
+        "Nombre" => ["Nombre", "70%"],
+    ],
 ];
 
 // si el modelo no está en la lista, se muestran todas las columnas
@@ -119,6 +122,10 @@ if ($modelo == "solicitud") {
 } elseif ($modelo == "tipo_solicitud") {
     if ($buscar !== "") {
         $where[] = "(nombre LIKE '%$buscarEsc%' OR descripcion LIKE '%$buscarEsc%')";
+    }
+} elseif ($modelo == "prioridad") {
+    if ($buscar !== "") {
+        $where[] = "Nombre LIKE '%$buscarEsc%'";
     }
 }
 
