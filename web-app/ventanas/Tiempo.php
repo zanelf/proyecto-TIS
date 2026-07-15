@@ -7,7 +7,7 @@
         exit;
     }
 
-    // Para admin y director
+    // solo admin y director pueden gestionar tiempos
     if ($_SESSION["tipo"] != "Administrador" && $_SESSION["tipo"] != "Director") {
         header("Location: ../index.php");
         exit;
@@ -16,12 +16,10 @@
     $esDirector = ($_SESSION["tipo"] == "Director");
     $dptoDirector = $esDirector ? $_SESSION["ID_departamento"] : null;
 
-    
     $prioridades = mysqli_query($conexionDB, "SELECT * FROM prioridad");
     $tipos = mysqli_query($conexionDB, "SELECT * FROM tipo_solicitud");
     $departamentos = mysqli_query($conexionDB, "SELECT * FROM departamento");
 
-    // listado de tiempos, filtrado por departamento si es director
     $buscar = isset($_GET['buscar']) ? trim($_GET['buscar']) : "";
     $buscarEsc = mysqli_real_escape_string($conexionDB, $buscar);
 
@@ -134,7 +132,7 @@
         </div>
     </div>
 
-    <!-- Modal nuevo tiempo -->
+    
     <div class="modal fade" id="modalNuevoTiempo" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius: 12px;">
@@ -171,6 +169,7 @@
                                 <label class="form-label fw-bold">Departamento</label>
                                 <select name="ID_departamento" class="form-select" required>
                                     <option value="" disabled selected>Seleccione...</option>
+                                    <option value="TODOS">Todos los departamentos</option>
                                     <?php while ($d = mysqli_fetch_assoc($departamentos)): ?>
                                         <option value="<?php echo $d['ID_departamento']; ?>"><?php echo htmlspecialchars($d['nombre']); ?></option>
                                     <?php endwhile; ?>

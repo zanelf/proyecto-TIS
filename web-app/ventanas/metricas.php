@@ -156,13 +156,13 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
             <div class="col-12 col-lg-5">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
                     <h5 class="fw-bold text-dark mb-4"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Distribución por Tipo</h5>
-                    <canvas id="chartTipos" height="220"></canvas>
+                    <div style="position:relative; height:280px;"><canvas id="chartTipos"></canvas></div>
                 </div>
             </div>
             <div class="col-12 col-lg-7">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
                     <h5 class="fw-bold text-dark mb-4"><i class="bi bi-bar-chart-line-fill text-success me-2"></i>Solicitudes por Departamento</h5>
-                    <canvas id="chartDeptos" height="220"></canvas>
+                    <div style="position:relative; height:280px;"><canvas id="chartDeptos"></canvas></div>
                 </div>
             </div>
         </div>
@@ -172,13 +172,13 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
             <div class="col-12 col-lg-5">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
                     <h5 class="fw-bold text-dark mb-4"><i class="bi bi-clipboard-check text-info me-2"></i>En Proceso vs Cerradas</h5>
-                    <canvas id="chartEstados" height="200"></canvas>
+                    <div style="position:relative; height:280px;"><canvas id="chartEstados"></canvas></div>
                 </div>
             </div>
             <div class="col-12 col-lg-7">
                 <div class="card shadow-sm border-0 p-4 bg-white h-100" style="border-radius: 12px;">
                     <h5 class="fw-bold text-dark mb-4"><i class="bi bi-graph-up text-warning me-2"></i>Tendencia Histórica</h5>
-                    <canvas id="chartTendencia" height="200"></canvas>
+                    <div style="position:relative; height:280px;"><canvas id="chartTendencia"></canvas></div>
                 </div>
             </div>
         </div>
@@ -204,7 +204,7 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
                 labels: datosTipos.map(t => t.nombre),
                 datasets: [{ data: datosTipos.map(t => t.cantidad), backgroundColor: paleta }]
             },
-            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
         });
 
         // Solicitudes por departamento 
@@ -217,7 +217,7 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
                     { label: 'Resueltas', data: datosDeps.map(d => d.resueltas), backgroundColor: '#198754' }
                 ]
             },
-            options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
         });
 
         // En proceso vs cerradas 
@@ -230,7 +230,7 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
                     backgroundColor: ['#0d6efd', '#198754', '#ffc107']
                 }]
             },
-            options: { responsive: true, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
         });
 
         // Tendencia 
@@ -247,7 +247,7 @@ $list_deps  = mysqli_query($conexionDB, "SELECT * FROM departamento");
                     tension: 0.3
                 }]
             },
-            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
         });
 
         // Ajax para no tener que recargar pag
