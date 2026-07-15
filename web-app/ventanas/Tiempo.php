@@ -106,12 +106,17 @@
                                 <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tabla-sla-cuerpo">
                             <?php if (mysqli_num_rows($tiempos) === 0): ?>
                                 <tr><td colspan="5" class="text-center text-muted py-3">No hay tiempos configurados.</td></tr>
-                            <?php else: ?>
-                                <?php while ($t = mysqli_fetch_assoc($tiempos)): ?>
-                                    <tr>
+                            <?php else:
+                                $filasPorPagina = 5;
+                                $numeroFila = 0;
+                                while ($t = mysqli_fetch_assoc($tiempos)):
+                                    $numeroFila++;
+                                    $paginaFila = (int)ceil($numeroFila / $filasPorPagina);
+                            ?>
+                                    <tr data-pagina="<?php echo $paginaFila; ?>">
                                         <td><?php echo htmlspecialchars($t['prioridad']); ?></td>
                                         <td><?php echo htmlspecialchars($t['tipo']); ?></td>
                                         <td><?php echo htmlspecialchars($t['departamento']); ?></td>
@@ -130,6 +135,57 @@
                 </div>
             </div>
         </div>
+
+        <?php
+            $totalPaginas = (int)ceil(($numeroFila ?? 0) / 5);
+            if ($totalPaginas > 1):
+        ?>
+            <div id="sla-paginacion" class="d-flex justify-content-center align-items-center gap-2 py-3 flex-wrap"></div>
+            <script>
+            (function() {
+                const filas = document.querySelectorAll('#tabla-sla-cuerpo tr[data-pagina]');
+                const totalPaginas = <?php echo $totalPaginas; ?>;
+                const contenedorPaginacion = document.getElementById('sla-paginacion');
+                let paginaActual = 1;
+
+                function mostrarPagina(pagina) {
+                    paginaActual = pagina;
+                    filas.forEach(function(fila) {
+                        fila.style.display = (parseInt(fila.dataset.pagina) === pagina) ? '' : 'none';
+                    });
+                    renderizarControles();
+                }
+
+                function renderizarControles() {
+                    contenedorPaginacion.innerHTML = '';
+
+                    const btnAnterior = document.createElement('button');
+                    btnAnterior.className = 'btn btn-sm btn-outline-secondary';
+                    btnAnterior.textContent = 'Anterior';
+                    btnAnterior.disabled = (paginaActual === 1);
+                    btnAnterior.addEventListener('click', function() { mostrarPagina(paginaActual - 1); });
+                    contenedorPaginacion.appendChild(btnAnterior);
+
+                    for (let i = 1; i <= totalPaginas; i++) {
+                        const btnPagina = document.createElement('button');
+                        btnPagina.className = 'btn btn-sm ' + (i === paginaActual ? 'btn-primary text-white' : 'btn-outline-secondary');
+                        btnPagina.textContent = i;
+                        btnPagina.addEventListener('click', function() { mostrarPagina(i); });
+                        contenedorPaginacion.appendChild(btnPagina);
+                    }
+
+                    const btnSiguiente = document.createElement('button');
+                    btnSiguiente.className = 'btn btn-sm btn-outline-secondary';
+                    btnSiguiente.textContent = 'Siguiente';
+                    btnSiguiente.disabled = (paginaActual === totalPaginas);
+                    btnSiguiente.addEventListener('click', function() { mostrarPagina(paginaActual + 1); });
+                    contenedorPaginacion.appendChild(btnSiguiente);
+                }
+
+                mostrarPagina(1);
+            })();
+            </script>
+        <?php endif; ?>
     </div>
 
     
