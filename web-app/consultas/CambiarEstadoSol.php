@@ -4,6 +4,7 @@
     require_once('GenerarTokenEncuesta.php');
     require_once('EnviarCorreoEstado.php');
     require_once('RegistrarLogEstado.php');
+    require_once('CalcularVencimiento.php');
 
     if (!isset($_SESSION["usuario"])) {
         header("Location: ../index.php");
@@ -25,9 +26,10 @@
         exit;
     }
 
-    // datos de la solicitud: estado actual (para el log) y datos del correo
+    
     $datosSol = mysqli_fetch_assoc(mysqli_query($conexionDB,
-        "SELECT solicitud.Tipo_estado, solicitud.Asunto, solicitud.correo_electronico, comprobante.ID_comprobante
+        "SELECT solicitud.Tipo_estado, solicitud.Asunto, solicitud.correo_electronico,
+                solicitud.ID_tipo_solicitud, solicitud.ID_departamento, comprobante.ID_comprobante
          FROM solicitud
          LEFT JOIN comprobante ON comprobante.solicitud_ID = solicitud.solicitud_ID
          WHERE solicitud.solicitud_ID = '$idSolicitud'
@@ -72,6 +74,44 @@
                 $datosSol['ID_comprobante'],
                 'Anulada',
                 $motivo
+            );
+        }
+
+    } elseif ($estadoSiguiente == 'Derivada' && isset($_POST['ID_prioridad'])) {
+        
+        $idPrioridad = mysqli_real_escape_string($conexionDB, $_POST['ID_prioridad']);
+
+        $diasSLA = obtenerTiempoSLA(
+            $conexionDB,
+            $idPrioridad,
+            $datosSol['ID_tipo_solicitud'],
+            $datosSol['ID_departamento']
+        );
+
+        if ($diasSLA !== null) {
+            $fechaVencimiento = sumarDiasHabiles($diasSLA);
+            $consulta = "UPDATE solicitud
+                         SET Tipo_estado = 'Derivada',
+                             ID_prioridad = '$idPrioridad',
+                             tiempo_asignado = '$diasSLA',
+                             fecha_vencimiento = '$fechaVencimiento'
+                         WHERE solicitud_ID = '$idSolicitud'";
+        } else {
+            //si no hay regla solametne derivamos sin regla
+            $consulta = "UPDATE solicitud
+                         SET Tipo_estado = 'Derivada', ID_prioridad = '$idPrioridad'
+                         WHERE solicitud_ID = '$idSolicitud'";
+        }
+        mysqli_query($conexionDB, $consulta);
+
+        registrarLogEstado($conexionDB, $idSolicitud, $estadoAnterior, 'Derivada', $idUsuario);
+
+        if ($datosSol && $datosSol['correo_electronico']) {
+            enviarCorreoEstado(
+                $datosSol['correo_electronico'],
+                $datosSol['Asunto'],
+                $datosSol['ID_comprobante'],
+                'Derivada'
             );
         }
 
